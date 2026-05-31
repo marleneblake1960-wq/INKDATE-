@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inkdate &mdash; Pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:#1a150e;color:#f5f0e8;font-family:'Old Standard TT',serif;font-size:17px;line-height:1.75;overflow-x:hidden;min-height:100vh;}
+:root{--ink:#1a150e;--gold:#c4956a;--gl:#e8c99a;--gd:#8a5f35;--red:#8b2020;--red2:#b02828;--white:#f5f0e8;--mid:rgba(245,240,232,0.65);--light:rgba(245,240,232,0.85);}
+
+/* NAV */
+nav{width:100%;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(196,149,106,0.2);position:sticky;top:0;z-index:100;
+  background:rgba(26,21,14,0.97);backdrop-filter:blur(12px);}
+.nav-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1.4rem;
+  background:linear-gradient(135deg,#f5f0e8,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:2px;text-decoration:none;margin-right:48px;}
+.nav-links{display:flex;gap:32px;align-items:center;}
+.nav-links a{font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(245,240,232,0.72);text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover{color:var(--white);}
+.nav-cta{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;
+  padding:10px 24px;font-family:'Old Standard TT',serif;font-size:0.9rem;
+  letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;}
+@media(max-width:768px){nav{padding:14px 20px;}.nav-links{display:none;}.nav-logo{margin-right:0;}}
+
+/* CURRENCY BAR */
+.currency-bar{width:100%;background:#1a150e;border-bottom:1px solid rgba(196,149,106,0.15);
+  padding:10px 32px;display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;}
+.currency-label{font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,0.5);}
+.cbtn{background:transparent;border:1px solid rgba(196,149,106,0.25);
+  color:rgba(245,240,232,0.7);padding:6px 14px;font-family:'Old Standard TT',serif;
+  font-size:0.85rem;cursor:pointer;transition:all 0.2s;letter-spacing:1px;}
+.cbtn:hover{border-color:rgba(196,149,106,0.6);color:var(--white);}
+.cbtn.on{background:rgba(196,149,106,0.15);border-color:var(--gold);color:var(--gold);}
+
+/* HERO */
+.hero{width:100%;text-align:center;padding:100px 24px 80px;
+  background:radial-gradient(ellipse at 50% 0%,#2a1f0f,#1a150e 65%);}
+.hero-ey{font-size:0.85rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:20px;display:flex;align-items:center;gap:16px;justify-content:center;}
+.hero-ey::before,.hero-ey::after{content:'';width:40px;height:1px;background:rgba(196,149,106,0.4);}
+.hero-wm{font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(3rem,10vw,6rem);line-height:0.9;letter-spacing:-2px;
+  background:linear-gradient(135deg,#f5f0e8,var(--gl) 35%,#f5f0e8 60%,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:20px;}
+.hero-orn{display:flex;align-items:center;gap:12px;max-width:260px;margin:0 auto 20px;}
+.hero-orn .rl{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(196,149,106,0.6));}
+.hero-orn .rl:last-child{background:linear-gradient(to left,transparent,rgba(196,149,106,0.6));}
+.hero-orn .dm{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);}
+.hero-orn .dm2{width:3px;height:3px;background:rgba(196,149,106,0.4);transform:rotate(45deg);}
+.hero-title{font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(2rem,5vw,3.5rem);color:var(--white);margin-bottom:16px;line-height:1.1;}
+.hero-title em{font-style:italic;background:linear-gradient(135deg,var(--gl),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.2rem;color:rgba(245,240,232,0.82);max-width:560px;margin:0 auto 40px;line-height:1.5;}
+.billing-toggle{display:inline-flex;border:1px solid rgba(245,240,232,0.3);}
+.bt-opt{padding:12px 32px;background:#1a150e;color:rgba(245,240,232,0.6);
+  border:none;cursor:pointer;font-family:'Old Standard TT',serif;font-size:1rem;
+  letter-spacing:2px;text-transform:uppercase;transition:all 0.25s;}
+.bt-opt.active{background:rgba(245,240,232,0.1);color:var(--white);}
+.badge{background:var(--red);color:#fff;font-size:0.75rem;padding:2px 8px;
+  margin-left:8px;letter-spacing:1px;vertical-align:middle;}
+
+/* PRICING SECTION */
+.pricing-section{width:100%;background:#1a150e;padding:80px 0;}
+.pricing-inner{max-width:1200px;margin:0 auto;padding:0 24px;}
+.section-header{text-align:center;margin-bottom:56px;}
+.section-eyebrow{font-size:0.85rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:16px;display:flex;align-items:center;gap:16px;justify-content:center;}
+.section-eyebrow::before,.section-eyebrow::after{content:'';width:40px;height:1px;background:rgba(196,149,106,0.3);}
+.section-title{font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(2rem,4vw,3rem);color:var(--white);margin-bottom:12px;}
+.section-title em{font-style:italic;background:linear-gradient(135deg,var(--gl),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.section-sub{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.1rem;color:rgba(245,240,232,0.75);}
+
+/* SWIPE HINT */
+.swipe-hint{display:none;text-align:center;font-size:0.9rem;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(245,240,232,0.88);margin-bottom:16px;
+  padding:10px 20px;border:1px solid rgba(196,149,106,0.3);
+  background:rgba(196,149,106,0.07);max-width:360px;margin-left:auto;margin-right:auto;}
+@media(max-width:1199px){.swipe-hint{display:block;}}
+
+/* PRICING SCROLL */
+.pricing-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;}
+.pricing-grid{display:grid;grid-template-columns:repeat(6,minmax(240px,1fr));
+  gap:1px;background:rgba(196,149,106,0.15);border:1px solid rgba(196,149,106,0.15);
+  min-width:1000px;}
+@media(min-width:1400px){
+  .pricing-scroll{overflow-x:visible;}
+  .pricing-grid{grid-template-columns:repeat(3,1fr);min-width:unset;}
+}
+
+/* TIER */
+.tier{background:#1a150e;padding:40px 28px 48px;position:relative;
+  display:flex;flex-direction:column;}
+.tier.featured{background:linear-gradient(160deg,#1e1810,#221a0e);}
+.tier-label{font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;opacity:0.85;}
+.tier-name{font-family:'Playfair Display',serif;font-weight:900;
+  font-size:1.5rem;color:var(--white);margin-bottom:6px;line-height:1.1;}
+.tier-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1rem;color:rgba(245,240,232,0.65);margin-bottom:24px;}
+.price-amount{font-family:'Playfair Display',serif;font-weight:900;
+  font-size:2.8rem;color:var(--white);line-height:1;}
+.cur{font-size:1.4rem;vertical-align:top;margin-top:6px;display:inline-block;}
+.per{font-size:1rem;color:rgba(245,240,232,0.6);}
+.price-annual{font-size:0.9rem;color:rgba(245,240,232,0.55);
+  font-family:'Cormorant Garamond',serif;font-style:italic;margin-top:6px;margin-bottom:20px;}
+.tier-divider{border:none;border-top:1px solid rgba(196,149,106,0.15);margin:16px 0 20px;}
+.features{list-style:none;padding:0;margin:0;flex:1;}
+.features li{font-size:0.95rem;color:rgba(245,240,232,0.88);
+  padding:8px 0;border-bottom:1px solid rgba(196,149,106,0.08);
+  display:flex;align-items:flex-start;gap:10px;line-height:1.5;}
+.features li:last-child{border-bottom:none;}
+.features li.dim{color:rgba(245,240,232,0.35);}
+.icon{color:var(--gold);flex-shrink:0;font-size:0.75rem;margin-top:3px;}
+.icon.red{color:var(--red);}
+.tier-cta{display:block;text-align:center;padding:14px;margin-top:24px;
+  font-family:'Playfair Display',serif;font-weight:700;font-size:0.85rem;
+  letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;cursor:pointer;border:none;}
+.cta-ghost{background:transparent;border:1px solid rgba(245,240,232,0.25);color:var(--white);}
+.cta-ghost:hover{border-color:var(--white);}
+.cta-red{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;}
+.cta-gold{background:linear-gradient(135deg,#5a3a18,var(--gd));color:var(--white);}
+.cta-outline{background:transparent;border:1px solid rgba(196,149,106,0.4);color:var(--gold);}
+.tier-badge{position:absolute;top:0;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;
+  font-family:'Old Standard TT',serif;font-size:0.7rem;letter-spacing:2px;
+  padding:4px 14px;white-space:nowrap;}
+.tier-badge.gold{background:linear-gradient(135deg,#5a3a18,var(--gold));color:var(--ink);}
+
+/* MEMORIAL EDITION */
+.memorial{width:100%;background:linear-gradient(135deg,#1a1208,#1e1508);
+  border-top:2px solid var(--gold);padding:48px 40px;
+  display:flex;align-items:flex-start;gap:40px;flex-wrap:wrap;}
+.mem-content{flex:1;min-width:260px;}
+.mem-eye{font-size:0.75rem;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;opacity:0.9;}
+.mem-title{font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(1.5rem,3vw,2.2rem);color:var(--gl);line-height:1.05;margin-bottom:6px;}
+.mem-sub{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.1rem;color:rgba(245,240,232,0.75);margin-bottom:20px;}
+.mem-prices{display:flex;gap:24px;flex-wrap:wrap;align-items:center;margin-bottom:16px;}
+.mem-price-block{}
+.mem-price-label{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(245,240,232,0.5);margin-bottom:4px;}
+.mem-price-amt{font-family:'Playfair Display',serif;font-weight:900;
+  font-size:2rem;color:var(--white);}
+.mem-divider{width:1px;height:48px;background:rgba(196,149,106,0.2);}
+.mem-note{font-size:0.88rem;color:rgba(245,240,232,0.45);font-family:'Cormorant Garamond',serif;
+  font-style:italic;margin-bottom:20px;}
+.mem-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.mem-btn{padding:14px 28px;font-family:'Playfair Display',serif;font-weight:700;
+  font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;transition:all 0.3s;display:inline-block;cursor:pointer;border:none;}
+.mem-btn.gold{background:linear-gradient(135deg,#5a3a18,var(--gd));color:var(--white);}
+.mem-btn.outline{background:transparent;border:1px solid rgba(196,149,106,0.4);color:var(--gold);}
+
+/* MINI NEWSPAPERS */
+.mem-papers{display:flex;gap:12px;align-items:stretch;flex-shrink:0;}
+.mini-np{width:90px;padding:10px;position:relative;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.mini-np.born{background:linear-gradient(160deg,#ede3c8,#e0d4b0);border:1px solid rgba(196,149,106,0.5);}
+.mini-np.passed{background:linear-gradient(160deg,#ddd5b8,#cec4a0);border:1px solid rgba(196,149,106,0.3);opacity:0.82;}
+.mini-mast{font-family:'UnifrakturMaguntia',cursive;font-size:0.6rem;text-align:center;
+  color:#111;border-bottom:1px solid #8a7050;padding-bottom:3px;margin-bottom:4px;}
+.mini-band{background:#8b2020;height:4px;margin-bottom:5px;}
+.mini-lines{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:4px;}
+.mini-line{height:3px;background:#3a2810;opacity:0.3;border-radius:1px;}
+.mini-photo{height:22px;background:#9a8a74;opacity:0.6;border:1px solid #8a7a60;margin-bottom:5px;}
+.mini-label{text-align:center;font-family:'Old Standard TT',serif;font-size:0.48rem;
+  color:rgba(90,72,48,0.75);letter-spacing:2px;text-transform:uppercase;
+  border-top:1px solid rgba(122,96,64,0.3);padding-top:4px;margin-top:4px;}
+.mini-dash{display:flex;align-items:center;color:rgba(196,149,106,0.3);
+  font-family:'Playfair Display',serif;font-size:1.2rem;}
+
+/* USE CASES */
+.use-section{width:100%;padding:100px 0;
+  background:linear-gradient(180deg,#1a150e,#1e1810);}
+.use-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:rgba(196,149,106,0.1);border:1px solid rgba(196,149,106,0.1);}
+@media(max-width:800px){.use-grid{grid-template-columns:1fr;}}
+.use-card{background:#1a150e;padding:44px 36px;}
+.use-num{font-family:'Playfair Display',serif;font-weight:900;
+  font-size:3rem;color:rgba(196,149,106,0.07);line-height:1;margin-bottom:16px;}
+.use-icon{font-size:1.4rem;margin-bottom:14px;display:block;}
+.use-title{font-family:'Playfair Display',serif;font-weight:700;
+  font-size:1.15rem;color:var(--white);margin-bottom:10px;}
+.use-body{font-size:0.95rem;color:rgba(245,240,232,0.82);line-height:1.7;margin-bottom:14px;}
+.use-price{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:0.95rem;color:var(--gold);}
+
+/* FAQ */
+.faq-section{width:100%;padding:100px 0;background:#1a150e;}
+.faq-inner{max-width:780px;margin:0 auto;padding:0 24px;}
+.faq-item{border-bottom:1px solid rgba(196,149,106,0.15);padding:24px 0;cursor:pointer;}
+.faq-q{font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;
+  color:var(--white);display:flex;justify-content:space-between;align-items:center;gap:16px;}
+.faq-q span{color:var(--gold);font-size:1.2rem;flex-shrink:0;transition:transform 0.3s;}
+.faq-a{font-size:1rem;color:rgba(245,240,232,0.82);line-height:1.75;
+  margin-top:16px;display:none;}
+.faq-item.open .faq-a{display:block;}
+.faq-item.open .faq-q span{transform:rotate(45deg);}
+
+/* FOOTER CTA */
+.footer-cta{width:100%;text-align:center;padding:100px 24px;
+  background:radial-gradient(ellipse at 50% 100%,#2a1f0f,#1a150e 70%);}
+.footer-cta-title{font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(2rem,5vw,3.5rem);color:var(--white);margin-bottom:16px;line-height:1.1;}
+.footer-cta-title em{font-style:italic;background:linear-gradient(135deg,var(--gl),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.footer-cta-sub{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.15rem;color:rgba(245,240,232,0.7);margin-bottom:40px;}
+.footer-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.footer-btns .primary{background:linear-gradient(135deg,var(--red),var(--red2));
+  color:#fff;padding:18px 48px;font-family:'Playfair Display',serif;font-weight:700;
+  font-size:0.95rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;}
+.footer-btns .ghost{background:transparent;border:1px solid rgba(245,240,232,0.25);
+  color:var(--white);padding:18px 48px;font-family:'Old Standard TT',serif;
+  font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;}
+
+/* FOOTER BAR */
+.footer-bar{width:100%;padding:28px 40px;border-top:1px solid rgba(196,149,106,0.15);
+  background:#1a150e;display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;}
+.footer-bar-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1rem;
+  background:linear-gradient(135deg,#f5f0e8,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;}
+.footer-bar-links{display:flex;gap:20px;flex-wrap:wrap;}
+.footer-bar-links a{font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;
+  color:rgba(245,240,232,0.72);text-decoration:none;transition:color 0.2s;}
+.footer-bar-links a:hover{color:var(--white);}
+.footer-bar-copy{font-size:0.85rem;color:rgba(245,240,232,0.4);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+@keyframes fu{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fi{from{opacity:0;}to{opacity:1;}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="inkdate-landing.html" class="nav-logo">INKDATE</a>
+  <div class="nav-links">
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="inkdate-landing.html#signup" class="nav-cta">Try Free</a>
+  </div>
+</nav>
+
+<!-- CURRENCY BAR -->
+<div class="currency-bar">
+  <span class="currency-label">Currency</span>
+  <button class="cbtn on" onclick="setCurrency('GBP',this)">&#163; GBP</button>
+  <button class="cbtn" onclick="setCurrency('EUR',this)">&#8364; EUR</button>
+  <button class="cbtn" onclick="setCurrency('USD',this)">&#36; USD</button>
+  <button class="cbtn" onclick="setCurrency('BRL',this)">R&#36; BRL</button>
+  <button class="cbtn" onclick="setCurrency('JPY',this)">&#165; JPY</button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div style="position:absolute;inset:0;display:flex;justify-content:center;opacity:0.03;pointer-events:none;overflow:hidden;">
+    <div style="flex:1;max-width:100px;border-right:1px solid var(--gold);background:repeating-linear-gradient(to bottom,transparent 0,transparent 14px,rgba(196,149,106,0.5) 14px,rgba(196,149,106,0.5) 15px);"></div>
+    <div style="flex:1;max-width:100px;border-right:1px solid var(--gold);background:repeating-linear-gradient(to bottom,transparent 0,transparent 14px,rgba(196,149,106,0.5) 14px,rgba(196,149,106,0.5) 15px);"></div>
+    <div style="flex:1;max-width:100px;border-right:1px solid var(--gold);background:repeating-linear-gradient(to bottom,transparent 0,transparent 14px,rgba(196,149,106,0.5) 14px,rgba(196,149,106,0.5) 15px);"></div>
+    <div style="flex:1;max-width:100px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 14px,rgba(196,149,106,0.5) 14px,rgba(196,149,106,0.5) 15px);"></div>
+  </div>
+  <div style="position:relative;z-index:2;">
+    <div class="hero-ey">Simple, honest pricing</div>
+    <div class="hero-wm">INKDATE</div>
+    <div class="hero-orn">
+      <div class="rl"></div><div class="dm2"></div><div class="dm"></div><div class="dm2"></div><div class="rl"></div>
+    </div>
+    <h1 class="hero-title">Every date deserves<br><em>a front page.</em></h1>
+    <p class="hero-sub">Start free. Buy a gift. Subscribe for the whole archive. Choose what suits the occasion.</p>
+    <div class="billing-toggle">
+      <button class="bt-opt active" onclick="setBilling('monthly',this)">Monthly</button>
+      <button class="bt-opt" onclick="setBilling('annual',this)">Annual <span class="badge">Save 35%</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING TIERS -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <p class="swipe-hint">&#8592; Swipe to see all plans &#8594;</p>
+    <div class="pricing-scroll">
+      <div class="pricing-grid">
+
+        <!-- ARCHIVE -->
+        <div class="tier reveal">
+          <div class="tier-label">To get started</div>
+          <div class="tier-name">The Archive</div>
+          <div class="tier-tagline">Try Inkdate. No card required.</div>
+          <div class="price-amount"><span class="cur" id="cur-archive"></span><span id="price-archive">0</span></div>
+          <div class="price-annual" id="sub-archive">Free, always</div>
+          <hr class="tier-divider">
+          <ul class="features">
+            <li><span class="icon">&#10022;</span>1 newspaper per month</li>
+            <li><span class="icon">&#10022;</span>English only</li>
+            <li><span class="icon">&#10022;</span>Digital view in browser</li>
+            <li><span class="icon">&#10022;</span>Inkdate watermark</li>
+            <li class="dim"><span class="icon">&#8212;</span>No download</li>
+            <li class="dim"><span class="icon">&#8212;</span>No language selection</li>
+            <li class="dim"><span class="icon">&#8212;</span>No photorealistic image</li>
+          </ul>
+          <a href="#" class="tier-cta cta-ghost">Start Free</a>
+        </div>
+
+        <!-- EDITION -->
+        <div class="tier featured reveal" style="border-top:3px solid var(--red);">
+          <div class="tier-badge">Most Popular</div>
+          <div class="tier-label" style="margin-top:14px;">Perfect for gifting</div>
+          <div class="tier-name">The Edition</div>
+          <div class="tier-tagline">One date. One beautiful front page.</div>
+          <div class="price-amount"><span id="price-edition">&#163;7.99</span></div>
+          <div class="price-annual" id="sub-edition">Per newspaper &middot; No subscription</div>
+          <hr class="tier-divider">
+          <ul class="features">
+            <li><span class="icon red">&#10022;</span>One newspaper, any date</li>
+            <li><span class="icon red">&#10022;</span>All 6 languages</li>
+            <li><span class="icon red">&#10022;</span>30+ countries &amp; newspapers</li>
+            <li><span class="icon red">&#10022;</span>High-res PDF download</li>
+            <li><span class="icon red">&#10022;</span>No watermark</li>
+            <li><span class="icon red">&#10022;</span>Gift certificate wrapper</li>
+            <li class="dim"><span class="icon">&#8212;</span>HTML rendered version</li>
+          </ul>
+          <a href="#" class="tier-cta cta-red" href="https://buy.stripe.com/6oU4gyeiwgeog8398bfAc00" target="_blank">Buy a Newspaper</a>
+        </div>
+
+        <!-- PREMIUM -->
+        <div class="tier reveal" style="border-top:3px solid var(--gold);">
+          <div class="tier-badge gold">&#10022; Photorealistic</div>
+          <div class="tier-label" style="margin-top:14px;">Most authentic</div>
+          <div class="tier-name" style="background:linear-gradient(135deg,#f5f0e8,var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">The Edition Premium</div>
+          <div class="tier-tagline">AI-generated. Looks genuinely real.</div>
+          <div class="price-amount"><span id="price-premium">&#163;14.99</span></div>
+          <div class="price-annual" id="sub-premium">Per newspaper &middot; No subscription</div>
+          <hr class="tier-divider">
+          <ul class="features">
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Everything in The Edition</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Photorealistic AI-generated image</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Authentic aged paper texture</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Period-accurate ink &amp; lighting</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Looks like a real photograph</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Ultra high-res 8K quality</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Gift certificate wrapper</li>
+          </ul>
+          <a href="#" class="tier-cta cta-gold" href="https://buy.stripe.com/aFaeVc2zO9Q00952JNfAc01" target="_blank">Order Premium</a>
+        </div>
+
+        <!-- PRESS -->
+        <div class="tier reveal">
+          <div class="tier-label">For the enthusiast</div>
+          <div class="tier-name">The Press</div>
+          <div class="tier-tagline">Unlimited front pages, all languages.</div>
+          <div class="price-amount" id="proPrice"><span class="cur">&#163;</span>4<span class="per">.99/mo</span></div>
+          <div class="price-annual" id="proAnnual">Or &#163;39/year &mdash; save &#163;20</div>
+          <hr class="tier-divider">
+          <ul class="features">
+            <li><span class="icon">&#10022;</span>Unlimited generations</li>
+            <li><span class="icon">&#10022;</span>All 6 languages</li>
+            <li><span class="icon">&#10022;</span>30+ countries &amp; newspapers</li>
+            <li><span class="icon">&#10022;</span>High-res PDF, no watermark</li>
+            <li><span class="icon">&#10022;</span>Personal archive &mdash; 50 papers</li>
+            <li><span class="icon">&#10022;</span>Priority generation</li>
+            <li class="dim"><span class="icon">&#8212;</span>Photorealistic extra</li>
+          </ul>
+          <a href="#" class="tier-cta cta-gold" href="https://buy.stripe.com/8x27sK3DS7HSbRN3NRfAc02" target="_blank">Subscribe</a>
+        </div>
+
+        <!-- BROADSHEET -->
+        <div class="tier reveal">
+          <div class="tier-label">The real thing</div>
+          <div class="tier-name">The Broadsheet</div>
+          <div class="tier-tagline">Photorealistic. Printed. Delivered.</div>
+          <div class="price-amount"><span id="price-broadsheet">&#163;39.99</span></div>
+          <div class="price-annual" id="sub-broadsheet">Delivered to any UK address</div>
+          <hr class="tier-divider">
+          <ul class="features">
+            <li><span class="icon">&#10022;</span>Photorealistic AI image</li>
+            <li><span class="icon">&#10022;</span>A3 on aged paper stock</li>
+            <li><span class="icon">&#10022;</span>All 6 languages &amp; 30+ countries</li>
+            <li><span class="icon">&#10022;</span>Rolled in kraft tube</li>
+            <li><span class="icon">&#10022;</span>Inkdate wax seal</li>
+            <li><span class="icon">&#10022;</span>Gift message included</li>
+            <li><span class="icon">&#10022;</span>Tracked delivery</li>
+          </ul>
+          <a href="#" class="tier-cta cta-ghost" href="https://buy.stripe.com/bJebJ0a2g6DO9JFesvfAc04" target="_blank">Order a Print</a>
+        </div>
+
+        <!-- CORPORATE -->
+        <div class="tier reveal">
+          <div class="tier-label">For businesses</div>
+          <div class="tier-name">Corporate</div>
+          <div class="tier-tagline">API access &amp; white-label licensing.</div>
+          <div class="price-amount"><span id="price-corporate">from &#163;199</span><span class="per">/mo</span></div>
+          <div class="price-annual" id="sub-corporate">Custom volume pricing available</div>
+          <hr class="tier-divider">
+          <ul class="features">
+            <li><span class="icon">&#10022;</span>Full API access</li>
+            <li><span class="icon">&#10022;</span>White-label branding</li>
+            <li><span class="icon">&#10022;</span>All languages &amp; countries</li>
+            <li><span class="icon">&#10022;</span>Photorealistic image generation</li>
+            <li><span class="icon">&#10022;</span>Bulk order fulfilment</li>
+            <li><span class="icon">&#10022;</span>Dedicated account manager</li>
+            <li><span class="icon">&#10022;</span>Custom SLA &amp; support</li>
+          </ul>
+          <a href="https://buy.stripe.com/aFa28qgqE5zKbRNacffAc07" target="_blank" class="tier-cta cta-outline">Contact Us</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MEMORIAL EDITION -->
+    <div style="margin-top:1px;border:1px solid rgba(196,149,106,0.15);border-top:none;">
+      <div class="memorial reveal">
+        <div class="mem-content">
+          <div class="mem-eye">A life remembered</div>
+          <div class="mem-title">The Memorial Edition</div>
+          <div class="mem-sub">A life. Two front pages.</div>
+          <ul class="features" style="margin-bottom:24px;">
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Photorealistic AI-generated images</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Two front pages &mdash; birth date &amp; date of passing</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>All 6 languages &middot; 30+ countries</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Any date, 1850 to present day</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>High-res PDF, no watermark</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Beautifully formatted memorial certificate</li>
+            <li><span class="icon" style="color:var(--gl);">&#10022;</span>Suitable for funeral programmes &amp; services</li>
+          </ul>
+          <div class="mem-prices">
+            <div class="mem-price-block">
+              <div class="mem-price-label">Digital PDF</div>
+              <div class="mem-price-amt" id="price-memorial-d">&#163;24.99</div>
+            </div>
+            <div class="mem-divider"></div>
+            <div class="mem-price-block">
+              <div class="mem-price-label">Physical A3 Print</div>
+              <div class="mem-price-amt" id="price-memorial-p">&#163;59.99</div>
+            </div>
+          </div>
+          <div class="mem-note">Physical print delivered rolled in kraft tube with Inkdate wax seal &middot; Tracked delivery to any UK address</div>
+          <div class="mem-btns">
+            <a href="#" class="mem-btn gold" href="https://buy.stripe.com/5kQ7sK7U8fakcVR98bfAc05" target="_blank">Order Digital &mdash; <span id="mem-d-price">&#163;24.99</span></a>
+            <a href="#" class="mem-btn outline" href="https://buy.stripe.com/eVqaEW0rG6DOg83bgjfAc06" target="_blank">Order Print &mdash; <span id="mem-p-price">&#163;59.99</span></a>
+          </div>
+        </div>
+        <div class="mem-papers">
+          <div class="mini-np born">
+            <div class="mini-mast">The Times</div>
+            <div class="mini-band"></div>
+            <div style="height:4px;background:#3a2810;opacity:0.4;margin-bottom:3px;border-radius:1px;"></div>
+            <div class="mini-photo"></div>
+            <div class="mini-lines">
+              <div class="mini-line"></div><div class="mini-line"></div>
+              <div class="mini-line" style="width:85%;"></div><div class="mini-line"></div>
+              <div class="mini-line" style="width:90%;"></div><div class="mini-line" style="width:70%;"></div>
+            </div>
+            <div class="mini-label">Born</div>
+          </div>
+          <div class="mini-dash">&mdash;</div>
+          <div class="mini-np passed">
+            <div class="mini-mast">The Times</div>
+            <div class="mini-band"></div>
+            <div style="height:4px;background:#3a2810;opacity:0.4;margin-bottom:3px;border-radius:1px;"></div>
+            <div class="mini-photo"></div>
+            <div class="mini-lines">
+              <div class="mini-line"></div><div class="mini-line"></div>
+              <div class="mini-line" style="width:75%;"></div><div class="mini-line"></div>
+              <div class="mini-line" style="width:65%;"></div><div class="mini-line" style="width:80%;"></div>
+            </div>
+            <div class="mini-label">Passed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="use-section" id="how">
+  <div class="pricing-inner">
+    <div class="section-header reveal">
+      <p class="section-eyebrow">Who uses Inkdate</p>
+      <h2 class="section-title">The occasion shapes <em>the choice.</em></h2>
+      <p class="section-sub">Every date tells a story. Here&rsquo;s how people tell theirs.</p>
+    </div>
+    <div class="use-grid">
+      <div class="use-card reveal">
+        <div class="use-num">01</div>
+        <span class="use-icon">&#127874;</span>
+        <div class="use-title">Birthday Gift</div>
+        <div class="use-body">Sarah wants something personal for her dad&rsquo;s 70th birthday. She enters his date of birth, selects The Times, downloads a beautiful PDF and emails it alongside his card. Done in five minutes. Genuinely moving.</div>
+        <div class="use-price">The Edition &mdash; &#163;7.99</div>
+      </div>
+      <div class="use-card reveal">
+        <div class="use-num">02</div>
+        <span class="use-icon">&#128149;</span>
+        <div class="use-title">Wedding Anniversary</div>
+        <div class="use-body">The front page from their wedding day, in French, framed and delivered for their 25th anniversary. A gift that required no shopping, no guessing, and cost less than a restaurant starter.</div>
+        <div class="use-price">The Broadsheet &mdash; &#163;39.99</div>
+      </div>
+      <div class="use-card reveal">
+        <div class="use-num">03</div>
+        <span class="use-icon">&#127881;</span>
+        <div class="use-title">Retirement</div>
+        <div class="use-body">The office wants to mark 35 years of service. The front page from the day their colleague started, in the newspaper from their hometown. Something no one else will think to give.</div>
+        <div class="use-price">The Edition &mdash; &#163;7.99</div>
+      </div>
+      <div class="use-card reveal">
+        <div class="use-num">04</div>
+        <span class="use-icon">&#10022;</span>
+        <div class="use-title">Memorial Service</div>
+        <div class="use-body">A family preparing a funeral programme wants something to remember their mother by. Two photorealistic newspaper front pages &mdash; her birth date and her passing &mdash; printed and delivered in time for the service.</div>
+        <div class="use-price">The Memorial Edition &mdash; &#163;24.99</div>
+      </div>
+      <div class="use-card reveal">
+        <div class="use-num">05</div>
+        <span class="use-icon">&#127970;</span>
+        <div class="use-title">The Corporate Gift</div>
+        <div class="use-body">A law firm wants something memorable for their 50th anniversary client event &mdash; a personalised front page from their founding day for every major client. Inkdate&rsquo;s corporate tier handles 200 prints, delivered, branded.</div>
+        <div class="use-price">Corporate &mdash; from &#163;199/month</div>
+      </div>
+      <div class="use-card reveal">
+        <div class="use-num">06</div>
+        <span class="use-icon">&#128214;</span>
+        <div class="use-title">The History Enthusiast</div>
+        <div class="use-body">VE Day in French. The Moon landing in German. Kennedy&rsquo;s assassination in Spanish. History told through the newspapers that reported it live &mdash; an unlimited subscription for those who can&rsquo;t stop reading.</div>
+        <div class="use-price">The Press &mdash; &#163;4.99/month</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="faq-inner">
+    <div class="section-header reveal">
+      <p class="section-eyebrow">Questions</p>
+      <h2 class="section-title">Frequently <em>asked.</em></h2>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">What dates can I choose? <span>+</span></div>
+      <div class="faq-a">Any date from 1850 to the present day. We cover key historical events across all supported languages and countries, with AI-generated content for dates outside our curated archive.</div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">How quickly do I receive my newspaper? <span>+</span></div>
+      <div class="faq-a">Digital PDFs are delivered instantly by email. Physical prints are dispatched within 2-3 working days and delivered by tracked post within 5-7 working days to UK addresses.</div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">Is the content historically accurate? <span>+</span></div>
+      <div class="faq-a">We use carefully researched historical content for key dates across all supported languages. For other dates, our AI generates period-accurate content. All newspapers carry an Inkdate attribution and are for illustrative and gifting purposes &mdash; not for use as historical evidence.</div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I get a refund? <span>+</span></div>
+      <div class="faq-a">Digital products are non-refundable once downloaded. Physical products that arrive damaged or defective will be replaced at no cost. Annual subscriptions can be cancelled within 14 days for a full refund.</div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">What languages and countries are available? <span>+</span></div>
+      <div class="faq-a">We support six languages &mdash; English, Espa&ntilde;ol, Fran&ccedil;ais, Deutsch, Portugu&ecirc;s and Japanese &mdash; across 30+ countries including the UK, USA, Germany, France, Spain, Brazil, Japan, Australia, Ireland, South Africa and many more.</div>
+    </div>
+    <div class="faq-item reveal" onclick="toggleFaq(this)">
+      <div class="faq-q">How does the Memorial Edition work? <span>+</span></div>
+      <div class="faq-a">You provide the date of birth and the date of passing, along with your choice of country and newspaper. We generate two photorealistic newspaper front pages and present them as a memorial certificate. By ordering, you confirm you are authorised to use the details of the deceased.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER CTA -->
+<section class="footer-cta">
+  <h2 class="footer-cta-title">Every date has<br><em>a front page.</em></h2>
+  <p class="footer-cta-sub">&ldquo;The day that made history.&rdquo;</p>
+  <div class="footer-btns">
+    <a href="inkdate-app.html" class="primary">Start Free</a>
+    <a href="#pricing" class="ghost">Buy a Newspaper &mdash; from &#163;7.99</a>
+  </div>
+</section>
+
+<!-- FOOTER BAR -->
+<footer class="footer-bar">
+  <div class="footer-bar-logo">INKDATE</div>
+  <div class="footer-bar-links">
+    <a href="inkdate-privacy.html">Privacy</a>
+    <a href="inkdate-terms.html">Terms</a>
+    <a href="#">Contact</a>
+    <a href="#">API</a>
+  </div>
+  <div class="footer-bar-copy">&copy; 2026 Inkdate &middot; inkdateapp.com</div>
+</footer>
+
+<script>
+// ── CURRENCY ──
+const RATES={GBP:{sym:'£',rate:1},EUR:{sym:'€',rate:1.18},USD:{sym:'$',rate:1.27},BRL:{sym:'R$',rate:6.45},JPY:{sym:'¥',rate:200}};
+const BASE={archive:0,edition:7.99,premium:14.99,press_mo:4.99,press_yr:39,broadsheet:39.99,memorial_d:24.99,memorial_p:59.99,corporate:199};
+let cur='GBP',billing='monthly';
+
+function fmt(gbp){
+  const r=RATES[cur];
+  const v=gbp*r.rate;
+  if(gbp===0)return'0';
+  if(cur==='JPY')return r.sym+Math.round(v).toLocaleString();
+  return r.sym+v.toFixed(2).replace(/\.00$/,'');
+}
+
+function setCurrency(code,btn){
+  cur=code;
+  document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  updatePrices();
+}
+
+function updatePrices(){
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.innerHTML=val;};
+  set('price-archive',BASE.archive===0?'0':fmt(BASE.archive));
+  set('cur-archive',BASE.archive===0?RATES[cur].sym:'');
+  set('price-edition',fmt(BASE.edition));
+  set('price-premium',fmt(BASE.premium));
+  set('price-broadsheet',fmt(BASE.broadsheet));
+  set('price-corporate','from '+fmt(BASE.corporate));
+  set('price-memorial-d',fmt(BASE.memorial_d));
+  set('price-memorial-p',fmt(BASE.memorial_p));
+  set('mem-d-price',fmt(BASE.memorial_d));
+  set('mem-p-price',fmt(BASE.memorial_p));
+  // Press
+  const pp=document.getElementById('proPrice');
+  const pa=document.getElementById('proAnnual');
+  const r=RATES[cur];
+  if(pp&&pa){
+    if(billing==='annual'){
+      pp.innerHTML='<span class="cur">'+r.sym+'</span>'+(BASE.press_yr/12*r.rate).toFixed(2).replace(/\.00$/,'')+'<span class="per">/mo</span>';
+      pa.innerHTML='Billed as <strong style="color:var(--gold)">'+fmt(BASE.press_yr)+'</strong>/year';
+    }else{
+      pp.innerHTML='<span class="cur">'+r.sym+'</span>'+(BASE.press_mo*r.rate).toFixed(2).replace(/\.00$/,'')+'<span class="per">/mo</span>';
+      pa.innerHTML='Or '+fmt(BASE.press_yr)+'/year \u2014 save '+fmt(BASE.press_mo*12-BASE.press_yr);
+    }
+  }
+}
+
+// ── BILLING ──
+function setBilling(mode,btn){
+  billing=mode;
+  document.querySelectorAll('.bt-opt').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  updatePrices();
+}
+
+// ── FAQ ──
+function toggleFaq(el){el.classList.toggle('open');}
+
+// ── REVEAL ──
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+
+// Init
+updatePrices();
+</script>
+</body>
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy &mdash; Inkdate</title>
+<meta name="description" content="Inkdate Privacy Policy — how we collect, use and protect your personal data.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ── UNIVERSAL DARK FOUNDATION ── */
+*{box-sizing:border-box;}
+html{background:#1a150e;min-height:100%;}
+body{background:#1a150e;min-height:100vh;width:100%;margin:0;padding:0;overflow-x:hidden;}
+body>section,body>nav,body>footer,body>div{
+  width:100%;
+  display:block;
+  background:#1a150e;
+}
+body>nav{background:rgba(26,21,14,0.97)!important;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a150e;--gold:#c4956a;--gl:#e8c99a;
+  --red:#8b2020;--white:#f5f0e8;
+}
+html,body{background:#1a150e;color:#f5f0e8;font-family:'Old Standard TT',serif;font-size:18px;line-height:1.8;overflow-x:hidden;width:100%;margin:0;padding:0;}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  padding:16px 40px;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(26,21,14,0.97);border-bottom:1px solid rgba(196,149,106,0.2);
+  backdrop-filter:blur(12px);width:100%;
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;font-weight:900;font-size:1.3rem;
+  background:linear-gradient(135deg,#f5f0e8,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:2px;text-decoration:none;
+}
+.nav-back{
+  font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(245,240,232,0.7);text-decoration:none;transition:color 0.2s;
+}
+.nav-back:hover{color:var(--white);}
+
+/* HERO */
+.hero{
+  width:100%;padding:100px 24px 80px;text-align:center;
+  background:radial-gradient(ellipse at 50% 0%,#2a1f0f,#1a150e 65%);
+  border-bottom:1px solid rgba(196,149,106,0.2);
+}
+.hero-eyebrow{
+  font-size:0.85rem;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;
+  display:flex;align-items:center;gap:16px;justify-content:center;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{
+  content:'';width:40px;height:1px;background:rgba(196,149,106,0.4);
+}
+.hero-title{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(2.2rem,6vw,4rem);color:var(--white);
+  margin-bottom:16px;line-height:1.05;
+}
+.hero-meta{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.1rem;color:rgba(245,240,232,0.6);
+}
+
+/* CONTENT */
+.content{
+  width:100%;background:#1a150e;
+}
+.content-inner{
+  max-width:860px;margin:0 auto;padding:80px 32px 120px;
+}
+
+.toc{
+  background:rgba(196,149,106,0.06);width:100%;
+  border:1px solid rgba(196,149,106,0.2);
+  border-left:3px solid var(--gold);
+  padding:28px 32px;margin-bottom:60px;
+}
+.toc-title{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:1rem;color:var(--gold);letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:16px;
+}
+.toc a{
+  display:block;font-size:1rem;color:rgba(245,240,232,0.8);
+  text-decoration:none;padding:5px 0;
+  border-bottom:1px solid rgba(196,149,106,0.1);
+  transition:color 0.2s;
+}
+.toc a:last-child{border-bottom:none;}
+.toc a:hover{color:var(--gold);}
+
+section.clause{margin-bottom:56px;}
+
+h2.clause-title{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:1.5rem;color:var(--white);
+  margin-bottom:20px;padding-bottom:12px;
+  border-bottom:1px solid rgba(196,149,106,0.3);
+}
+h3.sub-title{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:1.15rem;color:var(--gold);
+  margin:28px 0 12px;
+}
+p.body{
+  font-size:1rem;color:rgba(245,240,232,0.92);
+  margin-bottom:16px;line-height:1.8;
+}
+ul.list{
+  margin:0 0 16px 0;padding:0;list-style:none;
+}
+ul.list li{
+  font-size:1rem;color:rgba(245,240,232,0.88);
+  padding:8px 0 8px 24px;position:relative;
+  border-bottom:1px solid rgba(196,149,106,0.08);
+  line-height:1.7;
+}
+ul.list li:last-child{border-bottom:none;}
+ul.list li::before{
+  content:'\2756';position:absolute;left:0;
+  color:var(--gold);font-size:0.7rem;top:11px;
+}
+.highlight{
+  background:rgba(139,32,32,0.08);
+  border:1px solid rgba(139,32,32,0.2);
+  border-left:3px solid var(--red);
+  padding:20px 24px;margin:20px 0;
+  font-size:1rem;color:rgba(245,240,232,0.92);line-height:1.75;
+}
+.contact-block{
+  background:rgba(196,149,106,0.06);
+  border:1px solid rgba(196,149,106,0.2);
+  padding:24px 28px;margin-top:16px;
+}
+.contact-block p{
+  font-size:1rem;color:rgba(245,240,232,0.88);
+  margin-bottom:8px;
+}
+.contact-block a{color:var(--gold);text-decoration:none;}
+.contact-block a:hover{text-decoration:underline;}
+
+/* FOOTER */
+footer{
+  width:100%;background:#1a150e;
+  border-top:1px solid rgba(196,149,106,0.15);
+  padding:32px 40px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-logo{
+  font-family:'Playfair Display',serif;font-weight:900;font-size:1rem;
+  background:linear-gradient(135deg,#f5f0e8,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:2px;
+}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+.footer-links a{
+  font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;
+  color:rgba(245,240,232,0.7);text-decoration:none;transition:color 0.2s;
+}
+.footer-links a:hover{color:var(--white);}
+.footer-copy{font-size:0.85rem;color:rgba(245,240,232,0.45);}
+
+@media(max-width:640px){
+  nav{padding:14px 20px;}
+  .hero{padding:80px 20px 60px;}
+  .content{padding:48px 20px 80px;}
+  footer{flex-direction:column;text-align:center;padding:24px 20px;}
+  .footer-links{justify-content:center;}
+}
+
+
+html{background:#1a150e;}
+body>*{width:100%;box-sizing:border-box;background:#1a150e;}
+body>nav{background:rgba(26,21,14,0.97);}
+body>section.hero{background:radial-gradient(ellipse at 50% 0%,#2a1f0f,#1a150e 65%);}
+body>footer{background:#1a150e;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="inkdate-landing.html" class="nav-logo">INKDATE</a>
+  <a href="inkdate-landing.html" class="nav-back">&larr; Back to Inkdate</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Legal</div>
+  <h1 class="hero-title">Privacy Policy</h1>
+  <p class="hero-meta">Effective: 1 June 2026 &nbsp;&middot;&nbsp; Last updated: 29 May 2026</p>
+</section>
+<div class="content"><div class="content-inner">
+
+<p class="body" style="margin-bottom:40px;">This Privacy Policy explains how Inkdate (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) collects, uses, stores and protects your personal data when you use our website at inkdateapp.com and our historical newspaper generation service (collectively, the &ldquo;Service&rdquo;). Please read this policy carefully before using the Service.</p>
+
+<div class="toc">
+<div class="toc-title">Contents</div>
+<a href="#clause-1">1. Who We Are</a>
+<a href="#clause-2">2. What Personal Data We Collect</a>
+<a href="#clause-3">3. How We Use Your Personal Data</a>
+<a href="#clause-4">4. Who We Share Your Data With</a>
+<a href="#clause-5">5. International Data Transfers</a>
+<a href="#clause-6">6. How Long We Keep Your Data</a>
+<a href="#clause-7">7. Your Rights</a>
+<a href="#clause-8">8. Cookies</a>
+<a href="#clause-9">9. Security</a>
+<a href="#clause-10">10. Children&rsquo;s Privacy</a>
+<a href="#clause-11">11. Third-Party Links</a>
+<a href="#clause-12">12. Changes to This Policy</a>
+<a href="#clause-13">13. Contact Us</a>
+</div>
+
+<section class="clause" id="clause-1">
+<h2 class="clause-title">1. Who We Are</h2>
+<p class="body">Inkdate is a historical newspaper generation service, operated as a sole trader under the laws of England and Wales. Our contact details are:</p>
+<div class="contact-block"><p>Email: <a href='mailto:privacy@inkdateapp.com'>privacy@inkdateapp.com</a></p><p>Website: <a href='https://inkdateapp.com'>inkdateapp.com</a></p><p>Postal address: Marlene Blake, Flat 21 Glenwood Court, London, E18 2EU</p></div>
+</section>
+
+
+<section class="clause" id="clause-2">
+<h2 class="clause-title">2. What Personal Data We Collect</h2>
+<h3 class="sub-title">2.1 Data You Provide Directly</h3>
+<p class="body">When you use the Service, we may collect the following personal data:</p>
+<ul class="list"><li>Email address &mdash; when you sign up for early access, create an account, or contact us</li><li>Name &mdash; when you provide it as part of a gift certificate order</li><li>Payment information &mdash; processed securely by Stripe; we do not store card details</li><li>Date of birth or other significant dates &mdash; when you enter them to generate a newspaper</li><li>Name of a deceased individual &mdash; when ordering a Memorial Edition product</li><li>Delivery address &mdash; when ordering a physical print product</li><li>Gift message content &mdash; when included as part of an order</li></ul>
+<h3 class="sub-title">2.2 Data Collected Automatically</h3>
+<p class="body">When you visit our website, we automatically collect certain information including:</p>
+<ul class="list"><li>IP address</li><li>Browser type and version</li><li>Pages visited and time spent</li><li>Referring website</li><li>Device type and operating system</li></ul>
+<p class="body">We collect this data through cookies and similar tracking technologies including Google Analytics. See Section 8 for more information.</p>
+<h3 class="sub-title">2.3 Sensitive Data</h3>
+<p class="body">The name of a deceased individual entered for a Memorial Edition order is treated with the utmost sensitivity. We use it solely to fulfil your order and delete it in accordance with our retention schedule set out in Section 6.</p>
+</section>
+
+
+<section class="clause" id="clause-3">
+<h2 class="clause-title">3. How We Use Your Personal Data</h2>
+<h3 class="sub-title">3.1 To Provide the Service (Contractual Necessity)</h3>
+<ul class="list"><li>To process your order and generate your historical newspaper</li><li>To deliver digital PDF files to your email address</li><li>To coordinate physical print fulfilment with our print partner</li><li>To process payment through Stripe</li><li>To send order confirmation and delivery updates</li></ul>
+<h3 class="sub-title">3.2 With Your Consent</h3>
+<ul class="list"><li>To send you marketing communications where you have opted in</li><li>To use non-essential cookies and analytics tools</li></ul>
+<p class="body">You may withdraw consent at any time by contacting us or using the unsubscribe link in any marketing email.</p>
+<h3 class="sub-title">3.3 Legitimate Interests</h3>
+<ul class="list"><li>To improve our Service based on usage patterns</li><li>To detect and prevent fraud and abuse</li><li>To respond to customer enquiries</li><li>To maintain the security of our systems</li></ul>
+<h3 class="sub-title">3.4 Legal Obligation</h3>
+<ul class="list"><li>To comply with our legal and regulatory obligations, including tax and accounting requirements</li></ul>
+</section>
+
+
+<section class="clause" id="clause-4">
+<h2 class="clause-title">4. Who We Share Your Data With</h2>
+<p class="body">We do not sell your personal data. We share it only with the following third parties and only to the extent necessary:</p>
+<ul class="list"><li><strong>Stripe, Inc.</strong> &mdash; payment processing. PCI DSS compliant. Privacy policy at stripe.com/privacy</li><li><strong>Gelato or Printful</strong> &mdash; physical print fulfilment. We share your delivery name and address only for print orders</li><li><strong>Email service provider (Mailchimp or ConvertKit)</strong> &mdash; for transactional and marketing emails</li><li><strong>Google LLC</strong> &mdash; analytics via Google Analytics. See Section 8</li><li><strong>Anthropic, PBC</strong> &mdash; AI content generation. Dates and newspaper selections may be processed; we do not share names or personal details beyond what is technically necessary</li></ul>
+<h3 class="sub-title">Legal Requirements and Business Transfers</h3>
+<p class="body">We may disclose your data if required by law or court order. If Inkdate is acquired or merged, your data may transfer to the new owner with prior notice to you.</p>
+</section>
+
+
+<section class="clause" id="clause-5">
+<h2 class="clause-title">5. International Data Transfers</h2>
+<p class="body">Some of our service providers are located outside the UK and European Economic Area (EEA), including in the United States. Where we transfer your personal data outside the UK/EEA, we ensure appropriate safeguards are in place including Standard Contractual Clauses approved by the UK Information Commissioner&rsquo;s Office.</p>
+<p class="body">For more information about specific safeguards, please contact us at <a href='mailto:privacy@inkdateapp.com' style='color:var(--gold);'>privacy@inkdateapp.com</a>.</p>
+</section>
+
+
+<section class="clause" id="clause-6">
+<h2 class="clause-title">6. How Long We Keep Your Data</h2>
+<ul class="list"><li>Order records (name, email, dates, delivery address): 7 years from the date of order, to comply with UK tax obligations</li><li>Memorial Edition order details including name of deceased: 7 years from the date of order</li><li>Email addresses for marketing: until you unsubscribe or request deletion</li><li>Generated newspaper content: not retained after delivery unless you have an active subscription</li><li>Analytics data: 26 months (Google Analytics default)</li><li>Account data: for the duration of your account, plus 90 days after closure</li></ul>
+</section>
+
+
+<section class="clause" id="clause-7">
+<h2 class="clause-title">7. Your Rights</h2>
+<h3 class="sub-title">UK and EU Users (GDPR)</h3>
+<ul class="list"><li>Right of access &mdash; request a copy of your personal data</li><li>Right to rectification &mdash; request correction of inaccurate data</li><li>Right to erasure &mdash; request deletion of your data in certain circumstances</li><li>Right to restriction &mdash; request that we limit how we use your data</li><li>Right to data portability &mdash; receive your data in a structured, commonly used format</li><li>Right to object &mdash; object to processing based on legitimate interests or for direct marketing</li><li>Right to withdraw consent &mdash; at any time where processing is based on consent</li></ul>
+<p class="body">To exercise these rights, contact us at <a href='mailto:privacy@inkdateapp.com' style='color:var(--gold);'>privacy@inkdateapp.com</a>. We will respond within one month. You also have the right to complain to the UK Information Commissioner&rsquo;s Office at <a href='https://ico.org.uk' style='color:var(--gold);'>ico.org.uk</a>.</p>
+<h3 class="sub-title">California Residents (CCPA)</h3>
+<ul class="list"><li>Right to Know &mdash; what personal information we collect, use and disclose</li><li>Right to Delete &mdash; request deletion of your personal information</li><li>Right to Opt-Out &mdash; we do not sell personal information</li><li>Right to Non-Discrimination &mdash; we will not discriminate for exercising your rights</li></ul>
+<p class="body">To exercise California rights, contact us at <a href='mailto:privacy@inkdateapp.com' style='color:var(--gold);'>privacy@inkdateapp.com</a> with &ldquo;CCPA Request&rdquo; in the subject line.</p>
+<h3 class="sub-title">Brazilian Users (LGPD)</h3>
+<p class="body">If you are located in Brazil, you have rights under the LGPD substantially equivalent to GDPR rights. Please contact <a href='mailto:privacy@inkdateapp.com' style='color:var(--gold);'>privacy@inkdateapp.com</a> to exercise them.</p>
+</section>
+
+
+<section class="clause" id="clause-8">
+<h2 class="clause-title">8. Cookies</h2>
+<h3 class="sub-title">Types of Cookies We Use</h3>
+<ul class="list"><li><strong>Essential cookies</strong> &mdash; necessary for the website to function. These cannot be disabled</li><li><strong>Analytics cookies</strong> &mdash; Google Analytics to understand how visitors use our site. You can opt out at <a href='https://tools.google.com/dlpage/gaoptout' style='color:var(--gold);'>tools.google.com/dlpage/gaoptout</a></li><li><strong>Preference cookies</strong> &mdash; to remember your settings</li></ul>
+<h3 class="sub-title">Managing Cookies</h3>
+<p class="body">You can control cookies through your browser settings. On your first visit we will ask for your consent before placing any non-essential cookies. Disabling certain cookies may affect the functionality of our website.</p>
+</section>
+
+
+<section class="clause" id="clause-9">
+<h2 class="clause-title">9. Security</h2>
+<p class="body">We implement appropriate technical and organisational measures to protect your personal data, including:</p>
+<ul class="list"><li>Encrypted data transmission via HTTPS</li><li>Payment processing through PCI DSS-compliant Stripe &mdash; we never store card details</li><li>Access controls restricting who can access personal data</li><li>Regular review of our security practices</li></ul>
+<p class="body">No method of internet transmission is 100% secure. While we strive to protect your data, we cannot guarantee its absolute security.</p>
+</section>
+
+
+<section class="clause" id="clause-10">
+<h2 class="clause-title">10. Children&rsquo;s Privacy</h2>
+<p class="body">Our Service is not directed at children under the age of 13 (or 16 in the EU and UK). We do not knowingly collect personal data from children under these ages. If you believe a child has provided us with personal data, please contact us immediately and we will delete it promptly.</p>
+</section>
+
+
+<section class="clause" id="clause-11">
+<h2 class="clause-title">11. Third-Party Links</h2>
+<p class="body">Our website may contain links to third-party websites. We are not responsible for the privacy practices of those websites and encourage you to review their privacy policies.</p>
+</section>
+
+
+<section class="clause" id="clause-12">
+<h2 class="clause-title">12. Changes to This Policy</h2>
+<p class="body">We may update this Privacy Policy from time to time. We will notify you of significant changes by email (where we hold your address) or by posting a notice on our website. Your continued use of the Service after changes constitutes acceptance of the updated policy.</p>
+</section>
+
+
+<section class="clause" id="clause-13">
+<h2 class="clause-title">13. Contact Us</h2>
+<p class="body">If you have any questions, concerns or complaints about how we handle your personal data, please contact us:</p>
+<div class="contact-block"><p>Email: <a href='mailto:privacy@inkdateapp.com'>privacy@inkdateapp.com</a></p><p>Website: <a href='https://inkdateapp.com/contact'>inkdateapp.com/contact</a></p><p>Postal: Marlene Blake, Flat 21 Glenwood Court, London, E18 2EU</p></div>
+<p class="body">We aim to respond to all enquiries within 5 working days.</p>
+</section>
+
+</div></div>
+<footer>
+  <div class="footer-logo">INKDATE</div>
+  <div class="footer-links">
+    <a href="inkdate-privacy.html">Privacy</a>
+    <a href="inkdate-terms.html">Terms</a>
+    <a href="#">Contact</a>
+    <a href="#">API</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 Inkdate &middot; inkdateapp.com</div>
+</footer>
+</body>
+</html>

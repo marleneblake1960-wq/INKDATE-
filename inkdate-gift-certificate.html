@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inkdate — Gift Certificate</title>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+
+/* ── UNIVERSAL DARK FOUNDATION ── */
+*{box-sizing:border-box;}
+html{background:#1a150e;min-height:100%;}
+body{background:#1a150e;min-height:100vh;width:100%;margin:0;padding:0;overflow-x:hidden;}
+body>*{width:100%;display:block;background:#1a150e;}
+
+/* ══ RESET & BASE ══════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a150e;
+  --gold:#c4956a;--gl:#e8c99a;--gd:#8a5f35;--gdd:#5a3a18;
+  --paper:#f5f0e4;--paper2:#ede5cc;--paper3:#e0d5b5;
+  --red:#8b2020;--red2:#b02828;
+  --white:#f5f0e8;
+  --mid:#6a5a40;--rule:#7a6040;
+}
+
+html{background:#1a1410;}
+body{
+  font-family:'Old Standard TT',serif;
+  min-height:100vh;
+  background:#1a150e;
+  display:flex;flex-direction:column;align-items:center;
+  padding:0;
+}
+
+/* ══ EDITOR PANEL ══════════════════════════════════ */
+.editor{
+  width:100%;
+  background:rgba(26,21,14,.98);
+  border-bottom:1px solid rgba(196,149,106,.2);
+  padding:24px 32px;
+  display:flex;flex-wrap:wrap;gap:16px;
+  align-items:flex-end;
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(12px);
+}
+
+.editor-logo{
+  font-family:'Playfair Display',serif;font-weight:900;font-size:1.3rem;
+  background:linear-gradient(135deg,#f5f0e8,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  width:100%;margin-bottom:4px;letter-spacing:1px;
+}
+
+.field{display:flex;flex-direction:column;gap:6px;flex:1;min-width:140px;}
+.field label{
+  font-size:.75rem;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(245,240,232,.6);font-family:'Old Standard TT',serif;
+}
+.field input,.field textarea{
+  background:rgba(245,240,232,.06);
+  border:1px solid rgba(245,240,232,.15);
+  border-bottom:2px solid var(--gold);
+  color:var(--white);padding:10px 14px;
+  font-family:'Old Standard TT',serif;font-size:.95rem;
+  outline:none;transition:all .25s;resize:none;
+}
+.field input:focus,.field textarea:focus{
+  background:rgba(245,240,232,.1);
+  border-color:rgba(245,240,232,.3);
+}
+.field input::placeholder,.field textarea::placeholder{
+  color:rgba(245,240,232,.3);
+}
+
+.update-btn{
+  background:linear-gradient(135deg,var(--red),var(--red2));
+  color:#fff;border:none;padding:12px 28px;
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:.85rem;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;transition:all .3s;white-space:nowrap;
+  align-self:flex-end;
+}
+.update-btn:hover{opacity:.9;transform:translateY(-1px);}
+
+.print-btn{
+  background:transparent;
+  border:1px solid rgba(245,240,232,.25);
+  color:rgba(245,240,232,.7);padding:12px 20px;
+  font-family:'Old Standard TT',serif;
+  font-size:.85rem;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;transition:all .3s;white-space:nowrap;
+  align-self:flex-end;
+}
+.print-btn:hover{border-color:rgba(245,240,232,.5);color:var(--white);}
+
+.editor-note{
+  width:100%;font-size:.75rem;
+  color:rgba(245,240,232,.35);
+  font-style:italic;font-family:'Old Standard TT',serif;
+  border-top:1px solid rgba(245,240,232,.08);
+  padding-top:10px;margin-top:4px;
+}
+
+/* ══ CERTIFICATE WRAPPER ════════════════════════════ */
+.cert-wrap{
+  width:100%;
+  background:#1a150e;
+  margin-top:0;
+  padding:32px 16px 60px;
+}
+
+/* ══ PAGE 1 — COVER ════════════════════════════════ */
+.page{
+  width:100%;
+  background:var(--ink);
+  position:relative;
+  overflow:hidden;
+  margin-bottom:24px;
+  box-shadow:
+    0 4px 20px rgba(0,0,0,.5),
+    0 20px 60px rgba(0,0,0,.4);
+}
+
+/* Dark grain overlay */
+.page::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+
+/* ── COVER PAGE ── */
+.cover{
+  aspect-ratio:1/1.414;
+  display:flex;flex-direction:column;
+  position:relative;
+  background:radial-gradient(ellipse at 30% 20%,#2a1f0f 0%,var(--ink) 65%);
+}
+
+/* Gold border frame */
+.cover-border-outer{
+  position:absolute;inset:16px;
+  border:1px solid rgba(196,149,106,.35);
+  pointer-events:none;z-index:2;
+}
+.cover-border-inner{
+  position:absolute;inset:21px;
+  border:1px solid rgba(196,149,106,.12);
+  pointer-events:none;z-index:2;
+}
+
+/* Corner ornaments */
+.corner{
+  position:absolute;width:48px;height:48px;z-index:3;pointer-events:none;
+}
+.corner svg{width:100%;height:100%;}
+.corner.tl{top:10px;left:10px;}
+.corner.tr{top:10px;right:10px;transform:scaleX(-1);}
+.corner.bl{bottom:10px;left:10px;transform:scaleY(-1);}
+.corner.br{bottom:10px;right:10px;transform:scale(-1);}
+
+/* Red top band */
+.cover-band{
+  background:linear-gradient(135deg, #7a1a1a 0%, var(--red) 40%, #9a2525 100%);
+  padding:0;
+  position:relative;z-index:4;
+  margin:20px 20px 0;
+  /* Thin gold lines above and below for refinement */
+  border-top:1.5px solid var(--gold);
+  border-bottom:1.5px solid var(--gold);
+  overflow:hidden;
+}
+
+/* Subtle inner shine */
+.cover-band::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,
+    rgba(255,255,255,.08) 0%,
+    transparent 50%,
+    rgba(0,0,0,.1) 100%);
+  pointer-events:none;
+}
+
+/* Inner layout row */
+.cover-band-inner{
+  display:flex;
+  align-items:stretch;
+  position:relative;z-index:1;
+}
+
+/* Left section */
+.cover-band-left{
+  flex:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:10px 20px;
+  border-right:1px solid rgba(196,149,106,.35);
+  gap:2px;
+}
+
+/* Centre section — INKDATE wordmark */
+.cover-band-centre{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:10px 32px;
+  gap:4px;
+}
+
+/* Right section */
+.cover-band-right{
+  flex:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:10px 20px;
+  border-left:1px solid rgba(196,149,106,.35);
+  gap:2px;
+}
+
+/* Label above/below the main text */
+.band-eyebrow{
+  font-family:'Old Standard TT',serif;
+  font-size:.55rem;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.5);
+  line-height:1;
+}
+
+/* Main text in side sections */
+.cover-band-text{
+  font-family:'Old Standard TT',serif;
+  font-size:.78rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.92);
+  line-height:1;
+  font-weight:700;
+}
+
+/* INKDATE wordmark */
+.cover-band-logo{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:1.35rem;color:#fff;letter-spacing:4px;
+  text-shadow:0 1px 8px rgba(0,0,0,.3);
+  line-height:1;
+}
+
+/* Tagline under wordmark */
+.cover-band-tag{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.7rem;color:rgba(255,255,255,.6);
+  letter-spacing:1px;line-height:1;
+}
+
+/* Cover body */
+.cover-body{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:32px 60px;
+  position:relative;z-index:4;
+  text-align:center;
+}
+
+/* Decorative rule with diamond */
+.orn-rule{
+  display:flex;align-items:center;gap:12px;
+  width:100%;margin:16px 0;
+}
+.orn-rule .rl{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(196,149,106,.5));}
+.orn-rule .rl:last-child{background:linear-gradient(to left,transparent,rgba(196,149,106,.5));}
+.orn-rule .dm{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);flex-shrink:0;}
+.orn-rule .dm2{width:3px;height:3px;background:rgba(122,96,64,.4);transform:rotate(45deg);flex-shrink:0;}
+
+/* Gift label */
+.gift-label{
+  font-family:'Old Standard TT',serif;
+  font-size:.75rem;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);opacity:.9;margin-bottom:8px;
+}
+
+/* "A Gift For" */
+.gift-for{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1rem,3vw,1.3rem);color:rgba(245,240,232,.75);
+  margin-bottom:4px;
+}
+
+/* Recipient name */
+.recipient{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(1.8rem,6vw,3rem);
+  background:linear-gradient(135deg,#f5f0e8,var(--gl) 40%,#f5f0e8 70%,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1.05;letter-spacing:-0.5px;
+  margin-bottom:4px;
+}
+
+/* Occasion */
+.occasion{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(.9rem,2.5vw,1.1rem);color:rgba(245,240,232,.72);
+  margin-bottom:0;
+}
+
+/* The central newspaper preview box */
+.paper-preview{
+  width:100%;
+  background:linear-gradient(160deg,#ede3c8,#e4d9b8 40%,#eddfc5 70%,#e0d4b0);
+  border:1px solid #9a8060;
+  position:relative;overflow:hidden;
+  margin:20px 0;
+  box-shadow:0 4px 16px rgba(0,0,0,.15),inset 0 0 40px rgba(100,70,20,.06);
+}
+.paper-preview::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+/* Fold line */
+.paper-preview::after{
+  content:'';position:absolute;top:0;bottom:0;left:calc(50% - 6px);width:12px;
+  pointer-events:none;z-index:6;
+  background:linear-gradient(to right,transparent,rgba(0,0,0,.04) 40%,rgba(0,0,0,.07) 50%,rgba(0,0,0,.04) 60%,transparent);
+  mix-blend-mode:multiply;
+}
+
+.pp-inner{position:relative;z-index:4;}
+
+/* Mini masthead */
+.pp-mast{
+  padding:6px 12px;
+  border-bottom:2px double #2a1f0f;
+  text-align:center;
+  background:linear-gradient(to bottom,#f0e6cc,#ede3c4);
+}
+.pp-mast-top{
+  display:flex;justify-content:space-between;
+  font-family:'Old Standard TT',serif;font-size:.48rem;
+  color:#5a4830;padding-bottom:3px;border-bottom:1px solid #8a7050;
+  margin-bottom:4px;
+}
+.pp-name{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:clamp(1.2rem,4vw,2rem);color:#111;
+  line-height:1;text-shadow:1px 1px 0 rgba(0,0,0,.15);
+}
+.pp-dateline{
+  display:flex;justify-content:space-between;
+  font-family:'Old Standard TT',serif;font-size:.5rem;
+  color:#5a4830;padding-top:3px;border-top:1px solid #8a7050;
+  margin-top:3px;
+}
+/* Mini red band */
+.pp-redband{
+  background:var(--red);padding:3px 12px;
+  display:flex;justify-content:space-between;
+  font-family:'Old Standard TT',serif;font-size:.5rem;
+  color:rgba(255,255,255,.9);
+}
+/* Mini columns */
+.pp-cols{display:grid;grid-template-columns:1fr 2fr 1fr;padding:6px 10px;gap:0;}
+.pp-col{padding:4px 5px;border-right:1px solid #9a8060;}
+.pp-col:last-child{border-right:none;}
+.pp-hed{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(.5rem,1.5vw,.7rem);color:#111;line-height:1.05;
+  margin-bottom:3px;text-shadow:.2px .3px 0 rgba(0,0,0,.15);
+}
+.pp-hed.xl{font-size:clamp(.65rem,2vw,.95rem);text-align:center;}
+.pp-body-text{
+  font-family:'Old Standard TT',serif;
+  font-size:clamp(.38rem,1vw,.5rem);
+  line-height:1.55;color:#2a1a0a;text-align:justify;
+}
+/* Mini halftone photo */
+.pp-photo{
+  background:#b0a28c;position:relative;overflow:hidden;
+  width:100%;aspect-ratio:3/1;margin:3px 0;border:1px solid #9a8060;
+}
+.pp-photo::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,#6a5c48 1px,transparent 1px);
+  background-size:2.5px 2.5px;opacity:.5;
+}
+.pp-photo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(28,16,6,.5),rgba(80,60,30,.2),rgba(28,16,6,.45));
+}
+
+/* Message section */
+.gift-message-wrap{
+  background:rgba(196,149,106,.06);
+  border:1px solid rgba(196,149,106,.2);
+  border-left:3px solid var(--gold);
+  padding:14px 20px;
+  margin:14px 0;
+  text-align:left;
+}
+.gift-message-label{
+  font-family:'Old Standard TT',serif;
+  font-size:.7rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);opacity:.85;margin-bottom:6px;
+}
+.gift-message-text{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(.85rem,2.5vw,1.05rem);color:rgba(245,240,232,.92);
+  line-height:1.65;
+}
+
+/* How to redeem */
+.redeem{
+  background:rgba(196,149,106,.05);
+  border:1px solid rgba(196,149,106,.12);
+  border-top:2px solid var(--red);
+  padding:14px 20px;
+  position:relative;z-index:4;
+}
+.redeem-title{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:.82rem;color:var(--gold);letter-spacing:1px;
+  margin-bottom:10px;
+}
+.redeem-steps{
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.redeem-step{
+  flex:1;min-width:100px;display:flex;gap:8px;align-items:flex-start;
+}
+.rs-num{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:1rem;color:var(--red);line-height:1;flex-shrink:0;
+}
+.rs-text{
+  font-family:'Old Standard TT',serif;
+  font-size:.68rem;color:rgba(245,240,232,.88);line-height:1.5;
+}
+
+/* Cover footer */
+.cover-footer{
+  margin:0 20px 20px;
+  padding:10px 30px;
+  border-top:1px solid rgba(196,149,106,.2);
+  display:flex;justify-content:space-between;align-items:center;
+  position:relative;z-index:4;
+}
+.cover-footer-logo{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:.9rem;letter-spacing:2px;
+  background:linear-gradient(135deg,#f5f0e8,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.cover-footer-tag{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.72rem;color:rgba(245,240,232,.55);
+}
+.cover-footer-url{
+  font-family:'Old Standard TT',serif;
+  font-size:.65rem;letter-spacing:1px;color:var(--gold);
+  text-transform:uppercase;opacity:.75;
+}
+
+/* ── PAGE 2 — THE NEWSPAPER ── */
+.page2-label{
+  font-family:'Old Standard TT',serif;
+  font-size:.85rem;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(245,240,232,.7);
+  text-align:center;margin-bottom:12px;padding:0 16px;
+}
+
+.newspaper-full{
+  width:100%;
+  background:linear-gradient(160deg,#ede3c8,#e4d9b8 25%,#eddfc5 50%,#e0d4b0 75%,#e8ddc4);
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,.35),0 20px 60px rgba(0,0,0,.25);
+}
+.newspaper-full::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:10;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+.newspaper-full::after{
+  content:'';position:absolute;top:0;bottom:0;left:calc(50% - 10px);width:20px;
+  pointer-events:none;z-index:11;
+  background:linear-gradient(to right,transparent,rgba(0,0,0,.03) 30%,rgba(0,0,0,.07) 50%,rgba(0,0,0,.03) 70%,transparent);
+  mix-blend-mode:multiply;
+}
+.nf-inner{position:relative;z-index:5;}
+
+/* Full masthead */
+.nf-mast{padding:0 16px;border-bottom:3px double #2a1f0f;}
+.nf-mast-top{
+  display:flex;justify-content:space-between;padding:6px 0 4px;
+  font-family:'Old Standard TT',serif;font-size:.9rem;color:#3a2e1e;
+  border-bottom:1px solid #7a6040;
+}
+.nf-mast-ads{display:flex;justify-content:space-between;align-items:center;padding:8px 0;}
+.nf-adbox{
+  border:1px solid #7a6040;padding:5px 8px;text-align:center;
+  font-family:'Old Standard TT',serif;font-size:.65rem;color:#3a2e1e;
+  line-height:1.5;min-width:100px;
+}
+.nf-adbox strong{display:block;font-size:.72rem;}
+.nf-namewrap{flex:1;text-align:center;padding:0 10px;}
+.nf-name{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:clamp(2rem,6vw,4.2rem);color:#111;line-height:1;
+  text-shadow:1px 1px 0 rgba(0,0,0,.18);
+}
+.nf-motto{
+  font-family:'Old Standard TT',serif;font-style:italic;
+  font-size:.62rem;color:#5a4830;
+  border-top:1px solid #8a7050;border-bottom:1px solid #8a7050;
+  padding:2px 0;margin:3px 24px 0;
+}
+.nf-dateline{
+  display:flex;justify-content:space-between;padding:5px 0;
+  font-family:'Old Standard TT',serif;font-size:.9rem;color:#3a2e1e;
+  border-top:1px solid #7a6040;border-bottom:2px solid #2a1f0f;
+}
+/* Red band */
+.nf-rb{
+  background:var(--red);padding:5px 16px;
+  display:flex;justify-content:space-between;
+  font-family:'Old Standard TT',serif;font-size:.88rem;
+  color:rgba(255,255,255,.95);
+}
+.nf-rbl{font-weight:700;text-transform:uppercase;letter-spacing:2px;font-size:.75rem;}
+
+/* Columns */
+.nf-cols{display:grid;padding:0 12px;}
+.nf-c6{grid-template-columns:repeat(6,1fr);}
+.nf-c3{grid-template-columns:repeat(3,1fr);}
+.nf-col{padding:8px 9px;border-right:1px solid #8a7050;}
+.nf-col:last-child{border-right:none;}
+.nf-s2{grid-column:span 2;}
+.nf-s3{grid-column:span 3;}
+.nf-rule{border:none;border-top:1px solid #8a7050;margin:6px 0;}
+
+/* Type */
+.nf-hed{font-family:'Playfair Display',serif;font-weight:900;color:#111;
+  line-height:1.05;margin-bottom:5px;text-shadow:.3px .5px 0 rgba(0,0,0,.18);}
+.nf-xl{font-size:clamp(1.3rem,3.2vw,2rem);}
+.nf-lg{font-size:clamp(1rem,2.5vw,1.4rem);}
+.nf-sm{font-size:clamp(.78rem,1.8vw,.95rem);}
+.nf-xs{font-size:clamp(.7rem,1.6vw,.85rem);}
+.nf-deck{font-family:'Old Standard TT',serif;font-weight:700;
+  font-size:.9rem;color:#1a1208;line-height:1.4;margin-bottom:5px;}
+.nf-byl{font-family:'Old Standard TT',serif;font-style:italic;
+  font-size:.82rem;color:#555;margin-bottom:5px;}
+.nf-body{font-family:'Old Standard TT',serif;
+  font-size:.95rem;line-height:1.7;color:#1a1208;text-align:justify;hyphens:auto;}
+.nf-body p+p{margin-top:4px;text-indent:1em;}
+.nf-sect{
+  font-family:'Old Standard TT',serif;font-size:.72rem;
+  text-transform:uppercase;letter-spacing:2px;color:#5a4830;text-align:center;
+  border-top:1px solid #8a7050;border-bottom:1px solid #8a7050;
+  padding:3px 0;margin-bottom:6px;
+}
+
+/* Photo */
+.nf-photo{width:100%;background:#b0a28c;position:relative;overflow:hidden;
+  margin:6px 0 4px;border:1px solid #9a8060;}
+.nf-photo::before{content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,#6a5c48 1px,transparent 1px);
+  background-size:3px 3px;opacity:.5;}
+.nf-photo::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(28,16,6,.55),rgba(80,60,30,.18),rgba(28,16,6,.5));}
+.nf-plbl{position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:center;z-index:2;flex-direction:column;gap:5px;
+  font-family:'Old Standard TT',serif;font-size:.7rem;
+  color:rgba(240,226,200,.55);letter-spacing:1.5px;text-transform:uppercase;text-align:center;padding:8px;}
+.nf-cap{font-family:'Old Standard TT',serif;font-style:italic;
+  font-size:.8rem;color:#3a2a14;line-height:1.4;margin-top:3px;}
+
+/* Ad */
+.nf-ad{border:1px solid #9a8060;padding:8px 7px;text-align:center;margin-top:8px;}
+.nf-adt{font-family:'Playfair Display',serif;font-weight:700;font-size:.95rem;color:#111;}
+.nf-adc{font-family:'Old Standard TT',serif;font-style:italic;font-size:.78rem;color:#3a2a14;line-height:1.45;margin-top:3px;}
+
+/* Inside */
+.nf-ins{border:1px solid #8a7050;padding:6px 8px;margin-top:8px;}
+.nf-inst{font-family:'Playfair Display',serif;font-weight:900;font-size:.85rem;
+  text-align:center;border-bottom:1px solid #8a7050;padding-bottom:3px;margin-bottom:4px;color:#111;}
+.nf-insi{font-family:'Old Standard TT',serif;font-size:.78rem;color:#3a2a14;
+  line-height:1.8;border-bottom:1px dotted #c0a870;padding:1px 0;}
+.nf-insi:last-child{border-bottom:none;}
+
+/* Gift watermark on newspaper */
+.nf-gift-band{
+  background:linear-gradient(135deg,var(--ink),#2a1f0f);
+  padding:10px 18px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:3px solid var(--red);
+  flex-wrap:wrap;gap:8px;
+}
+.nf-gift-logo{font-family:'Playfair Display',serif;font-weight:900;
+  font-size:1rem;color:var(--gold);letter-spacing:2px;}
+.nf-gift-text{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.88rem;color:rgba(245,240,232,.7);}
+.nf-gift-recipient{font-family:'Old Standard TT',serif;
+  font-size:.75rem;color:rgba(245,240,232,.5);letter-spacing:1px;text-transform:uppercase;}
+
+/* Fox age marks */
+.fox{position:absolute;border-radius:50%;pointer-events:none;z-index:8;mix-blend-mode:multiply;}
+
+/* ══ PRINT STYLES ══ */
+@media print{
+  body{background:white;padding:0;}
+  .editor,.page2-label{display:none!important;}
+  .cert-wrap{max-width:100%;padding:0;margin:0;}
+  .page{margin-bottom:0;box-shadow:none;page-break-after:always;}
+  .newspaper-full{box-shadow:none;}
+}
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.cert-wrap{animation:fadeIn .8s ease both;}
+
+</style>
+</head>
+<body>
+
+<!-- ══ EDITOR PANEL ══ -->
+<div class="editor">
+  <div class="editor-logo">INKDATE — Gift Certificate Preview</div>
+
+  <div class="field">
+    <label>Recipient Name</label>
+    <input type="text" id="recipientName" placeholder="e.g. Margaret" value="Margaret">
+  </div>
+  <div class="field">
+    <label>Occasion</label>
+    <input type="text" id="occasion" placeholder="e.g. 70th Birthday" value="70th Birthday">
+  </div>
+  <div class="field">
+    <label>The Date</label>
+    <input type="date" id="theDate" value="1954-06-02">
+  </div>
+  <div class="field">
+    <label>Newspaper</label>
+    <input type="text" id="paperName" placeholder="e.g. The Times" value="The Times">
+  </div>
+  <div class="field" style="flex:2;min-width:200px;">
+    <label>Personal Message</label>
+    <textarea id="giftMessage" rows="2" placeholder="Your message here...">With all my love — the front page from the day you were born. Yours always, James.</textarea>
+  </div>
+  <div class="field">
+    <label>From</label>
+    <input type="text" id="fromName" placeholder="e.g. James" value="James">
+  </div>
+
+  <button class="update-btn" onclick="updateCert()">Update Certificate</button>
+  <button class="print-btn" onclick="window.print()">⬇ Save as PDF</button>
+
+  <p class="editor-note">
+    Edit the fields above and click Update to personalise the certificate. Use Save as PDF to download a print-ready version.
+  </p>
+</div>
+
+<!-- ══ CERTIFICATE ══ -->
+<div class="cert-wrap">
+
+  <!-- PAGE 1 — COVER -->
+  <div class="page">
+    <div class="cover">
+
+      <!-- Corner ornaments -->
+      <div class="corner tl">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2 L2 20 M2 2 L20 2" stroke="#c4956a" stroke-width="1.5"/>
+          <path d="M6 6 L6 18 M6 6 L18 6" stroke="#c4956a" stroke-width="0.5" opacity="0.5"/>
+          <circle cx="2" cy="2" r="2" fill="#c4956a"/>
+          <path d="M8 2 L14 2 M2 8 L2 14" stroke="#c4956a" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <div class="corner tr">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2 L2 20 M2 2 L20 2" stroke="#c4956a" stroke-width="1.5"/>
+          <path d="M6 6 L6 18 M6 6 L18 6" stroke="#c4956a" stroke-width="0.5" opacity="0.5"/>
+          <circle cx="2" cy="2" r="2" fill="#c4956a"/>
+          <path d="M8 2 L14 2 M2 8 L2 14" stroke="#c4956a" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <div class="corner bl">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2 L2 20 M2 2 L20 2" stroke="#c4956a" stroke-width="1.5"/>
+          <path d="M6 6 L6 18 M6 6 L18 6" stroke="#c4956a" stroke-width="0.5" opacity="0.5"/>
+          <circle cx="2" cy="2" r="2" fill="#c4956a"/>
+          <path d="M8 2 L14 2 M2 8 L2 14" stroke="#c4956a" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <div class="corner br">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2 L2 20 M2 2 L20 2" stroke="#c4956a" stroke-width="1.5"/>
+          <path d="M6 6 L6 18 M6 6 L18 6" stroke="#c4956a" stroke-width="0.5" opacity="0.5"/>
+          <circle cx="2" cy="2" r="2" fill="#c4956a"/>
+          <path d="M8 2 L14 2 M2 8 L2 14" stroke="#c4956a" stroke-width="0.5"/>
+        </svg>
+      </div>
+
+      <!-- Border -->
+      <div class="cover-border-outer"></div>
+      <div class="cover-border-inner"></div>
+
+      <!-- Red band — refined three-section layout -->
+      <div class="cover-band">
+        <div class="cover-band-inner">
+
+          <!-- Left: Gift Certificate label -->
+          <div class="cover-band-left">
+            <span class="band-eyebrow">Presented by</span>
+            <span class="cover-band-text">Gift Certificate</span>
+          </div>
+
+          <!-- Centre: INKDATE wordmark -->
+          <div class="cover-band-centre">
+            <div class="cover-band-logo">INKDATE</div>
+            <div class="cover-band-tag">"The day that made history"</div>
+          </div>
+
+          <!-- Right: Edition label -->
+          <div class="cover-band-right">
+            <span class="band-eyebrow">Historical Newspapers</span>
+            <span class="cover-band-text">Since 1850</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="cover-body">
+
+        <div class="orn-rule">
+          <div class="rl"></div>
+          <div class="dm2"></div><div class="dm"></div><div class="dm2"></div>
+          <div class="rl"></div>
+        </div>
+
+        <p class="gift-label">Presented to</p>
+        <p class="gift-for">with love and admiration,</p>
+        <h1 class="recipient" id="cert-recipient">Margaret</h1>
+        <p class="occasion" id="cert-occasion">on the occasion of her 70th Birthday</p>
+
+        <div class="orn-rule" style="margin-top:12px;">
+          <div class="rl"></div>
+          <div class="dm2"></div><div class="dm"></div><div class="dm2"></div>
+          <div class="rl"></div>
+        </div>
+
+        <!-- Newspaper preview -->
+        <div class="paper-preview">
+          <div class="pp-inner">
+            <div class="pp-mast">
+              <div class="pp-mast-top">
+                <span id="pp-issue">No. 54,839</span>
+                <span style="flex:1;text-align:center;font-style:italic;">Established 1785</span>
+                <span>Price 3d.</span>
+              </div>
+              <div style="text-align:center;padding:4px 0;">
+                <div class="pp-name" id="pp-papername">The Times</div>
+              </div>
+              <div class="pp-dateline">
+                <span id="pp-edition">Late City Edition</span>
+                <span style="flex:1;text-align:center;" id="pp-date">Wednesday, 2 June 1954</span>
+                <span>Weather: Fair</span>
+              </div>
+            </div>
+            <div class="pp-redband">
+              <span style="font-weight:700;letter-spacing:2px;font-size:.48rem;text-transform:uppercase;">Breaking News</span>
+              <span style="font-style:italic;" id="pp-headline-short">The Day That Made History</span>
+            </div>
+            <div class="pp-cols">
+              <div class="pp-col">
+                <div class="pp-hed" style="font-size:.52rem;">WORLD EVENTS OF THE DAY</div>
+                <div class="pp-body-text">Our correspondents report on the principal events of this remarkable day from capitals across the world. Full reports on pages 2 and 3.</div>
+              </div>
+              <div class="pp-col" style="border-right:1px solid #9a8060;">
+                <div class="pp-hed xl" id="pp-headline">THE DAY THAT CHANGED EVERYTHING</div>
+                <div class="pp-photo"><div class="nf-plbl" style="font-size:.45rem;">Photograph · Press Association</div></div>
+                <div class="pp-body-text" id="pp-story">On this remarkable day, the world bore witness to events of historic significance. Our special correspondents report from the scene with full details of a moment that will be remembered for generations to come.</div>
+              </div>
+              <div class="pp-col">
+                <div class="pp-hed" style="font-size:.52rem;">MARKETS & COMMERCE</div>
+                <div class="pp-body-text">The financial markets conducted their business in a manner reflecting the mood of the times. Further details in our City pages.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gift message -->
+        <div class="gift-message-wrap">
+          <div class="gift-message-label">A personal message</div>
+          <div class="gift-message-text" id="cert-message">
+            With all my love — the front page from the day you were born. Yours always, James.
+          </div>
+        </div>
+
+        <!-- How to redeem -->
+        <div class="redeem">
+          <div class="redeem-title">How to receive your front page</div>
+          <div class="redeem-steps">
+            <div class="redeem-step">
+              <div class="rs-num">1</div>
+              <div class="rs-text">Visit <strong style="color:var(--gold)">inkdateapp.com</strong> on any device</div>
+            </div>
+            <div class="redeem-step">
+              <div class="rs-num">2</div>
+              <div class="rs-text">Enter your unique gift code below</div>
+            </div>
+            <div class="redeem-step">
+              <div class="rs-num">3</div>
+              <div class="rs-text">Select your date, country &amp; newspaper</div>
+            </div>
+            <div class="redeem-step">
+              <div class="rs-num">4</div>
+              <div class="rs-text">Download your beautiful front page</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;padding-top:10px;border-top:1px solid rgba(196,149,106,.15);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            <div>
+              <div style="font-family:'Old Standard TT',serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,.6);margin-bottom:4px;">Your Gift Code</div>
+              <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.2rem;color:var(--gold);letter-spacing:4px;text-shadow:0 0 20px rgba(196,149,106,.3);" id="cert-code">INK-2025-GIFT</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-family:'Old Standard TT',serif;font-size:.78rem;letter-spacing:1px;color:rgba(245,240,232,.65);text-transform:uppercase;">Valid Until</div>
+              <div style="font-family:'Old Standard TT',serif;font-size:.88rem;color:rgba(245,240,232,.8);" id="cert-expiry">31 December 2026</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /cover-body -->
+
+      <!-- Cover footer -->
+      <div class="cover-footer">
+        <div class="cover-footer-logo">INKDATE</div>
+        <div class="cover-footer-tag">"The day that made history"</div>
+        <div class="cover-footer-url">inkdateapp.com</div>
+      </div>
+
+    </div><!-- /cover -->
+  </div><!-- /page 1 -->
+
+  <!-- PAGE 2 — THE NEWSPAPER -->
+  <p class="page2-label">Page 2 of 2 — The Newspaper Front Page</p>
+  <div class="page">
+    <div class="newspaper-full">
+
+      <!-- Age marks -->
+      <div class="fox" style="width:14px;height:9px;background:rgba(110,70,15,.1);top:12%;left:6%;transform:rotate(12deg);"></div>
+      <div class="fox" style="width:7px;height:7px;background:rgba(100,60,10,.09);top:38%;left:93%;"></div>
+      <div class="fox" style="width:10px;height:6px;background:rgba(120,80,20,.08);top:75%;left:4%;"></div>
+
+      <div class="nf-inner">
+
+        <!-- FULL MASTHEAD -->
+        <div class="nf-mast">
+          <div class="nf-mast-top">
+            <span id="nf-issue">No. 54,839</span>
+            <span style="flex:1;text-align:center;font-style:italic;">Established 1785</span>
+            <span>Price 3d.</span>
+          </div>
+          <div class="nf-mast-ads">
+            <div class="nf-adbox">
+              <strong>BARNETT</strong>
+              <span style="display:block;">The Best Thing</span>
+              <span style="display:block;">in Pork Sausages</span>
+              <span style="display:block;">7d. at all stores</span>
+            </div>
+            <div class="nf-namewrap">
+              <div class="nf-name" id="nf-papername">The Times</div>
+              <div class="nf-motto">Established for the service of good government and civil liberty</div>
+            </div>
+            <div class="nf-adbox">
+              <strong>BOAC</strong>
+              <span style="display:block;">VC10 Tri-jet</span>
+              <span style="display:block;">Now in Service</span>
+              <span style="display:block;">See Times Survey</span>
+            </div>
+          </div>
+          <div class="nf-dateline">
+            <span>Late City Edition</span>
+            <span style="flex:1;text-align:center;" id="nf-date">Wednesday, 2 June 1954</span>
+            <span>Weather: Fair, mild</span>
+          </div>
+        </div>
+
+        <!-- RED BAND -->
+        <div class="nf-rb">
+          <span class="nf-rbl">Breaking News</span>
+          <span style="font-style:italic;" id="nf-headline-short">The Day That Made History</span>
+        </div>
+
+        <!-- 6-COL MAIN -->
+        <div class="nf-cols nf-c6" style="border-top:1px solid #2a1f0f;">
+
+          <!-- Left rail -->
+          <div class="nf-col">
+            <div class="nf-sect">Overseas</div>
+            <div class="nf-hed nf-sm">WORLD WATCHES A HISTORIC MOMENT</div>
+            <div class="nf-deck">Leaders and Nations React to the Events of the Day</div>
+            <div class="nf-body"><p>The principal governments of Europe and America were yesterday united in acknowledging the significance of events that have marked this day as one of exceptional historical importance.</p><p>Our correspondents in the major capitals report a mood of heightened awareness and, in many quarters, quiet celebration of a moment that speaks to the enduring qualities of human endeavour.</p></div>
+            <div class="nf-rule"></div>
+            <div class="nf-hed" style="font-size:.8rem;">MARKETS STEADY ON THE NEWS</div>
+            <div class="nf-body"><p>The financial markets of London and New York absorbed the day's remarkable events with characteristic composure, closing in steady fashion after a session of moderate activity.</p></div>
+            <div class="nf-ins">
+              <div class="nf-inst">Inside To-Day</div>
+              <div class="nf-insi">World reaction — Page 3</div>
+              <div class="nf-insi">Financial markets — Pages 12, 13</div>
+              <div class="nf-insi">Sport — Page 18</div>
+              <div class="nf-insi">The Weather — Page 24</div>
+              <div class="nf-insi">Court Circular — Page 8</div>
+            </div>
+          </div>
+
+          <!-- Lead 3-col -->
+          <div class="nf-col nf-s3" style="border-right:1.5px solid #5a4030;">
+            <div class="nf-hed nf-xl" style="text-align:center;border-bottom:2px solid #5a4030;padding-bottom:8px;margin-bottom:7px;" id="nf-headline">
+              THE DAY THAT CHANGED EVERYTHING
+            </div>
+            <div class="nf-deck" style="text-align:center;margin-bottom:6px;" id="nf-deck">A moment of singular importance — our special correspondents report from the scene</div>
+            <div class="nf-byl" style="text-align:center;">From Our Special Correspondent</div>
+
+            <div class="nf-photo" style="aspect-ratio:16/7;">
+              <div class="nf-plbl">Associated Press Photograph</div>
+            </div>
+            <div class="nf-cap" id="nf-caption">The scene as history unfolded — a photograph that will be remembered for generations to come.</div>
+
+            <div class="nf-body" style="margin-top:8px;column-count:2;column-gap:15px;" id="nf-body">
+              <p>On this remarkable day, events of enduring historical significance unfolded before a watching world. Our correspondents were in position to record what future generations will recognise as one of the defining moments of the age.</p>
+              <p>The circumstances that led to this day have been long in preparation, and the outcome, when it came, carried with it all the weight of historical inevitability that marks a truly great event.</p>
+              <p>Thousands gathered to witness what they understood, even in the moment, to be an occasion of the first importance. The mood was one of quiet elation, of pride mingled with the solemnity that great occasions demand.</p>
+              <p>Tributes arrived throughout the day from every quarter of the globe, a testament to the universal significance of what has occurred and the place it will occupy in the historical record of this extraordinary era.</p>
+            </div>
+          </div>
+
+          <!-- Right 2-col -->
+          <div class="nf-col nf-s2">
+            <div class="nf-hed nf-lg" style="border-bottom:1px solid #7a6040;padding-bottom:5px;margin-bottom:5px;">GOVERNMENT STATEMENT ON THE MOMENTOUS EVENTS</div>
+            <div class="nf-deck">Ministers Meet in Emergency Session; Full Statement Expected Today</div>
+            <div class="nf-byl">From Our Political Correspondent</div>
+            <div class="nf-body"><p>Senior ministers of the Government met in emergency session yesterday evening to consider the implications of the day's remarkable events and to prepare the official response that the nation and the world await.</p><p>The Prime Minister is expected to address Parliament today in terms that will set the Government's position clearly before the House and the country.</p></div>
+            <div class="nf-rule"></div>
+            <div class="nf-hed" style="font-size:.88rem;">PEOPLE'S REACTION: JOY AND WONDER</div>
+            <div class="nf-body"><p>Across the country, ordinary men and women paused in the course of their daily lives to mark the occasion with the quiet pride of those who understand that they are living through history.</p></div>
+            <div class="nf-rule"></div>
+            <div class="nf-hed" style="font-size:.8rem;">THE WIDER WORLD RESPONDS</div>
+            <div class="nf-body"><p>Messages of acknowledgement and congratulation continued to arrive through the night from governments and institutions worldwide.</p></div>
+            <div class="nf-ad">
+              <div class="nf-adt">THOMAS COOK &amp; SON</div>
+              <div class="nf-adc">Continental Tours · Cruises · Escorted Parties<br>45 Berkeley Street, London W.1</div>
+            </div>
+          </div>
+
+        </div><!-- /6-col -->
+
+        <!-- Bottom 3-col -->
+        <div class="nf-cols nf-c3" style="border-top:1px solid #8a7050;">
+          <div class="nf-col">
+            <div class="nf-hed nf-xs">SPORT: FIXTURES AND RESULTS</div>
+            <div class="nf-body"><p>The day's sporting events proceeded with appropriate acknowledgement of the historic context. Full results and commentary on page 18.</p></div>
+          </div>
+          <div class="nf-col">
+            <div class="nf-hed nf-xs">THE ARTS: A DAY OF CELEBRATION</div>
+            <div class="nf-body"><p>Theatres and concert halls across the capital marked the occasion with special programmes. The arts correspondent reports from several events.</p></div>
+          </div>
+          <div class="nf-col">
+            <div class="nf-ad" style="margin-top:0;">
+              <div class="nf-adt">CUNARD LINE</div>
+              <div class="nf-adc"><em>R.M.S. Queen Elizabeth</em><br>Southampton to New York<br>Luxury staterooms available</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gift watermark band -->
+        <div class="nf-gift-band">
+          <div class="nf-gift-logo">INKDATE</div>
+          <div class="nf-gift-text">A gift for <span id="nf-recipient">Margaret</span> · <span id="nf-occasion-band">70th Birthday</span></div>
+          <div class="nf-gift-recipient">inkdateapp.com · The day that made history</div>
+        </div>
+
+      </div><!-- /nf-inner -->
+    </div><!-- /newspaper-full -->
+  </div><!-- /page 2 -->
+
+</div><!-- /cert-wrap -->
+
+<script>
+function formatDisplayDate(dateStr){
+  if(!dateStr)return '';
+  const d=new Date(dateStr+'T12:00:00');
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function generateCode(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code='INK-';
+  for(let i=0;i<4;i++)code+=chars[Math.floor(Math.random()*chars.length)];
+  code+='-';
+  for(let i=0;i<4;i++)code+=chars[Math.floor(Math.random()*chars.length)];
+  return code;
+}
+
+function getHeadlineForDate(dateStr){
+  const d=new Date(dateStr+'T12:00:00');
+  const yr=d.getFullYear();
+  const headlines={
+    '1953-06-02':'THE QUEEN IS CROWNED IN WESTMINSTER ABBEY',
+    '1969-07-21':'MAN WALKS ON THE MOON FOR THE FIRST TIME',
+    '1945-05-08':'GERMANY SURRENDERS: WAR IN EUROPE IS OVER',
+    '1963-11-22':'PRESIDENT KENNEDY ASSASSINATED IN DALLAS',
+    '1989-11-09':'THE BERLIN WALL FALLS: EUROPE IS REUNITED',
+    '1966-07-30':'ENGLAND WIN THE WORLD CUP AT WEMBLEY',
+    '2001-09-11':'AMERICA UNDER ATTACK: TWIN TOWERS DESTROYED',
+    '1960-08-24':'ROME PREPARED TO OPEN THE XVII OLYMPIAD',
+  };
+  if(headlines[dateStr])return headlines[dateStr];
+  if(yr<1920)return 'THE AFFAIRS OF THE NATION AND THE WORLD';
+  if(yr<1940)return 'EUROPE IN CRISIS: GOVERNMENTS IN URGENT CONSULTATION';
+  if(yr<1950)return 'THE GREAT WAR CONTINUES: ALLIED FORCES ADVANCE';
+  if(yr<1970)return 'A NEW ERA DAWNS: THE WORLD HOLDS ITS BREATH';
+  if(yr<1990)return 'THE WORLD TRANSFORMED: A HISTORIC MOMENT';
+  return 'THE WORLD WATCHES: AN UNFORGETTABLE DAY';
+}
+
+function getDeckForDate(dateStr){
+  const yr=new Date(dateStr+'T12:00:00').getFullYear();
+  if(yr<1950)return 'Our special correspondents report on events of lasting historical significance';
+  if(yr<1970)return 'A moment of extraordinary importance as the world pauses to mark the occasion';
+  if(yr<1990)return 'Correspondents from our bureaux around the world report on this historic day';
+  return 'Our reporters across the globe cover a day that will be remembered for generations';
+}
+
+function updateCert(){
+  const recipient=document.getElementById('recipientName').value||'Friend';
+  const occasion=document.getElementById('occasion').value||'A Special Occasion';
+  const dateStr=document.getElementById('theDate').value||'1960-01-01';
+  const paper=document.getElementById('paperName').value||'The Times';
+  const message=document.getElementById('giftMessage').value||'With warmest wishes.';
+  const from=document.getElementById('fromName').value||'';
+  const displayDate=formatDisplayDate(dateStr);
+  const headline=getHeadlineForDate(dateStr);
+  const deck=getDeckForDate(dateStr);
+  const yr=new Date(dateStr+'T12:00:00').getFullYear();
+  const issueNo=`No. ${(54000+(yr-1960)*365).toLocaleString()}`;
+
+  // Cover page
+  document.getElementById('cert-recipient').textContent=recipient;
+  document.getElementById('cert-occasion').textContent=`on the occasion of ${article(occasion)} ${occasion}`;
+  document.getElementById('cert-message').textContent=message+(from?` — ${from}`:'');
+  document.getElementById('cert-code').textContent=generateCode();
+
+  // Mini preview
+  document.getElementById('pp-papername').textContent=paper;
+  document.getElementById('pp-date').textContent=displayDate;
+  document.getElementById('pp-issue').textContent=issueNo;
+  document.getElementById('pp-headline').textContent=headline;
+  document.getElementById('pp-headline-short').textContent=headline.substring(0,50)+(headline.length>50?'…':'');
+  document.getElementById('pp-edition').textContent=yr<1975?'Late City Edition':'Late Edition';
+
+  // Full newspaper page
+  document.getElementById('nf-papername').textContent=paper;
+  document.getElementById('nf-date').textContent=displayDate;
+  document.getElementById('nf-issue').textContent=issueNo;
+  document.getElementById('nf-headline').textContent=headline;
+  document.getElementById('nf-headline-short').textContent=headline.substring(0,60)+(headline.length>60?'…':'');
+  document.getElementById('nf-deck').textContent=deck;
+  document.getElementById('nf-caption').textContent=`The scene as history unfolded on ${displayDate} — a photograph from the archives of the age.`;
+  document.getElementById('nf-recipient').textContent=recipient;
+  document.getElementById('nf-occasion-band').textContent=occasion;
+}
+
+function article(str){
+  const s=str.trim().toLowerCase();
+  const vowels=['a','e','i','o','u'];
+  if(s==='a special occasion'||s.startsWith('her ')||s.startsWith('his '))return '';
+  return vowels.includes(s[0])?'an ':'a ';
+}
+
+// Run on load
+updateCert();
+
+// Auto-update on date change
+document.getElementById('theDate').addEventListener('change',()=>{
+  // Small delay to let user finish typing
+  setTimeout(updateCert,300);
+});
+</script>
+</body>
+</html>

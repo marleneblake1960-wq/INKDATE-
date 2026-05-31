@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms & Conditions &mdash; Inkdate</title>
+<meta name="description" content="Inkdate Terms and Conditions — the rules governing your use of the Inkdate service.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ── UNIVERSAL DARK FOUNDATION ── */
+*{box-sizing:border-box;}
+html{background:#1a150e;min-height:100%;}
+body{background:#1a150e;min-height:100vh;width:100%;margin:0;padding:0;overflow-x:hidden;}
+body>section,body>nav,body>footer,body>div{
+  width:100%;
+  display:block;
+  background:#1a150e;
+}
+body>nav{background:rgba(26,21,14,0.97)!important;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a150e;--gold:#c4956a;--gl:#e8c99a;
+  --red:#8b2020;--white:#f5f0e8;
+}
+html,body{background:#1a150e;color:#f5f0e8;font-family:'Old Standard TT',serif;font-size:18px;line-height:1.8;overflow-x:hidden;width:100%;margin:0;padding:0;}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  padding:16px 40px;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(26,21,14,0.97);border-bottom:1px solid rgba(196,149,106,0.2);
+  backdrop-filter:blur(12px);width:100%;
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;font-weight:900;font-size:1.3rem;
+  background:linear-gradient(135deg,#f5f0e8,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:2px;text-decoration:none;
+}
+.nav-back{
+  font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(245,240,232,0.7);text-decoration:none;transition:color 0.2s;
+}
+.nav-back:hover{color:var(--white);}
+
+/* HERO */
+.hero{
+  width:100%;padding:100px 24px 80px;text-align:center;
+  background:radial-gradient(ellipse at 50% 0%,#2a1f0f,#1a150e 65%);
+  border-bottom:1px solid rgba(196,149,106,0.2);
+}
+.hero-eyebrow{
+  font-size:0.85rem;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;
+  display:flex;align-items:center;gap:16px;justify-content:center;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{
+  content:'';width:40px;height:1px;background:rgba(196,149,106,0.4);
+}
+.hero-title{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(2.2rem,6vw,4rem);color:var(--white);
+  margin-bottom:16px;line-height:1.05;
+}
+.hero-meta{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.1rem;color:rgba(245,240,232,0.6);
+}
+
+/* CONTENT */
+.content{
+  width:100%;background:#1a150e;
+}
+.content-inner{
+  max-width:860px;margin:0 auto;padding:80px 32px 120px;
+}
+
+.toc{
+  background:rgba(196,149,106,0.06);width:100%;
+  border:1px solid rgba(196,149,106,0.2);
+  border-left:3px solid var(--gold);
+  padding:28px 32px;margin-bottom:60px;
+}
+.toc-title{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:1rem;color:var(--gold);letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:16px;
+}
+.toc a{
+  display:block;font-size:1rem;color:rgba(245,240,232,0.8);
+  text-decoration:none;padding:5px 0;
+  border-bottom:1px solid rgba(196,149,106,0.1);
+  transition:color 0.2s;
+}
+.toc a:last-child{border-bottom:none;}
+.toc a:hover{color:var(--gold);}
+
+section.clause{margin-bottom:56px;}
+
+h2.clause-title{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:1.5rem;color:var(--white);
+  margin-bottom:20px;padding-bottom:12px;
+  border-bottom:1px solid rgba(196,149,106,0.3);
+}
+h3.sub-title{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:1.15rem;color:var(--gold);
+  margin:28px 0 12px;
+}
+p.body{
+  font-size:1rem;color:rgba(245,240,232,0.92);
+  margin-bottom:16px;line-height:1.8;
+}
+ul.list{
+  margin:0 0 16px 0;padding:0;list-style:none;
+}
+ul.list li{
+  font-size:1rem;color:rgba(245,240,232,0.88);
+  padding:8px 0 8px 24px;position:relative;
+  border-bottom:1px solid rgba(196,149,106,0.08);
+  line-height:1.7;
+}
+ul.list li:last-child{border-bottom:none;}
+ul.list li::before{
+  content:'\2756';position:absolute;left:0;
+  color:var(--gold);font-size:0.7rem;top:11px;
+}
+.highlight{
+  background:rgba(139,32,32,0.08);
+  border:1px solid rgba(139,32,32,0.2);
+  border-left:3px solid var(--red);
+  padding:20px 24px;margin:20px 0;
+  font-size:1rem;color:rgba(245,240,232,0.92);line-height:1.75;
+}
+.contact-block{
+  background:rgba(196,149,106,0.06);
+  border:1px solid rgba(196,149,106,0.2);
+  padding:24px 28px;margin-top:16px;
+}
+.contact-block p{
+  font-size:1rem;color:rgba(245,240,232,0.88);
+  margin-bottom:8px;
+}
+.contact-block a{color:var(--gold);text-decoration:none;}
+.contact-block a:hover{text-decoration:underline;}
+
+/* FOOTER */
+footer{
+  width:100%;background:#1a150e;
+  border-top:1px solid rgba(196,149,106,0.15);
+  padding:32px 40px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-logo{
+  font-family:'Playfair Display',serif;font-weight:900;font-size:1rem;
+  background:linear-gradient(135deg,#f5f0e8,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:2px;
+}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+.footer-links a{
+  font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;
+  color:rgba(245,240,232,0.7);text-decoration:none;transition:color 0.2s;
+}
+.footer-links a:hover{color:var(--white);}
+.footer-copy{font-size:0.85rem;color:rgba(245,240,232,0.45);}
+
+@media(max-width:640px){
+  nav{padding:14px 20px;}
+  .hero{padding:80px 20px 60px;}
+  .content{padding:48px 20px 80px;}
+  footer{flex-direction:column;text-align:center;padding:24px 20px;}
+  .footer-links{justify-content:center;}
+}
+
+
+html{background:#1a150e;}
+body>*{width:100%;box-sizing:border-box;background:#1a150e;}
+body>nav{background:rgba(26,21,14,0.97);}
+body>section.hero{background:radial-gradient(ellipse at 50% 0%,#2a1f0f,#1a150e 65%);}
+body>footer{background:#1a150e;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="inkdate-landing.html" class="nav-logo">INKDATE</a>
+  <a href="inkdate-landing.html" class="nav-back">&larr; Back to Inkdate</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Legal</div>
+  <h1 class="hero-title">Terms &amp; Conditions</h1>
+  <p class="hero-meta">Effective: 1 June 2026 &nbsp;&middot;&nbsp; Last updated: 29 May 2026</p>
+</section>
+<div class="content"><div class="content-inner">
+
+<p class="body" style="margin-bottom:40px;">These Terms and Conditions (&ldquo;Terms&rdquo;) govern your use of the Inkdate website and service available at inkdateapp.com (the &ldquo;Service&rdquo;). By using the Service, you agree to be bound by these Terms. If you do not agree, please do not use the Service.</p>
+
+<div class="toc">
+<div class="toc-title">Contents</div>
+<a href="#clause-1">1. About Inkdate</a>
+<a href="#clause-2">2. Important Disclaimer Regarding Content</a>
+<a href="#clause-3">3. Eligibility</a>
+<a href="#clause-4">4. Your Account</a>
+<a href="#clause-5">5. Products and Pricing</a>
+<a href="#clause-6">6. Payments</a>
+<a href="#clause-7">7. Refunds and Cancellations</a>
+<a href="#clause-8">8. Intellectual Property</a>
+<a href="#clause-9">9. Acceptable Use</a>
+<a href="#clause-10">10. Limitation of Liability</a>
+<a href="#clause-11">11. Governing Law</a>
+<a href="#clause-12">12. Complaints and Dispute Resolution</a>
+<a href="#clause-13">13. Changes to These Terms</a>
+<a href="#clause-14">14. Contact</a>
+</div>
+
+<section class="clause" id="clause-1">
+<h2 class="clause-title">1. About Inkdate</h2>
+<p class="body">Inkdate is a historical newspaper generation service that uses artificial intelligence to recreate period-accurate newspaper front pages for any date between 1850 and the present day. The content generated is for illustrative and gifting purposes only.</p>
+<p class="body">Inkdate is operated as a sole trader under the laws of England and Wales.</p>
+</section>
+
+
+<section class="clause" id="clause-2">
+<h2 class="clause-title">2. Important Disclaimer Regarding Content</h2>
+<div class="highlight"><strong>Please read this section carefully.</strong> The newspaper front pages generated by Inkdate are created using artificial intelligence and are intended to be illustrative and evocative of the period in question. They are NOT authentic reproductions of actual historical newspapers, NOT verified factual records of historical events, and NOT suitable for use as evidence in legal, academic or professional contexts.</div>
+<p class="body">While we take care to ensure historical content is accurate and period-appropriate, AI-generated content may contain errors, inaccuracies or omissions. Inkdate accepts no liability for any loss arising from reliance on the accuracy of generated content.</p>
+<p class="body">All generated newspapers include an Inkdate attribution unless purchased at a tier that removes it.</p>
+</section>
+
+
+<section class="clause" id="clause-3">
+<h2 class="clause-title">3. Eligibility</h2>
+<p class="body">You must be at least 18 years of age to purchase paid products from Inkdate. By placing an order, you confirm that you are 18 or older. If you are under 18, you may use the free tier only with the consent of a parent or guardian.</p>
+</section>
+
+
+<section class="clause" id="clause-4">
+<h2 class="clause-title">4. Your Account</h2>
+<p class="body">Certain features require you to create an account. You are responsible for:</p>
+<ul class="list"><li>Providing accurate and complete information when creating your account</li><li>Maintaining the confidentiality of your account credentials</li><li>All activity that occurs under your account</li></ul>
+<p class="body">Notify us immediately at <a href='mailto:legal@inkdateapp.com' style='color:var(--gold);'>legal@inkdateapp.com</a> if you suspect any unauthorised use of your account. We reserve the right to suspend or terminate accounts that breach these Terms.</p>
+</section>
+
+
+<section class="clause" id="clause-5">
+<h2 class="clause-title">5. Products and Pricing</h2>
+<h3 class="sub-title">The Archive &mdash; Free</h3>
+<p class="body">One generated newspaper per month, in English only, for dates between 1850 and 2000. Includes an Inkdate watermark. Digital viewing only, no download.</p>
+<h3 class="sub-title">The Edition &mdash; &pound;7.99 per newspaper</h3>
+<p class="body">A one-time purchase for any date from 1850 to the present day, in any available language, with access to all countries and newspapers. Includes a high-resolution PDF download, no watermark, and a gift certificate wrapper.</p>
+<h3 class="sub-title">The Press &mdash; &pound;4.99/month or &pound;39/year</h3>
+<p class="body">Unlimited newspaper generations, all languages, all countries, high-resolution PDF downloads, and a personal archive of up to 50 newspapers.</p>
+<h3 class="sub-title">The Broadsheet &mdash; &pound;29.99</h3>
+<p class="body">A physical A3 print on aged paper stock, rolled in a branded kraft tube with an Inkdate wax seal. Delivered to any UK address. International delivery available at additional cost.</p>
+<h3 class="sub-title">The Memorial Edition &mdash; &pound;14.99 digital / &pound;49.99 physical</h3>
+<p class="body">Two newspaper front pages &mdash; one for the date of birth and one for the date of passing &mdash; presented as a memorial certificate. Available in all languages for any date from 1850 to the present day.</p>
+<div class="highlight">By ordering a Memorial Edition, you confirm that you are authorised to use the personal information of the deceased individual provided, and that you are doing so for legitimate memorial purposes only.</div>
+<h3 class="sub-title">Corporate / API &mdash; from &pound;199/month</h3>
+<p class="body">White-label and API access for businesses. Subject to a separate commercial agreement. Contact <a href='mailto:legal@inkdateapp.com' style='color:var(--gold);'>legal@inkdateapp.com</a> for details.</p>
+</section>
+
+
+<section class="clause" id="clause-6">
+<h2 class="clause-title">6. Payments</h2>
+<p class="body">All payments are processed securely by Stripe, Inc. By providing payment information, you authorise Inkdate to charge the applicable fees to your chosen payment method.</p>
+<p class="body">All prices are displayed in Pounds Sterling (GBP). Prices may vary by country due to currency conversion.</p>
+</section>
+
+
+<section class="clause" id="clause-7">
+<h2 class="clause-title">7. Refunds and Cancellations</h2>
+<h3 class="sub-title">Digital Products</h3>
+<p class="body">By proceeding with an immediate download of a PDF newspaper, you expressly consent to us beginning performance of the contract immediately and acknowledge that you thereby lose your 14-day right to cancel under the Consumer Contracts Regulations 2013.</p>
+<p class="body">If you experience a technical fault with your download, please contact <a href='mailto:legal@inkdateapp.com' style='color:var(--gold);'>legal@inkdateapp.com</a> within 48 hours and we will issue a replacement or refund at our discretion.</p>
+<h3 class="sub-title">Physical Products</h3>
+<p class="body">All Inkdate physical prints are personalised to your specified date and newspaper and are therefore exempt from the standard right of return under Regulation 28(1)(b) of the Consumer Contracts Regulations.</p>
+<p class="body">If your physical product arrives damaged or defective, contact <a href='mailto:legal@inkdateapp.com' style='color:var(--gold);'>legal@inkdateapp.com</a> within 14 days of receipt with photographic evidence and we will arrange a replacement at no cost.</p>
+<h3 class="sub-title">Subscriptions</h3>
+<p class="body">You may cancel your Press subscription at any time. Cancellation takes effect at the end of your current billing period. No partial refunds are provided for unused days.</p>
+<p class="body">Annual subscribers who cancel within 14 days of purchase receive a full refund. After 14 days, the annual subscription is non-refundable but access continues until the end date.</p>
+</section>
+
+
+<section class="clause" id="clause-8">
+<h2 class="clause-title">8. Intellectual Property</h2>
+<h3 class="sub-title">Inkdate&rsquo;s Rights</h3>
+<p class="body">The Inkdate name, logo, brand identity, website design, and the layout and structure of generated newspapers are owned by Inkdate and protected by copyright and trade mark law. You may not reproduce, distribute or create derivative works from any of these without our prior written consent.</p>
+<h3 class="sub-title">Your Licence to Generated Content</h3>
+<p class="body">You are granted a personal, non-exclusive, non-transferable licence to use generated content for personal, non-commercial purposes including printing, framing and gifting. You may not:</p>
+<ul class="list"><li>Resell or commercially exploit generated newspapers without our prior written consent</li><li>Remove or obscure the Inkdate attribution where it appears</li><li>Represent generated content as genuine historical fact</li></ul>
+<h3 class="sub-title">Historical Newspaper Titles</h3>
+<p class="body">Historical newspaper titles and mastheads are used for illustrative and educational purposes only. Inkdate does not claim ownership of or affiliation with any historical newspaper title. All generated content is original AI-created material.</p>
+</section>
+
+
+<section class="clause" id="clause-9">
+<h2 class="clause-title">9. Acceptable Use</h2>
+<p class="body">You agree not to use the Service to:</p>
+<ul class="list"><li>Generate content that is defamatory, obscene, hateful or discriminatory</li><li>Impersonate any person or misrepresent your identity</li><li>Generate content that infringes any third party&rsquo;s intellectual property rights</li><li>Attempt to reverse-engineer, scrape or extract content from the Service in bulk</li><li>Use the Service for any unlawful purpose</li><li>Generate memorial content for individuals without proper authorisation</li></ul>
+<p class="body">We reserve the right to refuse, suspend or terminate access to the Service for any breach of these requirements.</p>
+</section>
+
+
+<section class="clause" id="clause-10">
+<h2 class="clause-title">10. Limitation of Liability</h2>
+<div class="highlight">To the maximum extent permitted by law: Inkdate&rsquo;s total liability to you shall not exceed the amount you paid to Inkdate in the 12 months preceding the claim. Inkdate is not liable for any indirect, consequential or special loss, or for any loss arising from reliance on the accuracy of AI-generated content.</div>
+<p class="body">Nothing in these Terms limits our liability for death or personal injury caused by our negligence, fraud, or any liability that cannot be excluded by law.</p>
+</section>
+
+
+<section class="clause" id="clause-11">
+<h2 class="clause-title">11. Governing Law</h2>
+<p class="body">These Terms are governed by and construed in accordance with the laws of England and Wales. Any dispute shall be subject to the exclusive jurisdiction of the courts of England and Wales.</p>
+<p class="body">For EU and EEA consumers: Nothing in these Terms affects your rights under the mandatory consumer protection laws of your country of residence.</p>
+</section>
+
+
+<section class="clause" id="clause-12">
+<h2 class="clause-title">12. Complaints and Dispute Resolution</h2>
+<p class="body">If you have a complaint, please contact us first at <a href='mailto:legal@inkdateapp.com' style='color:var(--gold);'>legal@inkdateapp.com</a>. We will acknowledge within 5 working days and aim to resolve within 21 working days.</p>
+</section>
+
+
+<section class="clause" id="clause-13">
+<h2 class="clause-title">13. Changes to These Terms</h2>
+<p class="body">We may update these Terms from time to time. We will notify you of significant changes by email or by posting a notice on our website at least 14 days before the changes take effect. Continued use of the Service constitutes acceptance.</p>
+</section>
+
+
+<section class="clause" id="clause-14">
+<h2 class="clause-title">14. Contact</h2>
+<p class="body">For any questions about these Terms:</p>
+<div class="contact-block"><p>Email: <a href='mailto:legal@inkdateapp.com'>legal@inkdateapp.com</a></p><p>Website: <a href='https://inkdateapp.com/contact'>inkdateapp.com/contact</a></p><p>Postal: Marlene Blake, Flat 21 Glenwood Court, London, E18 2EU</p></div>
+</section>
+
+</div></div>
+<footer>
+  <div class="footer-logo">INKDATE</div>
+  <div class="footer-links">
+    <a href="inkdate-privacy.html">Privacy</a>
+    <a href="inkdate-terms.html">Terms</a>
+    <a href="#">Contact</a>
+    <a href="#">API</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 Inkdate &middot; inkdateapp.com</div>
+</footer>
+</body>
+</html>
