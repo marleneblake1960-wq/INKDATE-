@@ -1,890 +1,680 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inkdate &mdash; The Day That Made History</title>
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--ink:#1a150e;--gold:#c4956a;--gl:#e8c99a;--gd:#8a5f35;--paper:#f0e6cc;--white:#f5f0e8;--red:#8b2020;--red2:#b02828;--mid:#6a5a40;}
-body{background:var(--ink);font-family:'Old Standard TT',serif;min-height:100vh;overflow-x:hidden;}
-.screen{display:none;min-height:100vh;}.screen.active{display:flex;flex-direction:column;}
-#sw{background:radial-gradient(ellipse at 30% 20%,#2a1f0f,var(--ink) 65%);align-items:center;justify-content:center;text-align:center;padding:40px 24px;}
-.wi{max-width:580px;z-index:2;position:relative;}
-.wlogo{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(4rem,15vw,8rem);line-height:.9;letter-spacing:-2px;background:linear-gradient(135deg,#f5f0e8,var(--gl) 40%,#f5f0e8 60%,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;animation:fu .8s .4s both;}
-.wdiv{display:flex;align-items:center;gap:12px;margin:16px auto;max-width:280px;animation:fu .8s .6s both;}
-.wdiv .wl{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--gold));}.wdiv .wl:last-child{background:linear-gradient(to left,transparent,var(--gold));}
-.wdiv .wd{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);}
-.wtag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.2rem,3.5vw,1.6rem);color:var(--white);letter-spacing:1px;animation:fu .8s .8s both;margin-bottom:44px;}
-.wey{font-size:1rem;letter-spacing:4px;text-transform:uppercase;color:var(--white);margin-bottom:20px;animation:fu .8s .2s both;opacity:.9;}
-.rcta{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;border:none;padding:18px 56px;font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 24px rgba(139,32,32,.4);transition:all .3s;animation:fu .8s 1s both;}
-.rcta:hover{transform:translateY(-2px);}
-.wfoot{margin-top:28px;font-size:.9rem;letter-spacing:2px;color:rgba(245,240,232,.55);text-transform:uppercase;animation:fu .8s 1.2s both;}
-#ss{background:radial-gradient(ellipse at 70% 80%,#2a1f0f,var(--ink) 65%);}
-.sh{padding:22px 28px;border-bottom:1px solid rgba(196,149,106,.2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.shl{font-family:'Playfair Display',serif;font-weight:900;font-size:1.8rem;background:linear-gradient(135deg,#f5f0e8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.sht{font-size:1rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);opacity:.8;}
-.bbtn{background:none;border:1px solid rgba(245,240,232,.3);color:var(--white);padding:10px 18px;font-family:'Old Standard TT',serif;font-size:1rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
-.sb{flex:1;display:flex;flex-direction:column;align-items:center;padding:44px 28px 60px;max-width:700px;margin:0 auto;width:100%;}
-.slb{font-size:1rem;letter-spacing:3px;text-transform:uppercase;color:var(--white);margin-bottom:28px;text-align:center;opacity:.85;}
-.fl{display:block;font-size:1rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);margin-bottom:12px;opacity:.9;}
-.dw{width:100%;margin-bottom:36px;}
-.di{width:100%;background:rgba(245,240,232,.06);border:1px solid rgba(245,240,232,.25);border-bottom:2px solid var(--red);color:var(--white);padding:16px 20px;font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;outline:none;-webkit-appearance:none;transition:all .3s;}
-.di::-webkit-calendar-picker-indicator{filter:invert(1) opacity(.7);}
-.lw{width:100%;margin-bottom:32px;}
-.lgr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-@media(max-width:480px){.lgr{grid-template-columns:repeat(2,1fr);}}
-.lb{background:rgba(245,240,232,.05);border:1px solid rgba(245,240,232,.18);color:var(--white);padding:16px 8px;cursor:pointer;font-family:'Old Standard TT',serif;transition:all .25s;text-align:center;line-height:1.6;}
-.lb:hover{border-color:rgba(245,240,232,.4);background:rgba(245,240,232,.1);}
-.lb.on{border-color:var(--red);background:rgba(139,32,32,.2);color:var(--white);}
-.lb .em{font-size:1.7rem;display:block;margin-bottom:5px;}
-.lb .ln{font-weight:700;font-size:1.05rem;display:block;color:var(--white);}
-.lb .ls{font-size:.88rem;color:rgba(245,240,232,.7);margin-top:3px;display:block;}
-.cw{width:100%;margin-bottom:24px;display:none;}
-.ssel{width:100%;background:rgba(245,240,232,.06);border:1px solid rgba(245,240,232,.25);border-bottom:2px solid var(--gold);color:var(--white);padding:14px 20px;font-family:'Old Standard TT',serif;font-size:1.1rem;outline:none;cursor:pointer;-webkit-appearance:none;}
-.ssel option{background:#1a150e;color:var(--white);}
-.pw{width:100%;margin-bottom:32px;display:none;}
-.pgr{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.pb{background:rgba(245,240,232,.05);border:1px solid rgba(245,240,232,.18);color:var(--white);padding:15px 13px;cursor:pointer;font-family:'Old Standard TT',serif;transition:all .25s;text-align:left;}
-.pb:hover{border-color:rgba(245,240,232,.4);background:rgba(245,240,232,.08);}
-.pb.on{border-color:var(--red);background:rgba(139,32,32,.2);color:var(--white);}
-.pb .pn{font-weight:700;font-size:1.05rem;display:block;color:var(--white);}
-.pb .pd{font-size:.9rem;color:rgba(245,240,232,.65);margin-top:4px;display:block;}
-.gbtn{width:100%;background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;border:none;padding:18px;font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 24px rgba(139,32,32,.35);transition:all .3s;display:none;}
-.gbtn:hover{transform:translateY(-2px);}
-#sl{background:var(--ink);align-items:center;justify-content:center;text-align:center;padding:40px 24px;}
-.li{max-width:360px;width:100%;}
-.ll{font-family:'Playfair Display',serif;font-weight:900;font-size:2.4rem;background:linear-gradient(135deg,#f5f0e8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:32px;letter-spacing:2px;}
-.lr{width:72px;height:72px;margin:0 auto 22px;position:relative;}
-.lc{width:72px;height:72px;border-radius:50%;border:2px solid rgba(139,32,32,.2);border-top-color:var(--red);animation:spin 1.2s linear infinite;}
-.lid{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;font-size:1.3rem;letter-spacing:-2px;color:var(--gold);}
-.ld{display:flex;gap:8px;justify-content:center;margin:14px 0 24px;}
-.ld span{width:7px;height:7px;border-radius:50%;background:var(--red);animation:dp 1.4s ease-in-out infinite;}
-.ld span:nth-child(2){animation-delay:.2s;}.ld span:nth-child(3){animation-delay:.4s;}
-.lstep{font-size:1rem;letter-spacing:1px;text-transform:uppercase;color:rgba(245,240,232,.35);padding:8px 0;border-bottom:1px solid rgba(245,240,232,.08);transition:color .5s;}
-.lstep.active{color:var(--white);}.lstep.done{color:rgba(245,240,232,.45);}
-.lnote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:rgba(245,240,232,.45);margin-top:20px;line-height:1.6;}
-#sp{background:#2a2018;}
-.ph{background:var(--ink);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(196,149,106,.2);flex-wrap:wrap;gap:10px;}
-.phl{font-family:'Playfair Display',serif;font-weight:900;font-size:1.4rem;background:linear-gradient(135deg,#f5f0e8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.pa{display:flex;gap:8px;}
-.abt{background:transparent;border:1px solid rgba(245,240,232,.3);color:var(--white);padding:9px 16px;font-family:'Old Standard TT',serif;font-size:1rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .25s;}
-.abt.red{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;border-color:transparent;}
-.psc{padding:24px 12px;display:flex;justify-content:center;}
-.np{width:100%;max-width:940px;background:linear-gradient(160deg,#ede3c8,#e4d9b8 25%,#eddfc5 50%,#e0d4b0 75%,#e8ddc4);position:relative;overflow:hidden;box-shadow:-4px 3px 12px rgba(0,0,0,.5),5px 8px 30px rgba(0,0,0,.6),0 24px 80px rgba(0,0,0,.5);}
-.np::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:20;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");mix-blend-mode:multiply;}
-.fold{position:absolute;top:0;bottom:0;left:calc(50% - 10px);width:20px;pointer-events:none;z-index:21;background:linear-gradient(to right,transparent,rgba(0,0,0,.02) 15%,rgba(0,0,0,.07) 50%,rgba(0,0,0,.02) 85%,transparent);mix-blend-mode:multiply;}
-.fox{position:absolute;border-radius:50%;pointer-events:none;z-index:19;mix-blend-mode:multiply;}
-.npc{position:relative;z-index:10;}
-.mast{padding:0 16px;border-bottom:3px double #2a1f0f;}
-.mtp{display:flex;justify-content:space-between;padding:6px 0 4px;font-family:'Old Standard TT',serif;font-size:.7rem;color:#3a2e1e;border-bottom:1px solid #7a6040;}
-.mads{display:flex;justify-content:space-between;align-items:center;padding:7px 0;}
-.adb{border:1px solid #7a6040;padding:5px 8px;text-align:center;font-family:'Old Standard TT',serif;font-size:.64rem;color:#3a2e1e;line-height:1.5;min-width:105px;}
-.adb strong{display:block;font-size:.7rem;}
-.nw{flex:1;text-align:center;padding:0 10px;}
-.nbl{font-family:'UnifrakturMaguntia',cursive;font-size:clamp(2.2rem,6.5vw,4.6rem);color:#111;line-height:1;text-shadow:1px 1px 0 rgba(0,0,0,.18);}
-.nsr{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(1.8rem,5.5vw,3.8rem);color:#111;line-height:1;text-shadow:1px 1px 0 rgba(0,0,0,.15);}
-.nmo{font-family:'Old Standard TT',serif;font-style:italic;font-size:.63rem;color:#5a4830;border-top:1px solid #8a7050;border-bottom:1px solid #8a7050;padding:2px 0;margin:3px 28px 0;}
-.dtl{display:flex;justify-content:space-between;padding:5px 0;font-family:'Old Standard TT',serif;font-size:.7rem;color:#3a2e1e;border-top:1px solid #7a6040;border-bottom:2px solid #2a1f0f;}
-.rb{background:var(--red);padding:5px 16px;display:flex;justify-content:space-between;font-family:'Old Standard TT',serif;font-size:.88rem;color:rgba(255,255,255,.95);}
-.rbl{font-weight:700;text-transform:uppercase;letter-spacing:2px;font-size:.75rem;}
-.cols{display:grid;padding:0 12px;}.c6{grid-template-columns:repeat(6,1fr);}.c3{grid-template-columns:repeat(3,1fr);}
-.col{padding:8px 9px;border-right:1px solid #8a7050;}.col:last-child{border-right:none;}
-.s2{grid-column:span 2;}.s3{grid-column:span 3;}
-.cr{border:none;border-top:1px solid #8a7050;margin:6px 0;}
-.hed{font-family:'Playfair Display',serif;font-weight:900;color:#111;line-height:1.05;margin-bottom:5px;text-shadow:.3px .5px 0 rgba(0,0,0,.18);}
-.hxl{font-size:clamp(1.55rem,3.8vw,2.35rem);}.hlg{font-size:clamp(1.1rem,2.7vw,1.55rem);}
-.hmd{font-size:clamp(.92rem,2vw,1.12rem);}.hsm{font-size:clamp(.82rem,1.8vw,.98rem);}.hxs{font-size:clamp(.74rem,1.6vw,.88rem);}
-.dk{font-family:'Old Standard TT',serif;font-weight:700;font-size:.84rem;color:#1a1208;line-height:1.42;margin-bottom:5px;}
-.by{font-family:'Old Standard TT',serif;font-style:italic;font-size:.74rem;color:#555;margin-bottom:5px;}
-.body{font-family:'Old Standard TT',serif;font-size:.86rem;line-height:1.72;color:#1a1208;text-align:justify;hyphens:auto;}
-.body p+p{margin-top:5px;text-indent:1.1em;}
-.sect{font-family:'Old Standard TT',serif;font-size:.64rem;text-transform:uppercase;letter-spacing:2px;color:#5a4830;text-align:center;border-top:1px solid #8a7050;border-bottom:1px solid #8a7050;padding:3px 0;margin-bottom:6px;}
-.ph2{width:100%;background:#b0a28c;position:relative;overflow:hidden;margin:6px 0 4px;border:1px solid #9a8060;}
-.ph2::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,#6a5c48 1px,transparent 1px);background-size:3px 3px;opacity:.5;}
-.ph2::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(28,16,6,.55),rgba(80,60,30,.18),rgba(28,16,6,.5));}
-.phl2{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;font-family:'Old Standard TT',serif;font-size:.63rem;color:rgba(240,226,200,.55);letter-spacing:1.5px;text-transform:uppercase;text-align:center;padding:8px;}
-.cap{font-family:'Old Standard TT',serif;font-style:italic;font-size:.72rem;color:#3a2a14;line-height:1.42;margin-top:3px;}
-.smad{border:1px solid #9a8060;padding:8px 7px;text-align:center;margin-top:8px;}
-.smat{font-family:'Playfair Display',serif;font-weight:700;font-size:.9rem;color:#111;}
-.smac{font-family:'Old Standard TT',serif;font-style:italic;font-size:.7rem;color:#3a2a14;line-height:1.48;margin-top:3px;}
-.ins{border:1px solid #8a7050;padding:6px 8px;margin-top:8px;}
-.inst{font-family:'Playfair Display',serif;font-weight:900;font-size:.8rem;text-align:center;border-bottom:1px solid #8a7050;padding-bottom:3px;margin-bottom:4px;color:#111;}
-.insi{font-family:'Old Standard TT',serif;font-size:.68rem;color:#3a2a14;line-height:1.78;border-bottom:1px dotted #c0a870;padding:1px 0;}
-.insi:last-child{border-bottom:none;}
-.wm{padding:8px 16px;border-top:3px solid var(--red);background:rgba(139,32,32,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;}
-.wml{font-family:'Playfair Display',serif;font-weight:900;font-size:.92rem;color:var(--red);letter-spacing:2px;}
-.wmt{font-family:'Old Standard TT',serif;font-style:italic;font-size:.63rem;color:var(--mid);}
-.wmu{font-family:'Old Standard TT',serif;font-size:.6rem;color:var(--red);letter-spacing:1px;text-transform:uppercase;}
-@keyframes fu{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-@keyframes spin{to{transform:rotate(360deg);}}
-@keyframes dp{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
-@media print{body>*:not(#sp){display:none!important;}#sp{display:block!important;}.ph{display:none!important;}.psc{padding:0!important;}.np{box-shadow:none!important;max-width:100%!important;}}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inkdate — Generate Your Newspaper</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── PREMIUM EDITION ── */
-.tier-sel{width:100%;margin-bottom:32px;display:none;}
-.tier-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.tob{background:rgba(245,240,232,.05);border:1px solid rgba(245,240,232,.18);
-  color:var(--white);padding:16px 14px;cursor:pointer;
-  font-family:'Old Standard TT',serif;transition:all .25s;text-align:left;}
-.tob:hover{border-color:rgba(245,240,232,.4);background:rgba(245,240,232,.08);}
-.tob.on{border-color:var(--gold);background:rgba(196,149,106,.12);color:var(--white);}
-.tob.on.red{border-color:var(--red);background:rgba(139,32,32,.2);}
-.tob-name{font-weight:700;font-size:1.05rem;display:block;color:var(--white);margin-bottom:4px;}
-.tob-price{font-size:0.9rem;color:var(--gold);}
-.tob-desc{font-size:0.82rem;color:rgba(245,240,232,.6);margin-top:4px;display:block;}
+    body {
+      font-family: Georgia, serif;
+      background: #1a0f0a;
+      color: #d4c4a8;
+      min-height: 100vh;
+    }
 
-/* Image generation screen */
-#si{background:var(--ink);align-items:center;justify-content:center;text-align:center;padding:40px 24px;}
-.ii{max-width:420px;width:100%;}
-.il{font-family:'Playfair Display',serif;font-weight:900;font-size:2rem;
-  background:linear-gradient(135deg,#f5f0e8,var(--gold));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin-bottom:28px;letter-spacing:2px;}
-.img-spinner{width:80px;height:80px;margin:0 auto 24px;position:relative;}
-.img-ring{width:80px;height:80px;border-radius:50%;
-  border:2px solid rgba(196,149,106,.15);border-top-color:var(--gold);
-  animation:spin 1.4s linear infinite;}
-.img-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-size:1.8rem;}
-.img-status{font-size:1rem;color:rgba(245,240,232,.85);margin-bottom:8px;letter-spacing:1px;}
-.img-sub{font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:0.95rem;color:rgba(245,240,232,.45);}
-.img-progress{width:100%;height:2px;background:rgba(196,149,106,.15);margin:20px 0;position:relative;overflow:hidden;}
-.img-progress-bar{height:100%;background:linear-gradient(to right,var(--red),var(--gold));
-  width:0%;transition:width 0.5s ease;border-radius:1px;}
+    /* HEADER */
+    .header {
+      text-align: center;
+      padding: 40px 32px 32px;
+      border-bottom: 1px solid #3a2415;
+    }
+    .header-sub {
+      font-size: 12px;
+      letter-spacing: 5px;
+      color: #d4c4a8;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .header-logo {
+      font-size: 48px;
+      font-weight: 900;
+      color: #e8d5b0;
+      letter-spacing: 6px;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .header-diamonds {
+      color: #c8a855;
+      letter-spacing: 6px;
+      margin-bottom: 16px;
+      font-size: 20px;
+    }
+    .header-tagline {
+      font-size: 16px;
+      font-style: italic;
+      color: #e8d5b0;
+      margin-bottom: 10px;
+    }
+    .header-desc {
+      font-size: 14px;
+      color: #d4c4a8;
+    }
 
-/* Generated image screen */
-#sg{background:#1a1208;}
-.gph{background:var(--ink);padding:14px 22px;display:flex;align-items:center;
-  justify-content:space-between;border-bottom:1px solid rgba(196,149,106,.2);flex-wrap:wrap;gap:10px;}
-.gphl{font-family:'Playfair Display',serif;font-weight:900;font-size:1.4rem;
-  background:linear-gradient(135deg,#f5f0e8,var(--gold));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.gpa{display:flex;gap:8px;flex-wrap:wrap;}
-.gabt{background:transparent;border:1px solid rgba(245,240,232,.3);color:var(--white);
-  padding:9px 16px;font-family:'Old Standard TT',serif;font-size:0.9rem;
-  letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .25s;}
-.gabt.gold{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;border-color:transparent;}
-.gen-content{padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px;}
-.gen-img-wrap{width:100%;max-width:600px;position:relative;
-  box-shadow:-4px 3px 12px rgba(0,0,0,.5),5px 8px 30px rgba(0,0,0,.6);}
-.gen-img-wrap img{width:100%;display:block;}
-.gen-img-wrap .wm-overlay{position:absolute;bottom:12px;right:14px;
-  font-family:'Playfair Display',serif;font-weight:900;font-size:0.75rem;
-  color:rgba(245,240,232,.35);letter-spacing:2px;text-transform:uppercase;}
-.gen-badge{display:inline-flex;align-items:center;gap:8px;
-  background:rgba(196,149,106,.08);border:1px solid rgba(196,149,106,.25);
-  padding:10px 18px;font-size:0.82rem;color:rgba(245,240,232,.75);letter-spacing:1px;}
-.gen-badge span{color:var(--gold);}
+    /* MAIN */
+    .main {
+      max-width: 660px;
+      margin: 0 auto;
+      padding: 36px 28px 60px;
+    }
 
-</style>
+    /* LABELS */
+    .field-label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #f0e0c0;
+      font-family: Georgia, serif;
+    }
+
+    /* INPUTS */
+    input[type="text"], input[type="password"], select {
+      width: 100%;
+      padding: 14px 16px;
+      background: #2a1a0e;
+      border: 1px solid #6a4028;
+      border-radius: 3px;
+      color: #f5ede0;
+      font-size: 14px;
+      font-family: Georgia, serif;
+      outline: none;
+      appearance: none;
+    }
+    input::placeholder { color: #9a7a58; }
+    select { cursor: pointer; }
+
+    /* FIELD GROUPS */
+    .field { margin-bottom: 22px; }
+    .field-row { display: grid; gap: 16px; margin-bottom: 22px; }
+    .field-row.two { grid-template-columns: 1fr 1fr; }
+    .field-row.one { grid-template-columns: 1fr; }
+
+    /* INPUT WITH BUTTON INSIDE */
+    .input-wrap { position: relative; }
+    .input-wrap input { padding-right: 80px; }
+    .input-inner-btn {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #f0e0c0;
+      cursor: pointer;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: Georgia, serif;
+      padding: 0;
+    }
+
+    /* TIERS */
+    .tiers { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .tier-btn {
+      padding: 16px 12px 14px;
+      background: #1e1008;
+      border: 1px solid #6a4028;
+      border-radius: 3px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      font-family: Georgia, serif;
+    }
+    .tier-btn.active {
+      background: #2e1208;
+      border-color: #8b2a2a;
+    }
+    .tier-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #d4c4a8;
+      line-height: 1.4;
+      margin-bottom: 5px;
+    }
+    .tier-btn.active .tier-name { color: #e8d5b0; }
+    .tier-sub {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #b8985c;
+    }
+    .tier-btn.active .tier-sub { color: #c8a855; }
+    .tier-desc {
+      font-size: 14px;
+      color: #d4c4a8;
+      font-style: italic;
+      text-align: center;
+      margin-bottom: 0;
+    }
+
+    /* DIVIDER */
+    .divider {
+      text-align: center;
+      color: #c8a855;
+      letter-spacing: 8px;
+      font-size: 22px;
+      font-weight: bold;
+      margin: 0 0 32px;
+    }
+
+    /* BUTTON */
+    .btn-generate {
+      width: 100%;
+      padding: 18px;
+      background: #3a2010;
+      border: none;
+      border-radius: 3px;
+      color: #9a8060;
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-family: Georgia, serif;
+      cursor: not-allowed;
+      transition: background 0.3s, color 0.3s;
+      margin-bottom: 24px;
+    }
+    .btn-generate.ready {
+      background: #8b2a2a;
+      color: #f5ede0;
+      cursor: pointer;
+    }
+
+    /* PROGRESS */
+    .progress { display: none; margin-bottom: 28px; }
+    .progress.show { display: flex; gap: 8px; }
+    .progress-step { flex: 1; text-align: center; }
+    .progress-bar {
+      height: 3px;
+      background: #3a2415;
+      margin-bottom: 6px;
+      border-radius: 2px;
+      transition: all 0.4s;
+    }
+    .progress-bar.active, .progress-bar.done { background: #8b2a2a; }
+    .progress-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #5a4030;
+      transition: all 0.3s;
+    }
+    .progress-label.active { color: #e8d5b0; }
+    .progress-label.done { color: #c8a855; }
+
+    /* ERROR */
+    .error-box {
+      display: none;
+      background: #2a0808;
+      border: 1px solid #6a2020;
+      border-radius: 3px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      color: #e08080;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .error-box.show { display: block; }
+
+    /* RESULT */
+    .result { display: none; margin-top: 16px; }
+    .result.show { display: block; }
+    .result-label {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #f0e0c0;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .result img {
+      width: 100%;
+      border-radius: 4px;
+      display: block;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.8);
+    }
+    .result-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .btn-open {
+      display: block;
+      padding: 14px;
+      text-align: center;
+      background: #8b2a2a;
+      border-radius: 3px;
+      color: #f5ede0;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-family: Georgia, serif;
+      text-decoration: none;
+    }
+    .btn-copy {
+      padding: 14px;
+      background: #2a1a0e;
+      border: 1px solid #6a4028;
+      border-radius: 3px;
+      color: #d4c4a8;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: Georgia, serif;
+      transition: all 0.2s;
+    }
+    .btn-copy.copied {
+      background: #0a2a0a;
+      border-color: #4a8a4a;
+      color: #90d090;
+    }
+    .result-note {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 12px;
+      color: #9a8060;
+      font-style: italic;
+    }
+
+    /* FOOTER */
+    .footer {
+      margin-top: 48px;
+      text-align: center;
+      border-top: 1px solid #3a2415;
+      padding-top: 24px;
+    }
+    .footer-diamonds { color: #c8a855; letter-spacing: 6px; margin-bottom: 10px; font-size: 18px; }
+    .footer-text { font-size: 11px; letter-spacing: 4px; color: #d4c4a8; text-transform: uppercase; }
+
+    /* NAV */
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding: 16px 32px;
+      border-bottom: 1px solid #3a2415;
+    }
+    .nav a {
+      color: #b8985c;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .nav a:hover { color: #e8d5b0; }
+
+    @media (max-width: 500px) {
+      .tiers { grid-template-columns: 1fr; }
+      .field-row.two { grid-template-columns: 1fr; }
+      .result-btns { grid-template-columns: 1fr; }
+      .header-logo { font-size: 36px; }
+    }
+  </style>
 </head>
 <body>
-<div id="sw" class="screen active">
-  <div class="wi">
-    <p class="wey">Historical Newspapers &middot; Worldwide</p>
-    <div class="wlogo">INKDATE</div>
-    <div class="wdiv"><div class="wl"></div><div class="wd"></div><div class="wd" style="opacity:.4;margin:0 2px;transform:rotate(45deg) scale(.6);"></div><div class="wd"></div><div class="wl"></div></div>
-    <p class="wtag">&ldquo;The day that made history&rdquo;</p>
-    <p style="font-family:'Old Standard TT',serif;font-size:1rem;color:rgba(245,240,232,0.75);line-height:1.8;max-width:420px;margin:0 auto 20px;text-align:center;">
-      Receive the authentic newspaper front page from any date in history &mdash; 
-      your birthday, your wedding day, a day of loss, or the moment everything changed.
-      Six languages. Thirty countries. 1850 to the present day.
-    </p>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;">
-      <span style="font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,0.5);display:flex;align-items:center;gap:6px;"><span style="color:var(--gold);font-size:0.6rem;">&#10022;</span>Birthdays</span>
-      <span style="font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,0.5);display:flex;align-items:center;gap:6px;"><span style="color:var(--gold);font-size:0.6rem;">&#10022;</span>Anniversaries</span>
-      <span style="font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,0.5);display:flex;align-items:center;gap:6px;"><span style="color:var(--gold);font-size:0.6rem;">&#10022;</span>Memorials</span>
-      <span style="font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,0.5);display:flex;align-items:center;gap:6px;"><span style="color:var(--gold);font-size:0.6rem;">&#10022;</span>Gifts</span>
-    </div>
-    <button class="rcta" onclick="go('ss')">Enter a Date</button>
-    <p class="wfoot">inkdateapp.com &nbsp;&middot;&nbsp; 6 languages &nbsp;&middot;&nbsp; 30+ countries</p>
-  </div>
-</div>
-<div id="ss" class="screen">
-  <div class="sh"><div class="shl">INKDATE</div><div class="sht">The Day That Made History</div><button class="bbtn" onclick="go('sw')">&larr; Back</button></div>
-  <div class="sb">
-    <p class="slb">Choose your date, language &amp; newspaper</p>
-    <div class="dw"><label class="fl">Select a Date</label><input type="date" class="di" id="din" min="1850-01-01" max="2099-12-31" onchange="chk()"></div>
-    <div class="lw"><label class="fl">Select Language &amp; Region</label>
-      <div class="lgr">
-        <button class="lb" onclick="pickL('en')" data-l="en"><span class="em">&#127468;&#127463;</span><span class="ln">English</span><span class="ls">UK &middot; USA &middot; Australia &middot; Canada</span></button>
-        <button class="lb" onclick="pickL('es')" data-l="es"><span class="em">&#127466;&#127480;</span><span class="ln">Espa&ntilde;ol</span><span class="ls">Spain &middot; Mexico &middot; Argentina</span></button>
-        <button class="lb" onclick="pickL('fr')" data-l="fr"><span class="em">&#127467;&#127479;</span><span class="ln">Fran&ccedil;ais</span><span class="ls">France &middot; Belgium &middot; Africa</span></button>
-        <button class="lb" onclick="pickL('de')" data-l="de"><span class="em">&#127465;&#127466;</span><span class="ln">Deutsch</span><span class="ls">Germany &middot; Austria &middot; Switzerland</span></button>
-        <button class="lb" onclick="pickL('pt')" data-l="pt"><span class="em">&#127463;&#127479;</span><span class="ln">Portugu&ecirc;s</span><span class="ls">Brazil &middot; Portugal</span></button>
-        <button class="lb" onclick="pickL('ja')" data-l="ja"><span class="em">&#127471;&#127477;</span><span class="ln">&#26085;&#26412;&#35486;</span><span class="ls">Japan</span></button>
-      </div>
-    </div>
-    <div class="cw" id="cw"><label class="fl">Select Country</label><select class="ssel" id="csel" onchange="loadP()"><option value="">&#8212; Choose a country &#8212;</option></select></div>
-    <div class="pw" id="pw"><label class="fl">Select Newspaper</label><div class="pgr" id="pg"></div></div>
 
-    <div class="tier-sel" id="tsw">
-      <label class="fl">Choose Your Edition</label>
-      <div class="tier-opts" style="grid-template-columns:1fr 1fr 1fr;">
-        <button class="tob" onclick="pickTier('free',this)">
-          <span class="tob-name">The Archive</span>
-          <span class="tob-price">Free</span>
-          <span class="tob-desc">Watermarked. View only. English only.</span>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-sub">Historical Newspapers · Worldwide</div>
+    <div class="header-logo">INKDATE</div>
+    <div class="header-diamonds">◆ · ◆</div>
+    <div class="header-tagline">"The day that made history"</div>
+    <div class="header-desc">Historically Informed · Powered by DALL-E 3</div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="inkdate-landing.html">Home</a>
+    <a href="inkdate-pricing.html">Pricing</a>
+    <a href="inkdate-app.html">Generate</a>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TIERS -->
+    <div class="field">
+      <label class="field-label">◆ Choose Your Product Tier</label>
+      <div class="tiers">
+        <button class="tier-btn active" onclick="selectTier('premium', this)">
+          <div class="tier-name">Single Front Page</div>
+          <div class="tier-sub">Premium</div>
         </button>
-        <button class="tob on red" onclick="pickTier('standard',this)">
-          <span class="tob-name">The Edition</span>
-          <span class="tob-price">£7.99</span>
-          <span class="tob-desc">HTML front page. Instant PDF. All languages.</span>
+        <button class="tier-btn" onclick="selectTier('thennow', this)">
+          <div class="tier-name">Then &amp; Now</div>
+          <div class="tier-sub">Ultra-Premium</div>
         </button>
-        <button class="tob" onclick="pickTier('premium',this)">
-          <span class="tob-name">&#10022; Premium</span>
-          <span class="tob-price">£14.99</span>
-          <span class="tob-desc">Photorealistic AI-generated image.</span>
+        <button class="tier-btn" onclick="selectTier('memorial', this)">
+          <div class="tier-name">Memorial</div>
+          <div class="tier-sub">Ultra-Premium</div>
         </button>
       </div>
+      <p class="tier-desc" id="tier-desc">One date. One historically verified front page.</p>
     </div>
-    <button class="gbtn" id="gb" onclick="startGen()">Generate Front Page</button>
-  </div>
-</div>
-<div id="sl" class="screen">
-  <div class="li">
-    <div class="ll">INKDATE</div>
-    <div class="lr"><div class="lc"></div><div class="lid">ID</div></div>
-    <div class="ld"><span></span><span></span><span></span></div>
-    <div id="lst">
-      <div class="lstep" id="ls1">Searching the archives...</div>
-      <div class="lstep" id="ls2">Researching the headlines...</div>
-      <div class="lstep" id="ls3">Setting the type...</div>
-      <div class="lstep" id="ls4">Pressing the front page...</div>
-      <div class="lstep" id="ls5">Ageing the paper...</div>
+
+    <div class="divider">· · ·</div>
+
+    <!-- NEWSPAPER -->
+    <div class="field">
+      <label class="field-label">◆ Newspaper Title</label>
+      <input type="text" id="newspaper" placeholder="Any newspaper · Any country · Any language — e.g. The Washington Post, Daily Gleaner, Le Monde" oninput="checkReady()">
     </div>
-    <p class="lnote">&ldquo;Every date has a front page.&rdquo;</p>
+
+    <!-- DATES -->
+    <div class="field-row one" id="date-row">
+      <div>
+        <label class="field-label" id="date1-label">◆ Date</label>
+        <input type="text" id="date1" placeholder="e.g. June 15, 1985" oninput="checkReady()">
+      </div>
+      <div id="date2-wrap" style="display:none">
+        <label class="field-label" id="date2-label">◆ Second Date</label>
+        <input type="text" id="date2" placeholder="e.g. June 15, 2025" oninput="checkReady()">
+      </div>
+    </div>
+
+    <!-- SURFACE & LIGHTING -->
+    <div class="field-row two">
+      <div>
+        <label class="field-label">◆ Surface</label>
+        <select id="surface">
+          <option value="pale grey marble surface">Grey Marble — Premium</option>
+          <option value="warm aged oak reading table">Aged Oak — Classic</option>
+          <option value="worn leather desktop with warm reading lamp glow">Leather — Personal</option>
+          <option value="clean dark walnut boardroom table">Dark Walnut — Corporate</option>
+          <option value="antique mahogany surface with a single white flower resting beside the paper">Antique Mahogany — Memorial</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label">◆ Lighting Mood</label>
+        <select id="lighting">
+          <option value="warm golden hour 7am light from the upper left, casting long soft shadows">Morning — Golden Hour</option>
+          <option value="cold pale directional winter light, 5600K blue-white, clinical and historic">Winter — Cold &amp; Historic</option>
+          <option value="bright even daylight, soft diffused shadows, warm and optimistic">Summer — Bright &amp; Open</option>
+          <option value="warm amber lamp light from the right, deep atmospheric shadows">Evening — Warm Amber</option>
+          <option value="clean neutral studio light, even illumination, archival precision">Studio — Archival</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- GENERATE BUTTON -->
+    <button class="btn-generate" id="btn-generate" onclick="runEngine()">
+      Generate My Newspaper
+    </button>
+
+    <!-- PROGRESS -->
+    <div class="progress" id="progress">
+      <div class="progress-step">
+        <div class="progress-bar" id="bar1"></div>
+        <div class="progress-label" id="label1">Building Prompt</div>
+      </div>
+      <div class="progress-step">
+        <div class="progress-bar" id="bar2"></div>
+        <div class="progress-label" id="label2">Generating Image</div>
+      </div>
+    </div>
+
+    <!-- ERROR -->
+    <div class="error-box" id="error-box"></div>
+
+    <!-- RESULT -->
+    <div class="result" id="result">
+      <div class="divider">· · ·</div>
+      <div class="result-label">◆ Your Newspaper</div>
+      <img id="result-img" src="" alt="Generated newspaper front page">
+      <div class="result-btns">
+        <a id="result-link" href="#" target="_blank" class="btn-open">Open Full Size</a>
+        <button class="btn-copy" id="btn-copy" onclick="copyPrompt()">Copy Prompt</button>
+      </div>
+      <div class="result-note">Image URLs expire after 60 minutes — tap Open Full Size to save yours.</div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-diamonds">◆ · ◆</div>
+      <div class="footer-text">INKDATEAPP.COM · 6 Languages · 30+ Countries</div>
+    </div>
+
   </div>
-</div>
-<div id="sp" class="screen">
-  <div class="ph"><div class="phl">INKDATE</div><div class="pa"><button class="abt" onclick="go('ss')">&larr; New Date</button><button class="abt red" onclick="window.print()">&darr; Save</button></div></div>
-  <div class="psc"><div class="np" id="npo"></div></div>
-</div>
-<script>
-const HDB={"1960-08-24": {"h": "ROME PREPARED TO OPEN THE XVII OLYMPIAD", "dk": "84 Nations and 5,000 Athletes Gather; Ceremony at Stadio Olimpico Tomorrow", "ps": ["Rome stands poised tonight to welcome the greatest gathering of athletic talent the modern world has seen, as the XVII Olympiad prepares to open at the Stadio Olimpico tomorrow evening. Some 5,000 competitors representing 84 nations have assembled in the Italian capital.", "The opening ceremony, presided over by President Giovanni Gronchi of Italy, will draw a capacity crowd of 100,000 spectators. The United States has entered its largest ever Olympic contingent, with more than 300 competitors across all disciplines.", "Among those attracting the most attention is Cassius Clay, an eighteen-year-old boxer from Louisville, Kentucky, whose speed and power have led seasoned observers to predict a gold medal.", "The marathon is to be run at night through the streets of Rome itself, an experiment designed to reduce the effects of the exceptional heat that has characterised the city throughout the week."], "cap": "The Olympic Stadium, Rome, prepared for the opening ceremony of the XVII Olympiad.", "s1h1": "LAOS IN TURMOIL AFTER COUP", "s1sub": "Rival Factions Manoeuvre; West Watches Closely", "s1b1": "The political situation in Laos remained volatile yesterday, three weeks after neutralist forces under Captain Kong Le seized Vientiane. Rival factions continued to manoeuvre as Western governments monitored events with growing anxiety.", "s1b2": "Reports from Vientiane suggest counter-coup preparations are underway by forces loyal to the deposed government.", "s1h2": "BAKWANGA RETAKEN IN CONGO", "s1b2t": "Congolese national army units retook the mining town of Bakwanga from secessionist forces loyal to Chief Kalonji. The diamond mines, principal source of revenue for the breakaway region, are reported undamaged.", "s1h3": "KHRUSHCHEV WARNS ON BERLIN", "s1b3": "Soviet Premier Khrushchev renewed his warning that Moscow may sign a separate peace with East Germany, threatening Allied access rights to West Berlin. Western governments immediately reiterated their position.", "rh1": "MACMILLAN GOVERNMENT WEIGHS WAGES POLICY", "rdk": "Cabinet to Consider Treasury Proposals for Autumn", "rps": ["Senior ministers are examining proposals for voluntary wage restraint across key industries, anticipating a difficult autumn bargaining round that threatens the Government's commitment to price stability.", "Trade union leaders have signalled strong opposition to any government interference in collective bargaining."], "rh2": "KENNEDY LEADS NIXON IN LATEST POLL", "rps2": ["Senator Kennedy maintains a narrow advantage over Vice-President Nixon in the latest Gallup survey. Both candidates prepare for televised debates expected to prove decisive in November."], "rh3": "RAIL DISPUTE: TALKS TODAY", "rb3": "Union representatives and British Railways management meet today under independent chairmanship to avert a threatened national rail stoppage.", "bh1": "CBS TO BROADCAST OLYMPICS LIVE", "bb1": "The Columbia Broadcasting System will provide live television coverage of the Rome Olympics for American audiences — the first time Olympic events have been transmitted live across the Atlantic. The network paid $400,000 for the rights.", "bh2": "STOCK MARKETS QUIET BEFORE BANK HOLIDAY", "bb2": "London equity markets closed in narrow ranges as dealers took few positions ahead of the Bank Holiday. The Financial Times Ordinary Index closed at 241.4.", "ins": ["The Late Lord Niven — Page 8", "Portugal's New President — Page 9", "Stock Exchange Prices — Pages 34, 35", "Olympic Preview — Page 15", "The Weather — Page 36"]}, "1945-05-08": {"h": "GERMANY SURRENDERS: WAR IN EUROPE IS OVER", "dk": "Victory in Europe; Churchill Addresses Nation; Celebrations Across the Empire", "ps": ["Germany surrendered unconditionally yesterday, ending five years and eight months of war in Europe. The instrument of surrender was signed at General Eisenhower's headquarters at Reims at 2:41 in the morning.", "Prime Minister Winston Churchill addressed enormous crowds from a balcony in Whitehall. “This is your victory,” he told them. “In all our long history we have never seen a greater day than this.” The crowds responded with cheers heard across the capital.", "The King and Queen appeared eight times on the Buckingham Palace balcony. Hundreds of thousands filled the Mall and St. James's Park in scenes of jubilation not witnessed since the Armistice of 1918.", "The war in the Pacific continues. Mr. Churchill reminded the celebrating nation that the conflict with Japan remains to be resolved and that British forces remain committed."], "cap": "Enormous crowds fill Whitehall as Prime Minister Churchill acknowledges Victory in Europe Day, London, 8 May 1945.", "s1h1": "EMPIRE AND COMMONWEALTH REJOICE", "s1sub": "From London to Delhi, Bells Ring for First Time Since 1939", "s1b1": "Church bells, silenced throughout the war as an invasion signal, rang across Britain for the first time since September 1939. In Edinburgh, Cardiff, Belfast and across the Commonwealth, scenes of jubilation echoed those in London.", "s1b2": "Public houses, granted extended licensing hours, did unprecedented business. Bonfires were lit on hillsides across the country. Thousands danced in the streets through the night.", "s1h2": "HITLER DEAD; DONITZ SIGNED THE SURRENDER", "s1b2t": "Adolf Hitler took his own life in the Berlin bunker on 30 April. Grand Admiral Karl Donitz, named as his successor, signed the unconditional surrender. The thousand-year Reich lasted twelve years.", "s1h3": "PRISONERS OF WAR: THE ROAD HOME", "s1b3": "Hundreds of thousands of British prisoners of war held in German camps face a complex repatriation. Allied forces have begun the enormous logistical task of returning them to their families.", "rh1": "THE LONG ROAD TO VICTORY", "rdk": "Six Years of War Come to an End in Europe", "rps": ["When Germany invaded Poland on 1 September 1939, few could have anticipated a war costing more than 50 million lives. Britain stood alone after the fall of France in 1940, sustained by Churchill's leadership and the courage of its people.", "From El Alamein to D-Day, from the liberation of France to the fall of Berlin, the road to this day has been long and terrible. The nation pauses to honour those who did not return."], "rh2": "TRUMAN: HALF THE JOB DONE", "rps2": ["President Harry Truman declared a two-day national holiday while warning that our victory is but half won. The United States remains committed to the defeat of Japan, and American forces are already redeploying to the Pacific."], "rh3": "RATIONING CONTINUES INDEFINITELY", "rb3": "Despite victory, food and clothing rationing continues. The Ministry of Food warned that some items may remain rationed into 1947.", "bh1": "THE KING ADDRESSES THE EMPIRE", "bb1": "His Majesty King George VI addressed the Empire and Commonwealth by radio, giving thanks for national deliverance and paying tribute to all who had served.", "bh2": "FIREWORKS OVER THE THAMES", "bb2": "A fireworks display over the Thames brought London's celebration to a close, visible from much of the capital and watched by enormous crowds on both banks of the river.", "ins": ["Churchill's speech in full — Page 3", "The surrender document — Page 4", "Prisoners of war — Page 5", "War in the Pacific — Page 6", "Roll of Honour — Pages 10, 11"]}, "1963-11-22": {"h": "PRESIDENT KENNEDY ASSASSINATED IN DALLAS", "dk": "Shots Fired at Motorcade in Texas; Johnson Takes Oath as 36th President", "ps": ["President John Fitzgerald Kennedy of the United States was assassinated in Dallas, Texas, shot twice while riding in an open motorcade through the city streets. He was pronounced dead at Parkland Memorial Hospital at one o'clock in the afternoon, becoming the fourth American president to die by assassination.", "Vice-President Lyndon Baines Johnson was sworn in as the 36th President aboard Air Force One at Love Field, Dallas, with Mrs. Kennedy standing at his side still wearing the blood-stained pink suit she had worn in the motorcade.", "Lee Harvey Oswald, a 24-year-old former Marine who had lived in the Soviet Union, was arrested in a Dallas cinema and later charged with the President's murder. The circumstances remain under urgent investigation.", "The world responded with an outpouring of grief. Leaders of every nation sent condolences to Washington. In London, crowds gathered outside the American Embassy in Grosvenor Square, many in tears."], "cap": "President Kennedy's motorcade in Dealey Plaza, Dallas, moments before the assassination, 22 November 1963.", "s1h1": "WORLD LEADERS EXPRESS GRIEF", "s1sub": "Governments of All Nations Send Messages to Washington", "s1b1": "Prime Minister Sir Alec Douglas-Home led British tributes, calling President Kennedy a statesman of exceptional gifts whose death represented an immeasurable loss to the free world. Flags at Buckingham Palace were lowered to half-mast.", "s1b2": "In Moscow, Premier Khrushchev sent condolences, while Soviet television interrupted its programming. The shooting has shocked governments of every political alignment.", "s1h2": "OSWALD CHARGED WITH MURDER", "s1b2t": "Lee Harvey Oswald, arrested 90 minutes after the shooting, was formally charged with the President's murder. Police said he had been employed at the Texas School Book Depository, overlooking the motorcade route.", "s1h3": "JOHNSON ADDRESSES THE NATION", "s1b3": "President Johnson vowed to continue the work of his predecessor and addressed Congress, calling for unity in a moment of national grief and asking for the passage of Kennedy's civil rights legislation.", "rh1": "THE KENNEDY PRESIDENCY: AN APPRECIATION", "rdk": "A Leader Who Inspired a Generation", "rps": ["John Fitzgerald Kennedy brought to the presidency a combination of youth, intelligence and eloquence that defined a generation. In three years he confronted the Cuban Missile Crisis, negotiated the Test Ban Treaty, and committed America to the Moon.", "He was 46 years old. He leaves a wife, Jacqueline, and two young children, Caroline and John."], "rh2": "SECURITY LAPSES UNDER SCRUTINY", "rps2": ["Questions were raised about the security arrangements for the Dallas motorcade. The route was published in advance and protective measures appear to have been inadequate for a visit to a city with a history of political extremism."], "rh3": "WORLD MARKETS IN SHOCK", "rb3": "Stock exchanges fell sharply on news of the assassination. The New York Stock Exchange suspended trading early as prices collapsed on enormous volume.", "bh1": "DALLAS: A CITY IN GRIEF", "bb1": "The city of Dallas reacted to the assassination with a mixture of grief and horror. Many businesses closed; churches opened for prayer. Mayor Cabell appealed for calm and dignity.", "bh2": "MRS KENNEDY: COMPOSURE IN CRISIS", "bb2": "Jacqueline Kennedy, 34, conducted herself throughout the terrible events with composure that drew universal admiration. She refused to change her blood-stained clothing.", "ins": ["Full reports from Dallas — Pages 2, 3, 4", "The life of John F. Kennedy — Pages 5, 6", "Lyndon Johnson: the new President — Page 8", "World reaction — Page 9", "Wall Street reaction — Page 14"]}, "1968-04-04": {"h": "DR MARTIN LUTHER KING SHOT DEAD IN MEMPHIS", "dk": "Civil Rights Leader Assassinated on Hotel Balcony; Nation Mourns; Cities Erupt in Violence", "ps": ["Dr Martin Luther King Jr, the Nobel Peace Prize laureate and the most influential leader of the American civil rights movement, was shot and killed yesterday evening in Memphis, Tennessee, as he stood on the balcony of the Lorraine Motel. He was 39 years old.", "Dr King had come to Memphis in support of striking sanitation workers, predominantly black men who had walked out over unequal pay and dangerous working conditions. The previous evening he had delivered a speech ending with the words: I have been to the mountaintop. I have seen the Promised Land. I may not get there with you.", "President Lyndon Johnson, visibly shaken, addressed the nation from the White House, calling for all Americans to reject the blind violence that had struck down one of the country's great leaders. Riots broke out in more than 100 American cities.", "James Earl Ray, a white escaped convict from Missouri, is the principal suspect. He is believed to have fired from a bathroom window of a rooming house opposite the Lorraine Motel and fled in a white Ford Mustang."], "cap": "The Lorraine Motel, Memphis, Tennessee, where Dr Martin Luther King Jr was shot on the balcony outside room 306, 4 April 1968.", "s1h1": "CITIES IN FLAMES ACROSS AMERICA", "s1sub": "National Guard Called Out as Riots Spread to 100 Cities", "s1b1": "Violent disturbances erupted in cities across the United States. Washington D.C. suffered some of the worst violence seen in an American capital in living memory, with fires visible from the White House and troops deployed on the streets.", "s1b2": "Senator Robert Kennedy, campaigning in Indianapolis, broke the news to a predominantly black crowd. His quiet personal address, recalling his own brother's murder, is credited with preventing riots in Indianapolis while other cities burned.", "s1h2": "THE SUSPECT: JAMES EARL RAY", "s1b2t": "FBI agents have identified James Earl Ray, 40, a white escaped convict from Missouri, as the principal suspect in the assassination of Dr King.", "s1h3": "FROM MONTGOMERY TO MEMPHIS", "s1b3": "Dr King came to national prominence in 1955 leading the Montgomery Bus Boycott. In August 1963 he addressed 250,000 people at the Lincoln Memorial with the words: I have a dream that my four little children will live in a nation where they will not be judged by the colour of their skin.", "rh1": "THE LIFE OF MARTIN LUTHER KING", "rdk": "From Montgomery to Memphis: A Leader Who Changed America", "rps": ["Martin Luther King was born in Atlanta, Georgia, on 15 January 1929, the son of a Baptist minister. He came to national prominence in 1955 leading the Montgomery Bus Boycott, a 381-day campaign that ended the segregation of Alabama's city buses.", "In October 1964, at the age of 35, Dr King became the youngest person ever to receive the Nobel Peace Prize, dedicating the prize money to the civil rights movement."], "rh2": "THE SANITATION STRIKE: WHY KING CAME TO MEMPHIS", "rps2": ["Dr King's visit to Memphis was in support of 1,300 black sanitation workers on strike since 12 February, after two workers were crushed to death in a garbage truck. Their slogan, I Am a Man, had become a symbol of the broader struggle for dignity and equality."], "rh3": "PRESIDENT JOHNSON'S STATEMENT", "rb3": "America is shocked and saddened by the brutal slaying of Dr Martin Luther King. I ask every citizen to reject the blind violence that has struck Dr King, who lived by nonviolence.", "bh1": "MRS CORETTA SCOTT KING: A WIDOW'S DIGNITY", "bb1": "Mrs Coretta Scott King flew immediately to Memphis to accompany her husband's body. Friends described her composure as extraordinary. The couple have four children.", "bh2": "ROBERT KENNEDY IN INDIANAPOLIS", "bb2": "Senator Kennedy's address to the crowd in Indianapolis, in which he broke the news of Dr King's death and appealed for calm, is being described as one of the most remarkable speeches in American political history.", "ins": ["Dr King: life and legacy — Pages 2, 3", "The civil rights movement — Page 4", "Violence across America — Page 5", "James Earl Ray: the suspect — Page 6", "President Johnson's statement — Page 7"]}, "1969-07-21": {"h": "MAN WALKS ON THE MOON", "dk": "Armstrong and Aldrin Land Eagle on Lunar Surface; One Giant Leap for Mankind", "ps": ["Neil Armstrong of the United States became the first human being in history to walk on the surface of the Moon at 02:56 Greenwich Mean Time, descending the ladder of the lunar module Eagle onto the Sea of Tranquility and saying the words that will be remembered forever: That's one small step for man, one giant leap for mankind.", "Astronaut Edwin Aldrin followed his commander onto the surface twenty minutes later. The two men spent two and a half hours on the Moon, planted the American flag, collected 48 pounds of rock samples, and spoke by telephone with President Nixon in Washington.", "The achievement fulfils President Kennedy's 1961 challenge to land a man on the Moon before the end of the decade. Michael Collins remained in lunar orbit aboard the command module Columbia throughout the moonwalk.", "An estimated 600 million people watched the moonwalk on television around the world. In cities from London to Tokyo, people wept openly as Armstrong descended the ladder."], "cap": "Astronaut Edwin Aldrin on the lunar surface, photographed by Neil Armstrong during the Apollo 11 moonwalk, 20 July 1969.", "s1h1": "WORLD CELEBRATES IN WONDER", "s1sub": "Millions Watch History on Television", "s1b1": "Crowds gathered in Trafalgar Square and across Britain to watch the moonwalk on television. Prime Minister Harold Wilson sent congratulations, calling it a triumph for all humanity.", "s1b2": "The Soviet Union, which lost the Moon race after a decade of fierce competition, made no immediate public comment on the American achievement. Soviet state media reported the landing briefly and without comment.", "s1h2": "RETURN JOURNEY UNDERWAY", "s1b2t": "The Eagle lunar module lifted from the Moon's surface this morning to rendezvous with the orbiting Columbia. Splashdown in the Pacific Ocean is expected on Thursday after a journey of 238,000 miles.", "s1h3": "KENNEDY'S DREAM FULFILLED", "s1b3": "The landing fulfils the challenge issued by President Kennedy to Congress in May 1961. Kennedy was assassinated in 1963 and did not live to see his nation's greatest achievement.", "rh1": "HOW APOLLO 11 REACHED THE MOON", "rdk": "A Triumph of Engineering and Human Courage", "rps": ["The Saturn V rocket that carried Apollo 11 stands 363 feet tall and consumed 203,000 gallons of fuel in the first 2.5 minutes of flight. The lunar module Eagle was designed specifically for Moon landing and cannot fly in Earth's atmosphere.", "Armstrong took manual control of the descent to avoid a boulder-strewn crater, landing with only seconds of fuel remaining, a detail that caused held breath at Mission Control in Houston before confirmation came through."], "rh2": "PRESIDENT NIXON CALLS THE ASTRONAUTS", "rps2": ["Because of what you have done, the heavens have become a part of man's world, President Nixon told the astronauts on the lunar surface in what he called the most historic telephone call ever made from the White House."], "rh3": "KENNEDY'S DREAM: A REMINDER", "rb3": "The landing fulfils the challenge President Kennedy issued in 1961. He did not live to see it.", "bh1": "THE MOON: WHAT SCIENCE NOW HOPES TO LEARN", "bb1": "The 48 pounds of lunar rock brought back by Armstrong and Aldrin will be distributed to scientific institutions around the world for analysis.", "bh2": "WALL STREET CELEBRATES", "bb2": "American stock markets rose sharply on news of the successful landing, with aerospace stocks leading the advance. The Dow Jones closed up 15 points at its highest level of the year.", "ins": ["Full mission report — Pages 2 and 3", "The astronauts: who they are — Page 4", "History of the space race — Page 5", "How the rocket works — Page 6", "World reaction — Page 7"]}, "1989-11-09": {"h": "BERLIN WALL FALLS: EAST GERMANY OPENS ITS BORDERS", "dk": "Crowds Tear Down the Wall; East and West Berlin United in Joy", "ps": ["The Berlin Wall, the most potent symbol of Europe's division since 1961, effectively ceased to exist last night after the East German government announced its citizens were free to travel to the West without restriction. Within hours, jubilant crowds from both sides were climbing the Wall, embracing strangers, and attacking the concrete with hammers.", "The announcement came from East German spokesman Gunter Schabowski at a televised press conference. Asked when the new rules would take effect, he consulted his notes and said: Immediately, without delay. Border guards, given no orders to the contrary, stood aside.", "Scenes of extraordinary emotion followed through the night. Hundreds of thousands of East Germans crossed into West Berlin for the first time, many in tears, many unable to comprehend that the barrier dividing their city for 28 years had vanished.", "Chancellor Helmut Kohl cut short a visit to Poland and flew to Berlin. We are and remain one nation, he told the crowds. The West German parliament spontaneously sang the national anthem when news arrived."], "cap": "Crowds celebrate on top of the Berlin Wall at the Brandenburg Gate, 9 November 1989.", "s1h1": "THE WORLD RESPONDS WITH WONDER", "s1sub": "Gorbachev Confirms: Soviet Union Will Not Intervene", "s1b1": "President Bush said the United States welcomed the opening as a step toward German freedom. Mrs Thatcher called it a great day for freedom. In Moscow, a Kremlin spokesman confirmed the Soviet Union would not intervene.", "s1b2": "The scenes in Berlin have electrified the other countries of the Eastern bloc. In Prague, Leipzig and Warsaw, the implications were immediately understood: if the Wall can fall, anything is possible.", "s1h2": "THE WALL: 28 YEARS OF DIVISION", "s1b2t": "The Wall was erected overnight on 12 August 1961. In 28 years, more than 140 people died attempting to cross it. Last night it fell without a shot being fired.", "s1h3": "GERMAN REUNIFICATION: THE QUESTION NOW", "s1b3": "With the Wall open, reunification has become a pressing practical question. Officials in Bonn are already considering what a united Germany might look like.", "rh1": "EYEWITNESS IN BERLIN", "rdk": "From Our Special Correspondent", "rps": ["I was at Checkpoint Charlie when the first East Germans came through, blinking in the bright lights, some carrying flowers, most simply dazed. West Berliners pressed bottles of champagne into their hands and embraced them as lost brothers.", "By midnight the crowd was vast. A young man with a pickaxe was chipping at the Wall and distributing pieces as souvenirs. An elderly woman told me she had not seen her sister, who lived 500 metres away in the East, for 22 years."], "rh2": "MARKETS SURGE ON BERLIN NEWS", "rps2": ["European and American markets opened sharply higher. German shares led the advance. Analysts predict a surge in economic activity as the two Germanies draw closer together."], "rh3": "GORBACHEV: THE MAN WHO LET IT HAPPEN", "rb3": "Without Gorbachev's policy of non-interference in Eastern Europe, the Wall would still be standing. His policy of perestroika has made last night possible.", "bh1": "THE HUMAN STORIES", "bb1": "Among those crossing last night: families separated for decades, elderly people seeing children and grandchildren for the first time in years, young people who had known only a divided city.", "bh2": "NATO IN EMERGENCY SESSION", "bb2": "NATO foreign ministers convened in emergency session in Brussels to coordinate the Western response and consider implications for European security.", "ins": ["History of the Berlin Wall — Page 4", "Map of divided Berlin — Page 5", "Gorbachev's revolution — Page 6", "German reunification: the questions — Page 7", "World reaction — Page 9"]}, "1990-02-11": {"h": "NELSON MANDELA WALKS FREE AFTER 27 YEARS", "dk": "Anti-Apartheid Leader Released from Victor Verster Prison; Hundreds of Thousands Cheer in Cape Town", "ps": ["Nelson Mandela walked free yesterday afternoon after 27 years of imprisonment, emerging from the gates of Victor Verster Prison near Paarl in the Western Cape at 4:16 in the afternoon with his right fist raised in a gesture that will define the moment in the memory of the world. At his side was Winnie Mandela, his wife.", "Mr Mandela, now 71 years old, was imprisoned in 1964 following the Rivonia Trial, in which he and fellow leaders of the African National Congress were convicted of sabotage. He served the first 18 years on Robben Island, before being transferred to Victor Verster in 1988.", "He was driven to Cape Town, where on the Grand Parade outside the City Hall he addressed a crowd estimated at more than 100,000 people, his first public speech in 27 years. The ANC is not anti-white. We want an equal sharing of power, he said.", "The release, announced by President F.W. de Klerk last Friday, has been described as the most significant moment in South African politics since the National Party instituted the apartheid system in 1948."], "cap": "Nelson Mandela raises his fist in triumph outside Victor Verster Prison, Paarl, South Africa, on the day of his release after 27 years of imprisonment, 11 February 1990.", "s1h1": "THE WORLD CELEBRATES A MOMENTOUS DAY", "s1sub": "From London to New York, Leaders Hail Mandela's Freedom", "s1b1": "World leaders united yesterday in welcoming the release of Nelson Mandela. President Bush called it a joyous day for all who love freedom. Prime Minister Thatcher said she was naturally delighted at the news.", "s1b2": "In townships across South Africa, people danced in the streets. In Soweto, Johannesburg, Durban and Port Elizabeth, communities that had lived under the weight of apartheid for decades greeted the news with an outpouring of emotion.", "s1h2": "27 YEARS: THE PRISONER'S STORY", "s1b2t": "Nelson Rolihlahla Mandela was born on 18 July 1918 in the Transkei. A lawyer by training, he joined the ANC in 1944. He turned to armed resistance after the Sharpeville massacre of 1960, in which 69 unarmed protesters were shot dead by police.", "s1h3": "DE KLERK AND MANDELA: THE NEGOTIATION AHEAD", "s1b3": "The release is the fruit of months of secret negotiation. Both men have signalled willingness to negotiate a new constitutional settlement, though the path to free elections will be long and will test both sides.", "rh1": "THE ANC: BANNED FOR 30 YEARS", "rdk": "The Movement That Survived Suppression", "rps": ["The African National Congress, founded in 1912, was banned by the South African government in 1960 following Sharpeville. It has operated in exile ever since, sustained by international solidarity.", "President de Klerk's announcement of 2 February, in which he unbanned the ANC along with 60 other organisations, was described as one of the most extraordinary political speeches in South African history."], "rh2": "ECONOMIC SANCTIONS: THE PRESSURE THAT WORKED", "rps2": ["Many analysts credit the international sanctions movement, including cultural boycotts, sporting isolation and economic pressure, with accelerating the political transformation that has produced yesterday's release."], "rh3": "WINNIE MANDELA", "rb3": "Mrs Winnie Mandela, who endured banning orders, imprisonment and harassment throughout her husband's years on Robben Island, stood at his side as he emerged.", "bh1": "ROBBEN ISLAND: THE PRISON THAT BECAME A SYMBOL", "bb1": "Robben Island, the maximum security prison off Cape Town where Mandela spent 18 of his 27 imprisoned years, became the most famous jail in the world during his incarceration.", "bh2": "WHAT HAPPENS NEXT", "bb2": "Negotiations between the ANC and the government are expected to begin formally in coming months. The path ahead includes a new constitution and the date of free elections.", "ins": ["Mandela's speech in full — Page 2", "27 years: a timeline — Page 3", "De Klerk: the man who freed him — Page 4", "ANC: the movement — Page 5", "South Africa: the road ahead — Page 6"]}, "2001-09-11": {"h": "AMERICA UNDER ATTACK", "dk": "Hijacked Airliners Destroy World Trade Centre and Strike Pentagon; Thousands Feared Dead", "ps": ["The United States suffered the most devastating attack on its soil in its history yesterday morning when four commercial airliners, hijacked by terrorists, were flown into the World Trade Centre in New York, the Pentagon in Washington, and a field in Pennsylvania. The twin towers of the World Trade Centre collapsed within two hours, in scenes of apocalyptic horror broadcast live around the world.", "American Airlines Flight 11 struck the North Tower at 8:46 in the morning. United Airlines Flight 175 struck the South Tower seventeen minutes later. The South Tower collapsed at 9:59 and the North Tower at 10:28. Thousands of office workers, firefighters, police officers and rescue personnel who had entered the buildings perished.", "President George W. Bush addressed the nation from the White House, vowing that those responsible would be found and brought to justice. We will make no distinction between the terrorists who committed these acts and those who harbour them.", "American intelligence officials pointed to Osama bin Laden and his al-Qaeda network as the prime suspects. The Taliban government in Kabul distanced itself from the attacks, but Washington is expected to demand the surrender of bin Laden as an immediate condition of avoiding military action."], "cap": "The World Trade Centre towers burn following the terrorist attacks in New York City, 11 September 2001.", "s1h1": "BIN LADEN SUSPECTED", "s1sub": "Al-Qaeda Network Believed Responsible for Coordinated Attacks", "s1b1": "American intelligence officials pointed to Osama bin Laden as the prime suspect. The Taliban government distanced itself from the attacks but Washington will demand his surrender as an immediate condition of avoiding military action.", "s1b2": "The North Atlantic Treaty Organisation invoked Article Five of its founding charter for the first time, declaring the attacks on the United States to be an attack on all member nations.", "s1h2": "PENTAGON STRUCK; FLIGHT 93 CRASHES", "s1b2t": "American Airlines Flight 77 struck the Pentagon building in Arlington, Virginia, at 9:37, killing those on board. United Airlines Flight 93 crashed in a field near Shanksville, Pennsylvania, after passengers apparently attempted to overpower the hijackers.", "s1h3": "WORLD LEADERS RALLY TO AMERICA", "s1b3": "This is not a battle between the United States and terrorism, but between the free and democratic world and terrorism, said Prime Minister Tony Blair.", "rh1": "NEW YORK: A CITY IN SHOCK AND GRIEF", "rdk": "From Our New York Correspondent", "rps": ["The streets of lower Manhattan were covered in grey ash for blocks in every direction from where the towers had stood. Thousands of missing persons notices were taped to every available surface, a wallpaper of grief that told the story of a catastrophe still too enormous to be fully comprehended.", "Rescue workers from across the New York area converged on what was already being called Ground Zero. Mayor Rudolph Giuliani became the visible voice of a city in crisis, directing the rescue operations with a composure that earned immediate admiration."], "rh2": "AIR TRAFFIC HALTED ACROSS AMERICA", "rps2": ["The Federal Aviation Administration ordered every aircraft in American airspace to land immediately, an unprecedented measure that grounded more than 4,500 flights. All transatlantic flights were diverted to Canadian airports."], "rh3": "STOCK EXCHANGES CLOSED", "rb3": "The New York Stock Exchange, NASDAQ and the American Stock Exchange all suspended trading and will remain closed until further notice. Markets around the world fell sharply on the news.", "bh1": "THE HEROES: FIREFIGHTERS AND POLICE", "bb1": "Hundreds of New York City firefighters and police officers entered the burning towers to evacuate civilians and died when the buildings collapsed. The city lost more firefighters in a single day than in any previous event in its history.", "bh2": "NATO INVOKES ARTICLE FIVE FOR FIRST TIME", "bb2": "The North Atlantic Treaty Organisation invoked Article Five of its founding charter for the first time, declaring the attacks on the United States to be an attack on all member nations.", "ins": ["Full reports from New York — Pages 2, 3, 4", "The Pentagon attack — Page 5", "Who is Osama bin Laden? — Page 6", "World reaction — Page 7", "What happens next? — Page 8"]}};
-const HDB_ES={"1960-08-24": {"h": "ROMA DISPUESTA A INAUGURAR LA XVII OLIMPIADA", "dk": "84 Naciones y 5.000 Atletas Reunidos; Ceremonia en el Estadio Olímpico Mañana", "ps": ["Roma se prepara esta noche para acoger a los mejores atletas del mundo en la apertura de la XVII Olimpiada. Unos 5.000 competidores que representan a un récord de 84 naciones se han reunido en la capital italiana, que soporta temperaturas superiores a los 38 grados centígrados.", "La ceremonia inaugural, presidida por el presidente italiano Giovanni Gronchi, reunirá a 100.000 espectadores en el Estadio Olímpico mañana por la noche.", "Estados Unidos ha enviado su mayor contingente olímpico con más de 300 competidores. Entre los más destacados figura Cassius Clay, boxeador de 18 años de Louisville, favorito al oro.", "La Unión Soviética, que dominó el medallero en Melbourne hace cuatro años, presenta de nuevo un formidable equipo, especialmente fuerte en gimnasia y lucha."], "cap": "El Estadio Olímpico de Roma, escenario de la ceremonia de apertura de la XVII Olimpiada mañana por la noche.", "s1h1": "CRISIS EN LAOS TRAS EL GOLPE DE ESTADO", "s1sub": "Facciones Rivales se Enfrentan; Occidente Sigue los Hechos con Preocupación", "s1b1": "La situación política en Laos siguió siendo muy volátil ayer, tres semanas después de que las fuerzas neutralistas del capitán Kong Le tomaran Vientiane.", "s1b2": "Estados Unidos, que había apoyado ampliamente al gobierno anterior, estudia sus opciones políticas.", "s1h2": "TROPAS CONGÓLEÑAS RETOMAN BAKWANGA", "s1b2t": "Unidades del ejército nacional congoleño retomaron ayer la ciudad minera de Bakwanga a las fuerzas secesionistas leales al jefe Kalonji.", "s1h3": "JRUSCHOV ADVIERTE SOBRE BERLÍN", "s1b3": "El primer ministro soviético Nikita Jruschov renovó su amenaza de firmar un tratado de paz por separado con Alemania del Este.", "rh1": "EL GOBIERNO DE MACMILLAN ESTUDIA LA POLÍTICA SALARIAL", "rdk": "El Gabinete Examinará las Propuestas del Tesoro para el Otoño", "rps": ["Los ministros más destacados de la administración Macmillan estudian propuestas de moderación salarial voluntaria en industrias clave.", "Los líderes sindicales ya han señalado su firme oposición a cualquier interferencia gubernamental en la negociación colectiva."], "rh2": "KENNEDY AVENTAJA A NIXON EN LAS ÚLTIMAS ENCUESTAS", "rps2": ["El senador John F. Kennedy mantiene una estrecha ventaja sobre el vicepresidente Nixon en la última encuesta Gallup. Ambos candidatos se preparan para una serie de debates televisivos."], "rh3": "DISPUTA FERROVIARIA: CONVERSACIONES HOY", "rb3": "Representantes sindicales y la dirección de British Railways se reúnen hoy bajo presidencia independiente para evitar un paro nacional amenazado.", "bh1": "CBS TELEVISARÁ LAS OLIMPIADAS EN DIRECTO", "bb1": "La CBS proporcionará cobertura televisiva en directo de las Olimpiadas de Roma para el público estadounidense, la primera vez que los Juegos se transmiten en vivo a través del Atlántico.", "bh2": "LOS MERCADOS, TRANQUILOS ANTES DEL FESTIVO", "bb2": "Los mercados bursátiles de Londres cerraron en rangos estrechos antes del fin de semana festivo.", "ins": ["Noticias internacionales — Página 2", "Política internacional — Página 3", "Mercados financieros — Página 12", "Deportes — Página 18", "El Tiempo — Página 24"]}, "1963-11-22": {"h": "KENNEDY ASESINADO EN DALLAS", "dk": "Disparos contra la Comitiva Presidencial en Texas; Johnson Jura el Cargo de 36.º Presidente", "ps": ["El presidente John Fitzgerald Kennedy de los Estados Unidos fue asesinado ayer en Dallas, Texas, alcanzado por dos disparos mientras desfilaba en un cortejo descubierto. Fue declarado muerto en el Hospital Memorial Parkland a la una de la tarde.", "El vicepresidente Lyndon Baines Johnson juró el cargo de 36.º presidente a bordo del Air Force One en el aeropuerto Love Field de Dallas, con la señora Kennedy a su lado.", "Lee Harvey Oswald, un ex marine de 24 años que había vivido en la Unión Soviética, fue detenido en un cine de Dallas y posteriormente acusado del asesinato del presidente.", "El mundo respondió con una oleada de dolor. Los líderes de todas las naciones enviaron sus condolencias a Washington."], "cap": "La comitiva del presidente Kennedy en Dallas, momentos antes del asesinato, 22 de noviembre de 1963.", "s1h1": "LOS LÍDERES MUNDIALES EXPRESAN SU DOLOR", "s1sub": "Gobiernos de Todas las Naciones Envían Mensajes a Washington", "s1b1": "El gobierno español expresó su profundo pesar por la muerte del presidente Kennedy. Las banderas ondearon a media asta en los edificios oficiales en Madrid.", "s1b2": "En Moscú, el premier Jruschov envió sus condolencias, mientras la televisión soviética interrumpía su programación.", "s1h2": "OSWALD, DETENIDO Y ACUSADO", "s1b2t": "Lee Harvey Oswald fue formalmente acusado del asesinato del presidente. Había trabajado en el Depósito de Libros Escolares de Texas, con vistas a la ruta del cortejo.", "s1h3": "JOHNSON SE DIRIGE AL CONGRESO", "s1b3": "El presidente Johnson se dirigirá hoy al Congreso para pedir unidad en un momento de duelo nacional.", "rh1": "LA PRESIDENCIA KENNEDY: UNA SEMBLANZA", "rdk": "Un Líder que Inspiró a toda una Generación", "rps": ["John Fitzgerald Kennedy aportó a la presidencia una combinación de juventud, inteligencia y elocuencia que definió a toda una generación.", "Tenía 46 años. Deja esposa, Jacqueline, y dos hijos pequeños, Caroline y John."], "rh2": "LA SEGURIDAD, BAJO ESCRUTINIO", "rps2": ["Se plantearon preguntas sobre los dispositivos de seguridad del cortejo de Dallas."], "rh3": "LOS MERCADOS, EN CAÍDA LIBRE", "rb3": "Las bolsas de valores cayeron bruscamente tras conocerse el asesinato.", "bh1": "DALLAS: UNA CIUDAD EN DUELO", "bb1": "Dallas reaccionó al asesinato con una mezcla de dolor y horror. Los negocios cerraron; las iglesias abrieron sus puertas.", "bh2": "LA SEÑORA KENNEDY: CORAJE Y DIGNIDAD", "bb2": "Jacqueline Kennedy, de 34 años, mantuvo una compostura que despertó la admiración universal.", "ins": ["Información completa de Dallas — Páginas 2, 3, 4", "La vida de John F. Kennedy — Páginas 5, 6", "Lyndon Johnson: el nuevo presidente — Página 8", "Reacción internacional — Página 9"]}, "1968-04-04": {"h": "EL DR. MARTIN LUTHER KING ASESINADO EN MEMPHIS", "dk": "Líder de los Derechos Civiles Muerto a Tiros; la Nación Llora; las Ciudades Estallan en Violencia", "ps": ["El Dr. Martin Luther King Jr., Premio Nobel de la Paz, fue abatido a tiros ayer por la tarde en Memphis, Tennessee, mientras permanecía en el balcón del Motel Lorraine. Tenía 39 años.", "El Dr. King había venido a Memphis en apoyo de los trabajadores del saneamiento en huelga. La noche anterior había pronunciado un discurso con las palabras: He estado en la cima de la montaña. He visto la Tierra Prometida. Puede que no llegue allí con vosotros.", "El presidente Lyndon Johnson, visiblemente conmocionado, se dirigió a la nación desde la Casa Blanca, pidiendo a todos los estadounidenses que rechazaran la violencia ciega.", "Estallaron disturbios en más de 100 ciudades americanas. James Earl Ray, un delincuente blanco huido de la justicia, es el principal sospechoso del asesinato."], "cap": "El Motel Lorraine, Memphis, Tennessee, donde el Dr. Martin Luther King Jr. fue tiroteado en el balcón exterior de la habitación 306, el 4 de abril de 1968.", "s1h1": "CIUDADES EN LLAMAS EN TODA AMÉRICA", "s1sub": "La Guardia Nacional Movilizada mientras los Disturbios se Extienden a 100 Ciudades", "s1b1": "Violentos disturbios estallaron anoche en ciudades de todo Estados Unidos.", "s1b2": "El senador Robert Kennedy comunicó la noticia de la muerte del Dr. King a una multitud en Indianapólis. Su discurso personal evitó que la ciudad ardiera.", "s1h2": "EL SOSPECHOSO: JAMES EARL RAY", "s1b2t": "Los agentes del FBI han identificado a James Earl Ray, de 40 años, un delincuente blanco evadido de Missouri, como el principal sospechoso.", "s1h3": "EL SENADOR KENNEDY ANUNCIA LA NOTICIA", "s1b3": "El senador Robert Kennedy, de campaña en Indianapólis, comunicó a las multitudes la muerte del Dr. King con un discurso conmovedor.", "rh1": "LA VIDA DE MARTIN LUTHER KING", "rdk": "De Montgomery a Memphis: Un Líder que Cambió América", "rps": ["Martin Luther King nació en Atlanta, Georgia, el 15 de enero de 1929. Llegó a la fama nacional en 1955 cuando lideró el Boicot de Autobuses de Montgomery, que puso fin a la segregación en los autobuses de la ciudad.", "En agosto de 1963, ante 250.000 personas, pronunció las palabras que definirían su movimiento: Tengo un sueño, que mis cuatro hijos pequeños vivirán un día en una nación donde no serán juzgados por el color de su piel."], "rh2": "EL PREMIO NOBEL DE LA PAZ, 1964", "rps2": ["En octubre de 1964, a los 35 años, el Dr. King se convirtió en la persona más joven en recibir el Premio Nobel de la Paz."], "rh3": "DECLARACIÓN DEL PRESIDENTE JOHNSON", "rb3": "América está conmocionada y apenada por el brutal asesinato esta noche del Dr. Martin Luther King. Pido a cada ciudadano que rechace la violencia ciega.", "bh1": "LA HUELGA DE SANEAMIENTO: POR QUÉ KING FUE A MEMPHIS", "bb1": "La visita del Dr. King a Memphis era en apoyo de 1.300 trabajadores negros del saneamiento en huelga desde el 12 de febrero.", "bh2": "CORETTA SCOTT KING: DIGNIDAD EN LA CRISIS", "bb2": "La señora Coretta Scott King voló inmediatamente a Memphis. La pareja tiene cuatro hijos.", "ins": ["El Dr. King: vida y legado — Páginas 2, 3", "El movimiento por los derechos civiles — Página 4", "Violencia en toda América — Página 5", "El sospechoso — Página 6", "Declaración del presidente Johnson — Página 7"]}, "1969-07-21": {"h": "EL HOMBRE LLEGA A LA LUNA", "dk": "Armstrong y Aldrin Alunizaron en el Mar de la Tranquilidad; Un Gran Salto para la Humanidad", "ps": ["Neil Armstrong de los Estados Unidos se convirtió ayer en el primer ser humano de la historia en pisar la superficie de la Luna a las 3:56 hora peninsular, descendiendo la escalerilla del módulo lunar Águila y pronunciando las palabras: Un pequeño paso para el hombre, un gran salto para la humanidad.", "El astronauta Edwin Aldrin siguió a su comandante sobre la superficie veinte minutos después. Los dos hombres pasaron dos horas y media en la Luna, plantaron la bandera estadounidense y recogieron 22 kilos de muestras.", "El logro cumple el desafío lanzado por el presidente Kennedy al Congreso en 1961: poner a un hombre en la Luna antes de que acabara la década.", "Se calcula que 600 millones de personas siguieron el paseo lunar por televisión en todo el mundo."], "cap": "El astronauta Edwin Aldrin en la superficie lunar, fotografiado por Neil Armstrong durante el paseo lunar del Apolo 11.", "s1h1": "EL MUNDO CELEBRA EL HISTÓRICO LOGRO", "s1sub": "Millones de Personas Siguen por Televisión el Momento Histórico", "s1b1": "El jefe del Estado envió un telegrama de felicitación al presidente Nixon, calificando la hazaña de triunfo de la humanidad.", "s1b2": "La Unión Soviética no realizó ningún comentario público inmediato sobre el logro estadounidense.", "s1h2": "EL VIAJE DE REGRESO, EN MARCHA", "s1b2t": "El módulo Águila despegó de la superficie lunar esta madrugada para reunirse con el Columbia en órbita.", "s1h3": "EL SUEÑO DE KENNEDY, CUMPLIDO", "s1b3": "Kennedy fue asesinado en 1963 y no vivió para ver el mayor logro de su nación. Su desafío de 1961 ha quedado cumplido con ocho meses de antelación.", "rh1": "CÓMO LLEGÓ EL APOLO 11 A LA LUNA", "rdk": "Un Triunfo de la Ingeniería y del Valor Humano", "rps": ["El cohete Saturno V que lanzó el Apolo 11 mide 111 metros de altura y consumió más de 750.000 litros de combustible en los primeros 2,5 minutos de vuelo.", "Armstrong tomó el control manual del descenso para evitar un cráter lleno de rocas, aterrizando con apenas segundos de combustible restantes."], "rh2": "NIXON LLAMA A LOS ASTRONAUTAS", "rps2": ["Por lo que habéis hecho, el cielo se ha convertido en parte del mundo del hombre, dijo el presidente Nixon a los astronautas."], "rh3": "LA CIENCIA, EXPECTANTE", "rb3": "Los 22 kilos de rocas lunares recogidos por Armstrong y Aldrin serán distribuidos a instituciones científicas de todo el mundo.", "bh1": "LAS ROCAS LUNARES, CLAVE CIENTÍFICA", "bb1": "Los geólogos de todo el mundo aguardan con enorme expectación el regreso de las muestras lunares.", "bh2": "LA BOLSA, AL ALZA", "bb2": "Los mercados bursátiles estadounidenses subieron con fuerza tras el éxito del alunizaje.", "ins": ["Informe completo de la misión — Páginas 2 y 3", "Los astronautas: quiénes son — Página 4", "Historia de la carrera espacial — Página 5", "Reacción mundial — Página 7"]}, "1989-11-09": {"h": "CAE EL MURO DE BERLÍN: ALEMANIA ABRE SUS FRONTERAS", "dk": "Las Multitudes Derriban el Muro; Berlín Este y Oeste se Unen en la Alegría", "ps": ["El Muro de Berlín dejó efectivamente de existir anoche después de que el gobierno de Alemania del Este anunciara que sus ciudadanos podían viajar libremente al Oeste. En pocas horas, multitudes jubilosas de ambos lados escalaban el Muro y atacaban el hormigón con martillos.", "El anuncio lo realizó el portavoz Günter Schabowski en una rueda de prensa televisada. Preguntado sobre cuándo entrarían en vigor las nuevas normas, consultó sus notas y respondió: Inmediatamente, sin demora.", "Escenas de extraordinaria emoción siguieron durante toda la noche. Cientos de miles de alemanes del Este cruzaron a Berlín Occidental por primera vez en su vida.", "El canciller Helmut Kohl interrumpió una visita oficial a Polonia y voló a Berlín. Somos y seguimos siendo una sola nación, dijo a las multitudes."], "cap": "Multitudes celebran sobre el Muro de Berlín junto a la Puerta de Brandenburgo, 9 de noviembre de 1989.", "s1h1": "EL MUNDO RESPONDE CON ASOMBRO", "s1sub": "Gorbachov Confirma: la URSS No Intervendrá", "s1b1": "El presidente Bush dijo que Estados Unidos acogía favorablemente la apertura. La primera ministra Thatcher la calificó de gran día para la libertad.", "s1b2": "Las escenas en Berlín han electrizado a los demás países del bloque del Este.", "s1h2": "EL MURO: 28 AÑOS DE DIVISIÓN", "s1b2t": "El Muro fue erigido en la noche del 12 al 13 de agosto de 1961. En 28 años, más de 140 personas murieron intentando cruzarlo.", "s1h3": "LA REUNIFICACIÓN ALEMANA: LA GRAN PREGUNTA", "s1b3": "Con el Muro abierto, la reunificación se ha convertido en una urgente realidad práctica.", "rh1": "CRÓNICA DESDE BERLÍN", "rdk": "De Nuestro Corresponsal Especial", "rps": ["Estaba en el Checkpoint Charlie cuando los primeros alemanes del Este cruzaron, poco después de las once de la noche.", "A medianoche, la multitud era inmensa. Una anciana me dijo que no había visto a su hermana, que vivía a 500 metros de distancia en el Este, desde hacía 22 años."], "rh2": "LOS MERCADOS, EN ALZA", "rps2": ["Los mercados europeos y estadounidenses abrieron al alza. Los analistas prevén un auge de la actividad económica."], "rh3": "GORBACHOV: EL HOMBRE QUE LO HIZO POSIBLE", "rb3": "Sin la política de no intervención de Gorbachov en Europa del Este, el Muro seguiría en pie.", "bh1": "LAS HISTORIAS HUMANAS", "bb1": "Entre quienes cruzaron anoche: familias separadas durante décadas, ancianos que veían a sus hijos por primera vez en años.", "bh2": "LA OTAN, EN SESIÓN DE EMERGENCIA", "bb2": "Los ministros de Asuntos Exteriores de la OTAN se reunieron en sesión de emergencia en Bruselas.", "ins": ["Historia del Muro de Berlín — Página 4", "Mapa de Berlín dividido — Página 5", "La revolución de Gorbachov — Página 6", "La reunificación alemana — Página 7"]}, "1990-02-11": {"h": "NELSON MANDELA SALE EN LIBERTAD TRAS 27 AÑOS", "dk": "El Líder Antiapártheid Liberado; Cientos de Miles le Aclaman en Ciudad del Cabo", "ps": ["Nelson Mandela quedó en libertad ayer por la tarde tras 27 años de prisión, emergiendo de las puertas de la Prisón de Victor Verster a las 4:16 de la tarde con el puño derecho en alto.", "El señor Mandela, de 71 años, fue encarcelado en 1964 tras el Juicio de Rivonia.", "Fue llevado a Ciudad del Cabo, donde se dirigió a una multitud de más de 100.000 personas: El CNA no es anti-blanco. Queremos un reparto equitativo del poder.", "La liberación ha sido descrita como el momento más significativo de la política sudafricana desde que el Partido Nacional instituyó el sistema del apartheid en 1948."], "cap": "Nelson Mandela levanta el puño en señal de triunfo a las puertas de la Prisón Victor Verster, Paarl, Sudáfrica, el 11 de febrero de 1990.", "s1h1": "EL MUNDO CELEBRA UN DÍA TRASCENDENTAL", "s1sub": "De Londres a Nueva York, los Líderes Saludan la Libertad de Mandela", "s1b1": "Los líderes mundiales se unieron para celebrar la liberación. El presidente Bush la calificó de día de alegría para todos los que aman la libertad.", "s1b2": "En los townships de toda Sudáfrica, la gente bailó en las calles.", "s1h2": "27 AÑOS: LA HISTORIA DEL PRISIONERO", "s1b2t": "Nelson Mandela nació el 18 de julio de 1918 en el Transkei. Se unió al CNA en 1944 y recurrió a la resistencia armada tras la masacre de Sharpeville de 1960.", "s1h3": "DE KLERK Y MANDELA: LA NEGOCIACIÓN POR DELANTE", "s1b3": "La liberación es el fruto de meses de negociación secreta entre Mandela y el gobierno de De Klerk.", "rh1": "EL CNA: PROHIBIDO DURANTE 30 AÑOS", "rdk": "El Movimiento que Sobrevivió a la Represión", "rps": ["El Congreso Nacional Africano, fundado en 1912, fue prohibido por el gobierno sudafricano en 1960.", "El anuncio del presidente De Klerk del 2 de febrero, levantando la prohibición del CNA, fue descrito como uno de los discursos políticos más extraordinarios de la historia sudafricana."], "rh2": "LAS SANCIONES ECONÓMICAS: LA PRESIÓN QUE FUNCIONÓ", "rps2": ["Muchos analistas atribuyen a las sanciones internacionales el mérito de haber acelerado la transformación política."], "rh3": "WINNIE MANDELA", "rb3": "La señora Winnie Mandela estuvo a su lado cuando emergió de la prisión.", "bh1": "LA ISLA ROBBEN: LA PRISÓN QUE SE CONVIRTIÓ EN SÍMBOLO", "bb1": "La Isla Robben, donde Mandela pasó 18 de sus 27 años de condena, se convirtió en la cárcel más famosa del mundo.", "bh2": "¿QUÉ OCURRIRÁ A CONTINUACIÓN?", "bb2": "Se espera que las negociaciones entre el CNA y el gobierno comiencen formalmente en los próximos meses.", "ins": ["Discurso íntegro de Mandela — Página 2", "27 años: una cronología — Página 3", "De Klerk: el hombre que lo liberó — Página 4", "CNA: el movimiento — Página 5"]}, "2001-09-11": {"h": "ESTADOS UNIDOS BAJO ATAQUE", "dk": "Aviones Secuestrados Destruyen las Torres Gemelas y Golpean el Pentágono; Miles de Muertos Temidos", "ps": ["Los Estados Unidos sufrieron ayer el ataque más devastador de su historia cuando cuatro aviones comerciales secuestrados fueron estrellados contra el World Trade Center de Nueva York, el Pentágono en Washington y un campo en Pensilvania.", "El vuelo 11 de American Airlines golpeó la Torre Norte a las 8:46. El vuelo 175 golpeó la Torre Sur diecisiete minutos después. Ambas torres se derrumbaron en dos horas.", "El presidente George W. Bush se dirigió a la nación desde la Casa Blanca prometiendo justicia: No haremos distinción entre los terroristas que cometieron estos actos y quienes los albergan.", "Los servicios de inteligencia señalaron a Osama bin Laden y su red Al Qaeda como los principales sospechosos."], "cap": "Las torres del World Trade Center arden tras los ataques terroristas en la ciudad de Nueva York, 11 de septiembre de 2001.", "s1h1": "BIN LADEN, PRINCIPAL SOSPECHOSO", "s1sub": "La Red Al Qaeda Considerada Responsable de los Ataques Coordinados", "s1b1": "Los servicios de inteligencia estadounidenses señalaron a Osama bin Laden como el principal sospechoso. El gobierno español expresó su solidaridad total e incondicional.", "s1b2": "El gobierno talibán en Kabul se distanció de los ataques, pero Washington exigirá la entrega de Bin Laden.", "s1h2": "EL PENTÁGONO ATACADO; EL VUELO 93 SE ESTRELLA", "s1b2t": "Un tercer avión golpeó el edificio del Pentágono en Virginia a las 9:37. El vuelo 93 se estrelló en Pensilvania.", "s1h3": "LOS LÍDERES MUNDIALES SE SOLIDARIZAN CON ESTADOS UNIDOS", "s1b3": "Los líderes de todas las principales naciones expresaron solidaridad incondicional con Estados Unidos.", "rh1": "NUEVA YORK: UNA CIUDAD EN ESTADO DE SHOCK", "rdk": "De Nuestro Corresponsal Especial en Nueva York", "rps": ["Las calles del bajo Manhattan estaban cubiertas de ceniza gris. Miles de anuncios de personas desaparecidas llenaban cada superficie.", "El alcalde Giuliani se convirtió en la voz visible de la ciudad en crisis."], "rh2": "EL TRÁFICO AÉREO PARALIZADO", "rps2": ["La Administración Federal de Aviación ordenó a todos los aviones que aterrizaran inmediatamente, dejando en tierra más de 4.500 vuelos."], "rh3": "LAS BOLSAS, CERRADAS", "rb3": "La Bolsa de Nueva York suspendió las operaciones y permanecerá cerrada hasta nuevo aviso.", "bh1": "LOS HÉROES: BOMBEROS Y POLICÍAS", "bb1": "Cientos de bomberos y policías de Nueva York entraron en las torres en llamas y murieron cuando los edificios se derrumbaron.", "bh2": "LA OTAN INVOCA EL ARTÍCULO 5 POR PRIMERA VEZ", "bb2": "La OTAN invocó el Artículo 5 de su carta fundacional por primera vez en la historia.", "ins": ["Informes completos de Nueva York — Páginas 2, 3, 4", "El Pentágono — Página 5", "¿Quién es Osama bin Laden? — Página 6", "Reacción mundial — Página 7"]}};
-const HDB_FR={"1960-08-24": {"h": "ROME S'APPRÊTE À OUVRIR LA XVIIe OLYMPIADE", "dk": "84 Nations et 5 000 Athlètes Réunis; Cérémonie au Stade Olympique Demain Soir", "ps": ["Rome se prépare ce soir à accueillir les meilleurs athlètes du monde pour l'ouverture de la XVIIe Olympiade. Quelque 5 000 compétiteurs représentant 84 nations se sont réunis dans la capitale italienne.", "La cérémonie d'ouverture, présidée par le président Giovanni Gronchi, réunira 100 000 spectateurs au Stade Olympique demain soir.", "Les États-Unis ont engagé leur plus grande délégation olympique avec plus de 300 compétiteurs. Parmi les plus attendus figure Cassius Clay, boxeur de 18 ans.", "L'Union soviétique, qui avait dominé le tableau des médailles à Melbourne, présente de nouveau une équipe redoutable."], "cap": "Le Stade Olympique de Rome, prêt pour la cérémonie d'ouverture de la XVIIe Olympiade demain soir.", "s1h1": "CRISE AU LAOS APRÈS LE COUP D'ÉTAT", "s1sub": "Factions Rivales en Manouvre; L'Occident Surveille avec Inquiétude", "s1b1": "La situation politique au Laos demeurait hier très instable, trois semaines après que les forces neutralistes du capitaine Kong Le se soient emparées de Vientiane.", "s1b2": "Les États-Unis, qui avaient largement soutenu l'administration précédente, examinent leurs options politiques.", "s1h2": "BAKWANGA REPRISE EN CONGO", "s1b2t": "Des unités de l'armée nationale congôlaise ont repris la ville minière de Bakwanga aux forces sécessionnistes.", "s1h3": "KHROUCHTCHEV MET EN GARDE SUR BERLIN", "s1b3": "Le Premier ministre soviétique Nikita Khrouchtchev a renouvelé sa menace de signer un traité de paix séparé avec l'Allemagne de l'Est.", "rh1": "LE GOUVERNEMENT DE DE GAULLE EXAMINE SA POLITIQUE", "rdk": "Le Conseil des Ministres Se Penche sur les Affaires Économiques", "rps": ["Le gouvernement du général de Gaulle a examiné plusieurs dossiers économiques importants.", "Les organisations syndicales ont fait savoir qu'elles attendaient des engagements concrets."], "rh2": "KENNEDY DEVANCE NIXON DANS LES SONDAGES", "rps2": ["Le sénateur John F. Kennedy maintient une légère avance sur le vice-président Nixon dans le dernier sondage Gallup."], "rh3": "LA DÉLÉGATION FRANÇAISE À ROME", "rb3": "La délégation française aux Jeux Olympiques de Rome compte plus de 230 athlètes dans diverses disciplines.", "bh1": "LA TÉLÉVISION DIFFUSERA LES JEUX EN DIRECT", "bb1": "La Radiodiffusion-Télévision Française diffusera des images des Jeux Olympiques de Rome en direct.", "bh2": "LES MARCHÉS BOURSIERS CALMES", "bb2": "La Bourse de Paris a clôturé hier en ordre dispersé.", "ins": ["Dernières nouvelles — Page 2", "Politique internationale — Page 3", "Marchés financiers — Page 12", "Sports — Page 18", "Météo — Page 24"]}, "1963-11-22": {"h": "LE PRÉSIDENT KENNEDY ASSASSINÉ À DALLAS", "dk": "Des Coups de Feu contre le Cortège au Texas; Johnson Prête Serment comme 36e Président", "ps": ["Le président John Fitzgerald Kennedy des États-Unis a été assassiné hier à Dallas, au Texas, atteint par deux balles. Il a été déclaré mort à l'hôpital Parkland à une heure de l'après-midi.", "Le vice-président Lyndon Baines Johnson a prêté serment comme 36e président à bord d'Air Force One à Dallas.", "Lee Harvey Oswald, un ex-marine de 24 ans ayant vécu en Union soviétique, a été arrêté et inculpé du meurtre.", "Le monde a répondu par un déferlement de douleur. Les dirigeants de toutes les nations ont envoyé leurs condoléances."], "cap": "Le cortège du président Kennedy à Dallas, moments avant l'assassinat, 22 novembre 1963.", "s1h1": "LES DIRIGEANTS MONDIAUX EXPRIMENT LEUR DOULEUR", "s1sub": "Gouvernements de Toutes les Nations Envoient leurs Messages à Washington", "s1b1": "Le général de Gaulle a rendu hommage au président Kennedy, qu'il a qualifié de grand homme d'État.", "s1b2": "À Moscou, le premier ministre Khrouchtchev a envoyé ses condoléances.", "s1h2": "OSWALD INCULPÉ DU MEURTRE", "s1b2t": "Lee Harvey Oswald a été formellement inculpé du meurtre du président.", "s1h3": "JOHNSON S'ADRESSE AU CONGRÈS", "s1b3": "Le président Johnson demandera l'unité et l'adoption de la législation sur les droits civiques de Kennedy.", "rh1": "LA PRÉSIDENCE KENNEDY: UN HOMMAGE", "rdk": "Un Chef qui a Inspiré toute une Génération", "rps": ["John Fitzgerald Kennedy a apporté à la présidence une combinaison de jeunesse, d'intelligence et d'éloquence.", "Il avait 46 ans. Il laisse épouse, Jacqueline, et deux jeunes enfants, Caroline et John."], "rh2": "LES FAILLES DE SÉCURITÉ EN QUESTION", "rps2": ["Des questions ont été soulevées sur le dispositif de sécurité du cortège de Dallas."], "rh3": "LES MARCHÉS FINANCIERS EN ÉTAT DE CHOC", "rb3": "Les bourses mondiales ont chuté brutalement à l'annonce de l'assassinat.", "bh1": "DALLAS: UNE VILLE EN DEUIL", "bb1": "Dallas a réagi à l'assassinat avec une mélange de douleur et d'horreur. De nombreux commerces ont fermé.", "bh2": "MME KENNEDY: COURAGE ET DIGNITÉ", "bb2": "Jacqueline Kennedy, 34 ans, a fait preuve tout au long des événements d'un sang-froid qui a suscité l'admiration universelle.", "ins": ["Rapports complets de Dallas — Pages 2, 3, 4", "La vie de John F. Kennedy — Pages 5, 6", "Lyndon Johnson: le nouveau président — Page 8", "Réaction mondiale — Page 9"]}, "1968-04-04": {"h": "LE DR MARTIN LUTHER KING ABATTU À MEMPHIS", "dk": "Le Leader des Droits Civiques Assassiné; la Nation en Deuil; les Villes en Feu", "ps": ["Le Dr Martin Luther King Jr, lauréat du prix Nobel de la paix, a été abattu hier soir à Memphis, dans le Tennessee, alors qu'il se trouvait sur le balcon du Lorraine Motel. Il avait 39 ans.", "Le Dr King était venu à Memphis en soutien aux éboueurs en grève. La veille, il avait prononcé un discours se terminant par: J'ai été au sommet de la montagne. J'ai vu la Terre promise. Je ne pourrai peut-être pas y arriver avec vous.", "Le président Johnson, visiblement ébranlé, s'est adressé à la nation depuis la Maison Blanche. Des émeutes ont éclaté dans plus de 100 villes américaines.", "James Earl Ray, un criminel blanc évadé de prison, est le principal suspect."], "cap": "Le Lorraine Motel, Memphis, Tennessee, où le Dr Martin Luther King Jr a été abattu sur le balcon de la chambre 306, le 4 avril 1968.", "s1h1": "DES VILLES EN FLAMMES À TRAVERS L'AMÉRIQUE", "s1sub": "La Garde Nationale Mobilisée alors que les Émeutes Gagnent 100 Villes", "s1b1": "Des émeutes violentes ont éclaté la nuit dernière dans des villes à travers les États-Unis.", "s1b2": "Le sénateur Robert Kennedy a annoncé la nouvelle à Indianapolis dans un discours personnel crédité d'avoir évité les émeutes.", "s1h2": "LE SUSPECT: JAMES EARL RAY", "s1b2t": "Les agents du FBI ont identifié James Earl Ray, 40 ans, un criminel blanc évadé du Missouri, comme le principal suspect.", "s1h3": "LA FRANCE EXPRIME SA DOULEUR", "s1b3": "Le général de Gaulle a fait part de la profonde émotion de la France à l'annonce de la mort du Dr King.", "rh1": "LA VIE DE MARTIN LUTHER KING", "rdk": "De Montgomery à Memphis: Un Leader qui a Changé l'Amérique", "rps": ["Martin Luther King est né à Atlanta le 15 janvier 1929. Il a mené le Boycott des bus de Montgomery en 1955.", "Le 28 août 1963, devant 250 000 personnes au Lincoln Memorial, il a prononcé son discours le plus célèbre: J'ai un rêve, que mes quatre petits enfants vivront un jour dans une nation où ils ne seront pas jugés par la couleur de leur peau."], "rh2": "LE PRIX NOBEL DE LA PAIX, 1964", "rps2": ["En octobre 1964, à 35 ans, le Dr King est devenu la plus jeune personne à recevoir le prix Nobel de la paix."], "rh3": "DÉCLARATION DU PRÉSIDENT JOHNSON", "rb3": "L'Amérique est sous le choc et accablée par l'assassinat du Dr Martin Luther King. Je demande à chaque citoyen de rejeter la violence aveugle.", "bh1": "LA GRÈVE DES ÉBOUEURS: POURQUOI KING EST VENU À MEMPHIS", "bb1": "La visite du Dr King à Memphis était en soutien à 1 300 éboueurs noirs en grève depuis le 12 février.", "bh2": "CORETTA SCOTT KING: LA DIGNITÉ D'UNE VEUVE", "bb2": "Mme Coretta Scott King a pris l'avion immédiatement pour Memphis. Le couple a quatre enfants.", "ins": ["Le Dr King: vie et héritage — Pages 2, 3", "Le mouvement des droits civiques — Page 4", "Violence à travers l'Amérique — Page 5", "Le suspect — Page 6", "Déclaration du président Johnson — Page 7"]}, "1969-07-21": {"h": "L'HOMME MARCHE SUR LA LUNE", "dk": "Armstrong et Aldrin se Posent sur la Surface Lunaire; Un Bond Géant pour l'Humanité", "ps": ["Neil Armstrong des États-Unis est devenu hier le premier être humain à marcher sur la Lune à 2h56, heure de Greenwich, descendant l'échelle du module lunaire Eagle jusqu'à la Mer de la Tranquillité.", "L'astronaute Edwin Aldrin a suivi son commandant sur la surface vingt minutes plus tard. Les deux hommes ont passé deux heures et demie sur la Lune.", "L'exploit accomplit le défi lancé par le président Kennedy au Congrès en 1961.", "Environ 600 millions de personnes ont suivi la sortie lunaire à la télévision dans le monde entier."], "cap": "L'astronaute Edwin Aldrin sur la surface lunaire, photographé par Neil Armstrong lors de la sortie de l'Apollo 11, le 20 juillet 1969.", "s1h1": "LE MONDE CÉLÈBRE DANS L'ÉMERVEILLEMENT", "s1sub": "Des Millions de Téléspectateurs Assistent à un Moment Historique", "s1b1": "Des foules se sont rassemblées sur les Champs-Élysées pour regarder la sortie lunaire à la télévision. Le président Pompidou a envoyé ses félicitations.", "s1b2": "L'Union soviétique n'a fait aucun commentaire public immédiat sur l'exploit américain.", "s1h2": "LE VOYAGE DE RETOUR EST EN COURS", "s1b2t": "Le module Eagle a décollé de la surface lunaire ce matin pour rejoindre le Columbia en orbite.", "s1h3": "LE RÊVE DE KENNEDY, ACCOMPLI", "s1b3": "Kennedy a été assassiné en 1963 et n'a pas vécu pour voir le plus grand exploit de sa nation.", "rh1": "COMMENT L'APOLLO 11 A ATTEINT LA LUNE", "rdk": "Un Triomphe de l'Ingénierie et du Courage Humain", "rps": ["La fusée Saturn V qui a lancé Apollo 11 mesure 111 mètres de hauteur et a consommé plus de 750 000 litres de carburant dans les 2,5 premières minutes de vol.", "Armstrong a pris le contrôle manuel de la descente pour éviter un cratère jonché de rochers."], "rh2": "NIXON APPELLE LES ASTRONAUTES", "rps2": ["Grâce à ce que vous avez accompli, le ciel est devenu une partie du monde de l'homme, a déclaré le président Nixon."], "rh3": "LA SCIENCE: ET MAINTENANT?", "rb3": "Les 22 kilogrammes de roches lunaires seront distribués à des institutions scientifiques du monde entier.", "bh1": "LES ROCHES LUNAIRES: LA CLÉ SCIENTIFIQUE", "bb1": "Les géologues du monde entier attendent le retour des échantillons lunaires avec une vive impatience.", "bh2": "WALL STREET CÉLÈBRE", "bb2": "Les marchés boursiers américains ont fortement progressé, les valeurs aérospatiales menant la hausse.", "ins": ["Rapport complet de la mission — Pages 2 et 3", "Les astronautes — Page 4", "Histoire de la course à l'espace — Page 5", "Réaction mondiale — Page 7"]}, "1989-11-09": {"h": "LE MUR DE BERLIN EST TOMBÉ", "dk": "Les Foules Abattent le Mur; Berlin-Est et Berlin-Ouest Réunis dans la Joie", "ps": ["Le mur de Berlin a cessé d'exister hier soir après que le gouvernement est-allemand ait annoncé que ses citoyens étaient libres de voyager vers l'Ouest sans restriction.", "L'annonce a été faite par le porte-parole Gunter Schabowski lors d'une conférence de presse télévisée. Interrogé sur l'entrée en vigueur des nouvelles mesures, il consulta ses notes et répondit: Immédiatement, sans délai.", "Des scènes d'émotion extraordinaire ont suivi toute la nuit. Des centaines de milliers d'Allemands de l'Est ont traversé à Berlin-Ouest pour la première fois.", "Le chancelier Helmut Kohl a écourté sa visite en Pologne et s'est envolé pour Berlin. Nous sommes et restons une seule nation, a-t-il déclaré."], "cap": "Les foules célèbrent sur le mur de Berlin à la Porte de Brandebourg, 9 novembre 1989.", "s1h1": "LE MONDE RÉPOND AVEC STUPEUR", "s1sub": "Gorbatchev Confirme: l'URSS N'Interviendra Pas", "s1b1": "Le président Bush s'est félicité de l'ouverture. Mme Thatcher l'a qualifiée de grand jour pour la liberté.", "s1b2": "Les scènes de Berlin ont électrisé les autres pays du bloc de l'Est.", "s1h2": "LE MUR: 28 ANS DE DIVISION", "s1b2t": "Le Mur a été érigé dans la nuit du 12 au 13 août 1961. En 28 ans, plus de 140 personnes sont mortes en tentant de le franchir.", "s1h3": "LA RÉUNIFICATION ALLEMANDE: LA GRANDE QUESTION", "s1b3": "Le Mur ouvert, la réunification est devenue une réalité pratique urgente.", "rh1": "CHRONIQUE DE BERLIN", "rdk": "De Notre Correspondant Spécial", "rps": ["J'étais au Checkpoint Charlie quand les premiers Allemands de l'Est sont passés. Les Berlinois de l'Ouest leur mettaient des bouteilles de champagne dans les mains.", "Une vieille dame m'a dit qu'elle n'avait pas vu sa soeur, qui habitait à 500 mètres dans l'Est, depuis 22 ans."], "rh2": "LES MARCHÉS EN HAUSSE", "rps2": ["Les marchés européens et américains ont ouvert en forte hausse. Les valeurs allemandes ont mené la progression."], "rh3": "GORBATCHEV: L'HOMME QUI L'A PERMIS", "rb3": "Sans la politique de non-intervention de Gorbatchev en Europe de l'Est, le Mur serait toujours debout.", "bh1": "LES HISTOIRES HUMAINES", "bb1": "Parmi ceux qui ont traversé cette nuit: des familles séparées depuis des décennies.", "bh2": "L'OTAN EN SESSION D'URGENCE", "bb2": "Les ministres des Affaires étrangères de l'OTAN se sont réunis d'urgence à Bruxelles.", "ins": ["Histoire du mur de Berlin — Page 4", "Carte de Berlin divisée — Page 5", "La révolution de Gorbatchev — Page 6", "La réunification allemande — Page 7"]}, "1990-02-11": {"h": "NELSON MANDELA SORT LIBRE APRÈS 27 ANS", "dk": "Le Leader Anti-Apartheid Libéré; Des Centaines de Milliers Acclament à Cape Town", "ps": ["Nelson Mandela a recouvré la liberté hier après-midi après 27 ans d'emprisonnement, sortant des portes de la prison de Victor Verster à 16h16, le poing droit levé.", "M. Mandela, 71 ans, a été emprisonné en 1964 suite au procès de Rivonia. Il a passé les 18 premières années sur l'île Robben.", "Au Cap, devant plus de 100 000 personnes, il a prononcé son premier discours public en 27 ans: Le CNA n'est pas anti-blanc. Nous voulons un partage équitable du pouvoir.", "La libération, annoncée par le président de Klerk vendredi dernier, a été décrite comme le moment le plus important de la politique sud-africaine depuis 1948."], "cap": "Nelson Mandela lève le poing devant la prison de Victor Verster, Paarl, Afrique du Sud, le 11 février 1990.", "s1h1": "LE MONDE CÉLÈBRE UNE JOURNÉE HISTORIQUE", "s1sub": "De Londres à New York, les Leaders Saluent la Liberté de Mandela", "s1b1": "Les dirigeants mondiaux se sont unis pour célébrer la libération. Le président Mitterrand a exprimé la joie profonde de la France.", "s1b2": "Dans les townships de toute l'Afrique du Sud, les gens ont dansé dans les rues.", "s1h2": "27 ANS: L'HISTOIRE DU PRISONNIER", "s1b2t": "Nelson Mandela est né le 18 juillet 1918 dans le Transkei. Il s'est tourné vers la résistance armée après le massacre de Sharpeville de 1960.", "s1h3": "DE KLERK ET MANDELA: LA NÉGOCIATION À VENIR", "s1b3": "La libération est le fruit de mois de négociations secrètes entre Mandela et le gouvernement de Klerk.", "rh1": "LE CNA: INTERDIT PENDANT 30 ANS", "rdk": "Le Mouvement qui a Survécu à la Répression", "rps": ["Le Congrès national africain, fondé en 1912, a été interdit en 1960. Il a opéré en exil depuis lors.", "L'annonce du président de Klerk du 2 février, levant l'interdiction du CNA, a été décrite comme l'un des discours politiques les plus extraordinaires."], "rh2": "LES SANCTIONS ÉCONOMIQUES: LA PRESSION QUI A FONCTIONNÉ", "rps2": ["De nombreux analystes créditent le mouvement de sanctions internationales d'avoir accéléré la transformation politique."], "rh3": "WINNIE MANDELA", "rb3": "Mme Winnie Mandela se tenait à ses côtés lors de sa sortie.", "bh1": "ROBBEN ISLAND: LA PRISON DEVENUE SYMBOLE", "bb1": "L'île Robben, où Mandela a passé 18 de ses 27 années d'emprisonnement, est devenue la prison la plus célèbre du monde.", "bh2": "QUE VA-T-IL SE PASSER MAINTENANT?", "bb2": "Des négociations formelles entre le CNA et le gouvernement doivent commencer dans les prochains mois.", "ins": ["Discours de Mandela intégral — Page 2", "27 ans: une chronologie — Page 3", "De Klerk: l'homme qui l'a libéré — Page 4", "CNA: le mouvement — Page 5"]}, "2001-09-11": {"h": "L'AMÉRIQUE SOUS ATTAQUE", "dk": "Des Avions Détournés Détruisent le World Trade Center; des Milliers de Morts Craints", "ps": ["Les États-Unis ont subi hier matin l'attaque la plus dévastatrice de leur histoire lorsque quatre avions commerciaux détournés ont été précipités sur le World Trade Center à New York, le Pentagone à Washington et un champ en Pennsylvanie.", "Le vol 11 d'American Airlines a frappé la Tour Nord à 8h46. Le vol 175 a frappé la Tour Sud dix-sept minutes plus tard. Les deux tours se sont effondrées en moins de deux heures.", "Le président Bush a promis de trouver les responsables: Nous ne ferons aucune distinction entre les terroristes et ceux qui les hébergent.", "La France a exprimé sa solidarité totale. Le président Chirac a déclaré: Dans cette épreuve terrible, la France est aux côtés des Américains."], "cap": "Les tours du World Trade Center en flammes après les attaques terroristes à New York, 11 septembre 2001.", "s1h1": "BEN LADEN SUSPECTÉ", "s1sub": "Le Réseau Al-Qaïda Considéré Responsable des Attaques", "s1b1": "Les services de renseignement américains ont désigné Oussama Ben Laden comme le principal suspect.", "s1b2": "La France a immédiatement exprimé sa solidarité totale avec les États-Unis.", "s1h2": "LE PENTAGONE FRAPPÉ; LE VOL 93 S'ÉCRASE", "s1b2t": "Le vol 77 a frappé le Pentagone en Virginie à 9h37. Le vol 93 s'est écrasé en Pennsylvanie après que des passagers ont tenté de maîtriser les pirates.", "s1h3": "L'OTAN INVOQUE L'ARTICLE 5 POUR LA PREMIÈRE FOIS", "s1b3": "L'OTAN a invoqué l'Article 5 pour la première fois de son histoire.", "rh1": "NEW YORK: UNE VILLE SOUS LE CHOC", "rdk": "De Notre Correspondant Spécial à New York", "rps": ["Les rues du bas Manhattan étaient couvertes de cendres grises. Des milliers d'avis de personnes disparues étaient collés sur toutes les surfaces.", "Le maire Giuliani est devenu la voix visible de la ville en crise."], "rh2": "LE TRAFIC AÉRIEN PARALYSÉ", "rps2": ["L'aviation fédérale a ordonné l'atterrissage immédiat de tous les avions, clouant au sol plus de 4 500 vols."], "rh3": "LES BOURSES FERMÉES", "rb3": "La Bourse de New York et toutes les autres ont suspendu leurs activités.", "bh1": "LES HÉROS: POMPIERS ET POLICIERS", "bb1": "Des centaines de pompiers et de policiers new-yorkais sont entrés dans les tours et ont péri lors de l'effondrement.", "bh2": "L'OTAN EN SESSION D'URGENCE", "bb2": "Les ministres des Affaires étrangères de l'OTAN se sont réunis d'urgence à Bruxelles.", "ins": ["Rapports complets de New York — Pages 2, 3, 4", "Le Pentagone — Page 5", "Qui est Oussama Ben Laden? — Page 6", "Réaction mondiale — Page 7"]}};
-const HDB_DE={"1960-08-24": {"h": "ROM BEREITET SICH AUF DIE ERÖFFNUNG DER XVII. OLYMPIADE VOR", "dk": "84 Nationen und 5.000 Athleten Versammelt; Feier im Olympiastadion Morgen Abend", "ps": ["Rom steht heute Abend bereit, die besten Sportler der Welt zur Eröffnung der XVII. Olympiade zu empfangen. Rund 5.000 Wettkampfer aus einem Rekordhoch von 84 Nationen haben sich in der italienischen Hauptstadt eingefunden.", "Die Eröffnungsfeier unter dem Vorsitz von Italiens Staatspräsident Giovanni Gronchi wird morgen Abend 100.000 Zuschauer im Olympiastadion zusammenbringen.", "Die Vereinigten Staaten haben ihre größte olympische Mannschaft aller Zeiten mit über 300 Wettkampfern entsandt. Besondere Aufmerksamkeit gilt Cassius Clay, einem 18-jährigen Boxer aus Louisville.", "Die Sowjetunion, die vor vier Jahren in Melbourne die Medaillenwertung dominiert hatte, präsentiert erneut eine starke Mannschaft."], "cap": "Das Olympiastadion in Rom, bereit für die Eröffnungsfeier der XVII. Olympiade morgen Abend.", "s1h1": "LAOS IN AUFRUHR NACH STAATSREICH", "s1sub": "Rivalisierende Fraktionen Manövrieren; Westen Beobachtet mit Sorge", "s1b1": "Die politische Lage in Laos blieb gestern äußerst instabil, drei Wochen nachdem neutralistische Kräfte unter Hauptmann Kong Le Vientiane übernommen hatten.", "s1b2": "Die USA, die die frühere Regierung stark unterstützt hatten, überprüfen ihre politischen Optionen.", "s1h2": "BAKWANGA IM KONGO ZURÜCKEROBERT", "s1b2t": "Kongolesische Nationalarmeeeinheiten haben die Bergbaustadt Bakwanga von den Sezessionstruppen zurückerobert.", "s1h3": "CHRUSCHTSCHOW WARNT VOR BERLIN", "s1b3": "Der sowjetische Ministerpräsident Nikita Chruschtschow erneuerte seine Drohung, einen Separatfrieden mit Ostdeutschland zu schließen.", "rh1": "BUNDESREGIERUNG PRÜFT WIRTSCHAFTSPOLITIK", "rdk": "Kabinett Berät über Lohnpolitik für den Herbst", "rps": ["Die Bundesregierung unter Konrad Adenauer hat gestern mehrere wichtige wirtschaftspolitische Fragen erörtert.", "Die Gewerkschaften haben bereits signalisiert, dass sie in der Herbstrunde deutliche Lohnerhöhungen fordern werden."], "rh2": "KENNEDY FÜHRT VOR NIXON IN UMFRAGEN", "rps2": ["Senator Kennedy behält in der neuesten Gallup-Umfrage einen knappen Vorsprung vor Vizeprasident Nixon."], "rh3": "DEUTSCHE ATHLETEN IN ROM", "rb3": "Die deutsche Olympiamannschaft, in diesem Jahr erstmals als gesamtdeutsche Mannschaft aus Ost und West, umfasst fast 300 Athleten.", "bh1": "FERNSEHEN ÜBERTRÄGT OLYMPIA LIVE", "bb1": "Das Deutsche Fernsehen wird die Olympischen Spiele in Rom erstmals live für das deutsche Publikum übertragen.", "bh2": "BÖRSEN RUHIG VOR FEIERTAG", "bb2": "Die deutschen Börsen schlossen gestern in engen Spannen, da die Handler vor dem langen Wochenende keine neuen Positionen aufbauen wollten.", "ins": ["Aktuelle Nachrichten — Seite 2", "Internationale Politik — Seite 3", "Finanzmärkte — Seite 12", "Sport — Seite 18", "Wetter — Seite 24"]}, "1963-11-22": {"h": "PRÄSIDENT KENNEDY IN DALLAS ERSCHOSSEN", "dk": "Schüsse auf den Konvoi in Texas; Johnson als 36. Präsident Vereidigt", "ps": ["Präsident John Fitzgerald Kennedy der Vereinigten Staaten wurde gestern in Dallas, Texas, erschossen, zweimal getroffen, während er in einem offenen Konvoi durch die Straßen der Stadt fuhr.", "Vizeprasident Lyndon Baines Johnson wurde als 36. Präsident an Bord der Air Force One auf dem Love Field Flughafen in Dallas vereidigt.", "Lee Harvey Oswald, ein 24-jähriger ehemaliger Marine, der in der Sowjetunion gelebt hatte, wurde in einem Kino in Dallas verhaftet und später des Mordes angeklagt.", "Die Welt reagierte mit einem Ausbruch der Trauer. Die Führungen aller Nationen schickten Kondolenzbezeugungen nach Washington."], "cap": "Der Konvoi von Präsident Kennedy in Dallas, Momente vor dem Attentat, 22. November 1963.", "s1h1": "WELTFÜHRER BRINGEN IHRE TRAUER ZUM AUSDRUCK", "s1sub": "Regierungen Aller Nationen Senden Beileidsbekundungen nach Washington", "s1b1": "Bundeskanzler Adenauer würdigte Präsident Kennedy als Staatsmann von außerordentlichen Fähigkeiten. Die Flaggen wurden auf Halbmast gesetzt.", "s1b2": "In Moskau sandte Premierminister Chruschtschow sein Beileid, während das sowjetische Fernsehen sein Programm unterbrach.", "s1h2": "OSWALD DES MORDES ANGEKLAGT", "s1b2t": "Lee Harvey Oswald wurde formell des Mordes an dem Präsidenten angeklagt.", "s1h3": "JOHNSON WENDET SICH AN DEN KONGRESS", "s1b3": "Präsident Johnson wird heute vor dem Kongress um Einheit bitten und die Verabschiedung von Kennedys Bürgerrechtsgesetzgebung beantragen.", "rh1": "DIE KENNEDY-PRÄSIDENTSCHAFT: EINE WÜRDIGUNG", "rdk": "Ein Führer, der eine Generation Inspirierte", "rps": ["John Fitzgerald Kennedy brachte in die Präsidentschaft eine Kombination aus Jugend, Intelligenz und Eloquenz, die eine Generation prägte.", "Er war 46 Jahre alt. Er hinterlässt eine Frau, Jacqueline, und zwei kleine Kinder, Caroline und John."], "rh2": "SICHERHEITSLÜCKEN UNTER BESCHUSS", "rps2": ["Es wurden Fragen zu den Sicherheitsvorkehrungen für den Konvoi in Dallas gestellt."], "rh3": "WELTMÄRKTE UNTER SCHOCK", "rb3": "Die Börsen fielen nach der Nachricht des Attentats scharf. Die New Yorker Börse setzte den Handel früh aus.", "bh1": "DALLAS: EINE STADT IN TRAUER", "bb1": "Die Stadt Dallas reagierte auf das Attentat mit einer Mischung aus Trauer und Entsetzen. Viele Geschäfte schlossen.", "bh2": "MRS KENNEDY: HALTUNG IN DER KRISE", "bb2": "Jacqueline Kennedy, 34, bewahrte während der schrecklichen Ereignisse eine Fassung, die allgemeine Bewunderung hervorrief.", "ins": ["Vollständige Berichte aus Dallas — Seiten 2, 3, 4", "Das Leben von John F. Kennedy — Seiten 5, 6", "Lyndon Johnson: der neue Präsident — Seite 8", "Weltreaktionen — Seite 9"]}, "1968-04-04": {"h": "DR. MARTIN LUTHER KING IN MEMPHIS ERSCHOSSEN", "dk": "Bürgerrechtler auf Hotelbalkon Ermordet; die Nation Trauert; Städte in Aufruhr", "ps": ["Dr. Martin Luther King Jr., Friedensnobelpreisträger und einflussreichster Führer der amerikanischen Bürgerrechtsbewegung, wurde gestern Abend in Memphis, Tennessee, erschossen, als er auf dem Balkon des Lorraine Motels stand. Er war 39 Jahre alt.", "Dr. King war nach Memphis gekommen, um streikende Müllarbeiter zu unterstützen. Am Vorabend hatte er eine Rede gehalten mit den Worten: Ich war auf dem Gipfel des Berges. Ich habe das Gelobte Land gesehen. Ich komme vielleicht nicht dorthin mit euch.", "Präsident Lyndon Johnson, sichtlich erschüttert, wandte sich vom Weißen Haus aus an die Nation. In mehr als 100 amerikanischen Städten brachen Unruhen aus.", "James Earl Ray, ein weißer entflohener Straftäter, ist der Hauptverdächtige des Attentats."], "cap": "Das Lorraine Motel, Memphis, Tennessee, wo Dr. Martin Luther King Jr. auf dem Balkon vor Zimmer 306 erschossen wurde, 4. April 1968.", "s1h1": "STÄDTE IN FLAMMEN IN GANZ AMERIKA", "s1sub": "Nationalgarde Alarmiert als Unruhen auf 100 Städte Übergreifen", "s1b1": "Gewalttätige Unruhen brachen in der vergangenen Nacht in Städten in den gesamten USA aus.", "s1b2": "Senator Robert Kennedy verkündete der Menge den Tod Dr. Kings in Indianapolis. Seine persönliche Ansprache soll Ausschreitungen in Indianapolis verhindert haben.", "s1h2": "DER VERDÄCHTIGE: JAMES EARL RAY", "s1b2t": "FBI-Agenten haben James Earl Ray, 40, einen weißen entflohenen Straftäter aus Missouri, als Hauptverdächtigen identifiziert.", "s1h3": "BUNDESREGIERUNG DRÜCKT BEILEID AUS", "s1b3": "Die Bundesregierung drückte tiefes Beileid zum Tod von Dr. Martin Luther King aus.", "rh1": "DAS LEBEN VON MARTIN LUTHER KING", "rdk": "Von Montgomery bis Memphis: Ein Führer der Amerika Veränderte", "rps": ["Martin Luther King wurde am 15. Januar 1929 in Atlanta, Georgia, als Sohn eines baptistischen Pfarrers geboren. Er erlangte 1955 nationale Bekanntheit durch den Montgomery Bus-Boykott.", "Am 28. August 1963 hielt er vor 250.000 Menschen am Lincoln Memorial die Rede, die seine Bewegung definierte: Ich habe einen Traum, dass meine vier kleinen Kinder eines Tages in einer Nation leben werden, in der sie nicht nach der Farbe ihrer Haut beurteilt werden."], "rh2": "DER FRIEDENSNOBELPREIS 1964", "rps2": ["Im Oktober 1964 wurde Dr. King mit 35 Jahren zum jüngsten Empfänger des Friedensnobelpreises."], "rh3": "ERKLÄRUNG VON PRÄSIDENT JOHNSON", "rb3": "Amerika ist erschüttert und betrübt über den brutalen Mord an Dr. Martin Luther King. Ich bitte jeden Bürger, die blinde Gewalt abzulehnen.", "bh1": "DER MÜLLARBEITERSTREIK: WARUM KING NACH MEMPHIS KAM", "bb1": "Dr. Kings Besuch in Memphis galt seiner Unterstützung von 1.300 schwarzen Müllarbeitern, die seit dem 12. Februar streikten.", "bh2": "CORETTA SCOTT KING: DIE WÜRDE EINER WITWE", "bb2": "Mrs. Coretta Scott King flog sofort nach Memphis. Das Paar hat vier Kinder.", "ins": ["Dr. King: Leben und Vermächtnis — Seiten 2, 3", "Die Bürgerrechtsbewegung — Seite 4", "Gewalt in ganz Amerika — Seite 5", "Der Verdächtige — Seite 6", "Erklärung von Präsident Johnson — Seite 7"]}, "1969-07-21": {"h": "DER MENSCH BETRITT DEN MOND", "dk": "Armstrong und Aldrin Landen auf der Mondoberfläche; Ein Riesenschritt für die Menschheit", "ps": ["Neil Armstrong aus den Vereinigten Staaten wurde gestern um 2:56 Uhr Greenwich-Zeit zum ersten Menschen in der Geschichte, der die Mondoberfläche betrat, und sprach die Worte: Das ist ein kleiner Schritt für einen Menschen, aber ein riesiger Sprung für die Menschheit.", "Astronaut Edwin Aldrin folgte seinem Kommandanten zwanzig Minuten später auf die Oberfläche. Die beiden Männer verbrachten zweieinhalb Stunden auf dem Mond.", "Die Leistung erfüllt die Herausforderung, die Präsident Kennedy dem Kongress 1961 gestellt hatte. Michael Collins blieb in der Mondumlaufbahn an Bord der Columbia.", "Schätzungsweise 600 Millionen Menschen verfolgten den Mondspaziergang weltweit im Fernsehen."], "cap": "Astronaut Edwin Aldrin auf der Mondoberfläche, fotografiert von Neil Armstrong während des Mondausstiegs von Apollo 11, 20. Juli 1969.", "s1h1": "DIE WELT FEIERT MIT STAUNEN", "s1sub": "Millionen Fernsehzuschauer Erleben den Historischen Moment", "s1b1": "In ganz Deutschland verfolgten Millionen Menschen die Mondlandung am Fernsehschirm. Bundespräsident Heinemann sandte Glückwünsche an Präsident Nixon.", "s1b2": "Die Sowjetunion machte keinen öffentlichen Kommentar zur amerikanischen Leistung.", "s1h2": "DIE RÜCKREISE IST IN GANG", "s1b2t": "Das Mondlandemodul Eagle hob heute Morgen von der Mondoberfläche ab, um sich mit der Columbia in der Umlaufbahn zu vereinen.", "s1h3": "KENNEDYS TRAUM ERFÜLLT", "s1b3": "Kennedy wurde 1963 ermordet und erlebte nicht die größte Leistung seiner Nation.", "rh1": "WIE APOLLO 11 DEN MOND ERREICHTE", "rdk": "Ein Triumph der Ingenieurskunst und des Menschlichen Mutes", "rps": ["Die Saturn-V-Rakete ist 111 Meter hoch und verbrauchte in den ersten 2,5 Flugminuten mehr als 750.000 Liter Treibstoff.", "Armstrong übernahm manuell die Kontrolle über den Abstieg, um einen felsigen Krater zu vermeiden, und landete mit nur noch wenigen Sekunden Treibstoff."], "rh2": "NIXON RUFT DIE ASTRONAUTEN AN", "rps2": ["Durch das, was Sie getan haben, ist der Himmel zu einem Teil der Welt des Menschen geworden, sagte Präsident Nixon zu den Astronauten."], "rh3": "WISSENSCHAFT: WAS KOMMT JETZT?", "rb3": "Die von Armstrong und Aldrin gesammelten 22 Kilogramm Mondgestein werden an wissenschaftliche Einrichtungen weltweit verteilt.", "bh1": "DIE MONDSTEINE: DER WISSENSCHAFTLICHE SCHLÜSSEL", "bb1": "Geologen in aller Welt erwarten die Rückkehr der Mondproben mit gespannter Erwartung.", "bh2": "WALL STREET FEIERT", "bb2": "Amerikanische Aktienmärkte stiegen nach der erfolgreichen Mondlandung stark an.", "ins": ["Vollständiger Missionsbericht — Seiten 2 und 3", "Die Astronauten — Seite 4", "Geschichte des Weltraumrennens — Seite 5", "Weltreaktionen — Seite 7"]}, "1989-11-09": {"h": "DIE BERLINER MAUER IST GEFALLEN", "dk": "Jubelnde Massen Stürmen die Übergänge; Ost- und Westberlin Wiedervereint in Freude", "ps": ["Die Berliner Mauer hörte gestern Nacht faktisch auf zu existieren, nachdem die DDR-Regierung angekündigt hatte, dass ihre Bürger ohne Einschränkung in den Westen reisen dürfen.", "DDR-Sprecher Günter Schabowski machte die Ankündigung bei einer live im Fernsehen übertragenen Pressekonferenz. Auf die Frage, wann die neuen Regelungen in Kraft träten, antwortete er: Sofort, unverzüglich.", "Szenen außerordentlicher Emotionen folgten die ganze Nacht über. Hunderttausende von DDR-Bürgern überquerten nach Westberlin zum ersten Mal in ihrem Leben.", "Bundeskanzler Helmut Kohl brach seinen Polen-Besuch ab und flog nach Berlin. Wir sind und bleiben eine Nation, sagte er zu den Menschenmassen."], "cap": "Jubelnde Massen feiern auf der Berliner Mauer am Brandenburger Tor, 9. November 1989.", "s1h1": "DIE WELT REAGIERT MIT STAUNEN", "s1sub": "Gorbatschow Bestätigt: UdSSR Wird Nicht Eingreifen", "s1b1": "Präsident Bush begrüßte die Öffnung als Schritt zur deutschen Freiheit. Premierministerin Thatcher nannte es einen großen Tag für die Freiheit.", "s1b2": "Die Szenen in Berlin haben die anderen Länder des Ostblocks elektrisiert.", "s1h2": "DIE MAUER: 28 JAHRE DER TEILUNG", "s1b2t": "Die Mauer wurde in der Nacht vom 12. auf den 13. August 1961 errichtet. In 28 Jahren starben mehr als 140 Menschen beim Versuch, sie zu überqueren.", "s1h3": "DIE DEUTSCHE EINHEIT: DIE GROSÜE FRAGE", "s1b3": "Mit der offenen Mauer ist die Wiedervereinigung zu einer dringenden praktischen Realität geworden.", "rh1": "AUGENZEUGENBERICHT AUS BERLIN", "rdk": "Von Unserem Sonderkorrespondenten", "rps": ["Ich stand am Checkpoint Charlie, als die ersten DDR-Bürger kurz nach 23 Uhr hindurchkamen. Die Westberliner drückten ihnen Sektflaschen in die Hände und umarmten sie wie verlorene Brüder.", "Eine ältere Frau sagte mir, sie habe ihre Schwester, die 500 Meter entfernt im Osten lebte, seit 22 Jahren nicht gesehen."], "rh2": "MÄRKTE STEIGEN STARK", "rps2": ["Europäische und amerikanische Aktienmärkte eröffneten nach den Nachrichten aus Berlin deutlich höher."], "rh3": "GORBATSCHOW: DER MANN, DER ES ERMÖGLICHTE", "rb3": "Ohne Gorbatschows Politik der Nicht-Einmischung in Osteuropa würde die Mauer noch stehen.", "bh1": "DIE MENSCHLICHEN GESCHICHTEN", "bb1": "Unter denen, die heute Nacht überquerten: seit Jahrzehnten getrennte Familien.", "bh2": "NATO IN NOTSTANDSSITZUNG", "bb2": "Die NATO-Außenminister kamen zu einer Notstandssitzung in Brüssel zusammen.", "ins": ["Geschichte der Berliner Mauer — Seite 4", "Karte des geteilten Berlins — Seite 5", "Gorbatschows Revolution — Seite 6", "Deutsche Einheit — Seite 7"]}, "1990-02-11": {"h": "NELSON MANDELA NACH 27 JAHREN FREI", "dk": "Anti-Apartheid-Führer aus Victor Verster Gefängnis Entlassen; Hunderttausende Jubeln in Kapstadt", "ps": ["Nelson Mandela wurde gestern Nachmittag nach 27 Jahren Haft freigelassen und trat um 16:16 Uhr mit erhobener rechter Faust aus den Toren des Victor Verster Gefängnisses in der Nähe von Paarl.", "Herr Mandela, jetzt 71 Jahre alt, war 1964 nach dem Rivonia-Prozess inhaftiert worden. Er verbrachte die ersten 18 Jahre auf Robben Island.", "Er wurde nach Kapstadt geführt, wo er vor mehr als 100.000 Menschen seine erste öffentliche Rede seit 27 Jahren hielt: Der ANC ist nicht anti-weiß. Wir wollen eine gleichberechtigte Teilhabe an der Macht.", "Die Freilassung, von Präsident de Klerk am Freitag angekündigt, wird als bedeutsamster Moment der südafrikanischen Politik seit 1948 bezeichnet."], "cap": "Nelson Mandela reckt die Faust vor dem Victor Verster Gefängnis, Paarl, Südafrika, am Tag seiner Freilassung nach 27 Jahren Haft, 11. Februar 1990.", "s1h1": "DIE WELT FEIERT EINEN HISTORISCHEN TAG", "s1sub": "Von London bis New York Begrüssen Führungspersonen Mandelas Freiheit", "s1b1": "Weltführer vereinten sich gestern, um die Freilassung Nelson Mandelas zu feiern. Bundespräsident Richard von Weizsäcker begrüßte die Freilassung als wichtigen Schritt zur Überwindung der Apartheid.", "s1b2": "In den Townships ganz Südafrikas tanzten die Menschen auf den Straßen.", "s1h2": "27 JAHRE: DIE GESCHICHTE DES GEFANGENEN", "s1b2t": "Nelson Mandela wurde am 18. Juli 1918 im Transkei geboren. Er schloss sich dem ANC 1944 an und wandte sich nach dem Massaker von Sharpeville 1960 dem bewaffneten Widerstand zu.", "s1h3": "DE KLERK UND MANDELA: DIE BEVORSTEHENDEN VERHANDLUNGEN", "s1b3": "Die Freilassung ist die Frucht monatelanger geheimer Verhandlungen zwischen Mandela und der Regierung von Klerk.", "rh1": "DER ANC: 30 JAHRE VERBOTEN", "rdk": "Die Bewegung, die die Unterdückung Überlebte", "rps": ["Der Afrikanische Nationalkongress, 1912 gegründet, wurde 1960 von der südafrikanischen Regierung verboten.", "Präsident de Klerks Ankündigung vom 2. Februar, mit der er das Verbot des ANC aufhob, wurde als eine der außerordentlichsten politischen Reden bezeichnet."], "rh2": "WIRTSCHAFTSSANKTIONEN: DER DRUCK DER WIRKTE", "rps2": ["Viele Analysten schreiben der internationalen Sanktionsbewegung das Verdienst zu, den politischen Wandel beschleunigt zu haben."], "rh3": "WINNIE MANDELA", "rb3": "Frau Winnie Mandela stand an seiner Seite, als er heraustrat.", "bh1": "ROBBEN ISLAND: DAS GEFÄNGNIS DAS ZUM SYMBOL WURDE", "bb1": "Robben Island, das Hochsicherheitsgefängnis vor Kapstadt, wo Mandela 18 seiner 27 Inhaftierungsjahre verbrachte, wurde zum berühmtesten Gefängnis der Welt.", "bh2": "WAS KOMMT JETZT?", "bb2": "Verhandlungen zwischen dem ANC und der Regierung sollen in den kommenden Monaten formell beginnen.", "ins": ["Mandelas Rede im Wortlaut — Seite 2", "27 Jahre: eine Chronologie — Seite 3", "De Klerk: der Mann der ihn befreite — Seite 4", "ANC: die Bewegung — Seite 5"]}, "2001-09-11": {"h": "AMERIKA UNTER ANGRIFF", "dk": "Entführte Flugzeuge Zerstören das World Trade Center und Treffen das Pentagon; Tausende Tote Befürchtet", "ps": ["Die Vereinigten Staaten erlitten gestern Morgen den verheerendsten Angriff ihrer Geschichte, als vier von Terroristen entführte Verkehrsflugzeuge in das World Trade Center in New York, das Pentagon in Washington und ein Feld in Pennsylvania gestürzt wurden.", "Flug 11 von American Airlines traf den Nordturm um 8:46 Uhr. Flug 175 traf den Südturm siebzehn Minuten später. Beide Türme stürzten innerhalb von zwei Stunden ein.", "Präsident Bush wandte sich an die Nation und versprach, die Verantwortlichen zu finden. Wir werden keinen Unterschied machen zwischen den Terroristen und denen, die ihnen Zuflucht gewähren.", "Bundeskanzler Schröder erklärte Deutschland bereit zur uneingeschränkten Solidarität mit den USA."], "cap": "Die Türme des World Trade Centers brennen nach den Terroranschlägen in New York, 11. September 2001.", "s1h1": "BIN LADEN VERDÄCHTIG", "s1sub": "Al-Qaida-Netzwerk für Koordinierte Anschläge Verantwortlich Gemacht", "s1b1": "Amerikanische Geheimdienste deuteten auf Osama bin Laden als Hauptverdächtigen hin. Bundeskanzler Schröder erklärte die uneingeschränkte Solidarität Deutschlands.", "s1b2": "Die Taliban-Regierung distanzierte sich von den Anschlägen, aber Washington wird die Auslieferung Bin Ladens fordern.", "s1h2": "PENTAGON GETROFFEN; FLUG 93 STÜRZT AB", "s1b2t": "Flug 77 von American Airlines traf das Pentagon in Virginia um 9:37 Uhr. Flug 93 stürzte in Pennsylvania ab.", "s1h3": "NATO RUFT ERSTMALS ARTIKEL 5 AUS", "s1b3": "Die NATO rief Artikel 5 ihrer Gründungsurkunde zum ersten Mal aus.", "rh1": "NEW YORK: EINE STADT UNTER SCHOCK", "rdk": "Von Unserem Sonderkorrespondenten in New York", "rps": ["Die Straßen von Lower Manhattan waren kilometerweit mit grauer Asche bedeckt. Tausende von Vermisstenhinweisen klebten an allen verfügbaren Oberflächen.", "Bürgermeister Rudolph Giuliani wurde zur sichtbaren Stimme der Stadt und leitete die Rettungsoperationen."], "rh2": "LUFTVERKEHR IN GANZ AMERIKA EINGESTELLT", "rps2": ["Die Federal Aviation Administration ordnete an, dass alle Flugzeuge im amerikanischen Luftraum sofort landen sollten, mehr als 4.500 Flüge blieben am Boden."], "rh3": "BÖRSEN GESCHLOSSEN", "rb3": "Die New Yorker Börse und alle anderen amerikanischen Börsen haben den Handel eingestellt.", "bh1": "DIE HELDEN: FEUERWEHRLEUTE UND POLIZISTEN", "bb1": "Hunderte von New Yorker Feuerwehrleuten und Polizisten betraten die brennenden Türme und starben beim Einsturz.", "bh2": "NATO IN NOTSITZUNG", "bb2": "Die NATO-Außenminister kamen zu einer Notsitzung in Brüssel zusammen.", "ins": ["Vollständige Berichte aus New York — Seiten 2, 3, 4", "Das Pentagon — Seite 5", "Wer ist Osama bin Laden? — Seite 6", "Weltreaktionen — Seite 7"]}};
 
-const CT={
-  en:[
-    {c:'gb',n:'United Kingdom',p:[{id:'times',n:'The Times',d:'London · Est. 1785',bl:1},{id:'mirror',n:'Daily Mirror',d:'London · Est. 1903',bl:0}]},
-    {c:'us',n:'United States',p:[{id:'nyt',n:'The New York Times',d:'New York · Est. 1851',bl:0},{id:'wp',n:'The Washington Post',d:'Washington D.C. · Est. 1877',bl:0}]},
-    {c:'au',n:'Australia',p:[{id:'smh',n:'The Sydney Morning Herald',d:'Sydney · Est. 1842',bl:0}]},
-    {c:'ca',n:'Canada',p:[{id:'globe',n:'The Globe and Mail',d:'Toronto · Est. 1844',bl:0}]},
-    {c:'ie',n:'Ireland',p:[{id:'iti',n:'The Irish Times',d:'Dublin · Est. 1859',bl:0}]},
-    {c:'in',n:'India',p:[{id:'toi',n:'The Times of India',d:'Mumbai · Est. 1838',bl:0},{id:'hindu',n:'The Hindu',d:'Chennai · Est. 1878',bl:0}]},
-    {c:'za',n:'South Africa',p:[{id:'mail',n:'Mail & Guardian',d:'Johannesburg · Est. 1985',bl:0}]}
-  ],
-  es:[
-    {c:'es',n:'España',p:[{id:'elpais',n:'El País',d:'Madrid · Est. 1976',bl:0},{id:'abc',n:'ABC',d:'Madrid · Est. 1903',bl:0}]},
-    {c:'mx',n:'México',p:[{id:'excelsior',n:'Excélsior',d:'Ciudad de México · Est. 1917',bl:0},{id:'universal',n:'El Universal',d:'Ciudad de México · Est. 1916',bl:0}]},
-    {c:'ar',n:'Argentina',p:[{id:'lanacion',n:'La Nación',d:'Buenos Aires · Est. 1870',bl:0},{id:'clarin',n:'Clarín',d:'Buenos Aires · Est. 1945',bl:0}]},
-    {c:'co',n:'Colombia',p:[{id:'espectador',n:'El Espectador',d:'Bogotá · Est. 1887',bl:0}]},
-    {c:'cl',n:'Chile',p:[{id:'mercurio',n:'El Mercurio',d:'Santiago · Est. 1900',bl:0}]},
-    {c:'pe',n:'Perú',p:[{id:'comercio',n:'El Comercio',d:'Lima · Est. 1839',bl:0}]}
-  ],
-  fr:[
-    {c:'fr',n:'France',p:[{id:'lemonde',n:'Le Monde',d:'Paris · Est. 1944',bl:0},{id:'figaro',n:'Le Figaro',d:'Paris · Est. 1826',bl:0}]},
-    {c:'be',n:'Belgique',p:[{id:'soir',n:'Le Soir',d:'Bruxelles · Est. 1887',bl:0}]},
-    {c:'ch',n:'Suisse',p:[{id:'tribune',n:'La Tribune de Genève',d:'Genève · Est. 1879',bl:0}]},
-    {c:'sn',n:'Sénégal',p:[{id:'soleil',n:'Le Soleil',d:'Dakar · Est. 1970',bl:0}]}
-  ],
-  de:[
-    {c:'de',n:'Deutschland',p:[{id:'faz',n:'Frankfurter Allgemeine',d:'Frankfurt · Est. 1949',bl:1},{id:'welt',n:'Die Welt',d:'Hamburg · Est. 1946',bl:0},{id:'sz',n:'Süddeutsche Zeitung',d:'München · Est. 1945',bl:0}]},
-    {c:'at',n:'Österreich',p:[{id:'presse',n:'Die Presse',d:'Wien · Est. 1848',bl:0}]},
-    {c:'ch_de',n:'Schweiz',p:[{id:'nzz',n:'Neue Zürcher Zeitung',d:'Zürich · Est. 1780',bl:1}]}
-  ],
-  pt:[
-    {c:'br',n:'Brasil',p:[{id:'oglobo',n:'O Globo',d:'Rio de Janeiro · Est. 1925',bl:0},{id:'folha',n:'Folha de S.Paulo',d:'São Paulo · Est. 1921',bl:0}]},
-    {c:'pt',n:'Portugal',p:[{id:'publico',n:'Público',d:'Lisboa · Est. 1990',bl:0},{id:'expresso',n:'Expresso',d:'Lisboa · Est. 1973',bl:0}]}
-  ],
-  ja:[{c:'jp',n:'日本',p:[{id:'yomiuri',n:'読売新聴',d:'東京 · 創刊 1874年',bl:0},{id:'asahi',n:'朝日新聴',d:'東京 · 創刊 1879年',bl:0}]}]
-};
-const MN={times:'The Times',mirror:'Daily Mirror',nyt:'The New York Times',wp:'The Washington Post',smh:'The Sydney Morning Herald',globe:'The Globe and Mail',iti:'The Irish Times',toi:'The Times of India',hindu:'The Hindu',mail:'Mail & Guardian',elpais:'El País',abc:'ABC',excelsior:'Excélsior',universal:'El Universal',lanacion:'La Nación',clarin:'Clarín',espectador:'El Espectador',mercurio:'El Mercurio',comercio:'El Comercio',lemonde:'Le Monde',figaro:'Le Figaro',soir:'Le Soir',tribune:'La Tribune de Genève',soleil:'Le Soleil',faz:'Frankfurter Allgemeine Zeitung',welt:'Die Welt',sz:'Süddeutsche Zeitung',presse:'Die Presse',nzz:'Neue Zürcher Zeitung',oglobo:'O Globo',folha:'Folha de S.Paulo',publico:'Público',expresso:'Expresso',yomiuri:'読売新聴',asahi:'朝日新聴'};
+  <script>
+    let currentTier = 'premium';
+    let currentPrompt = '';
 
-function fallback(yr){
-  if(yr<1920)return{h:'THE GREAT WAR: LATEST FROM THE FRONT',dk:'Allied Forces Continue Operations; Heavy Fighting on the Western Front',ps:['Allied forces on the Western Front continued operations yesterday in difficult conditions, with heavy artillery exchanges reported along the line. The War Office issued its daily communique reporting progress in certain sectors.','The fighting, now well into its course, has imposed strains on the resources of all belligerent nations that none anticipated when war was declared in August 1914.','The nation girds itself for a long contest, sustained by conviction that the cause of freedom and civilisation demands no less than total commitment.','Our correspondents in the field report scenes of extraordinary courage and endurance among the officers and men of all the Allied armies.'],cap:'British troops in the field during operations on the Western Front.',s1h1:'WAR OFFICE COMMUNIQUE',s1sub:'Progress Reported on Several Sectors',s1b1:'The War Office yesterday issued its communique from the Front, reporting Allied forces had made progress in certain sectors while maintaining positions under heavy pressure in others.',s1b2:'Units of the British Expeditionary Force have distinguished themselves in engagements that speak well of the training and resolution of officers and men.',s1h2:'MUNITIONS OUTPUT INCREASES',s1b2t:'The Ministry of Munitions reported significant increases in shell output from British factories, attributing the improvement to the patriotic efforts of the workforce.',s1h3:'NAVAL INTELLIGENCE',s1b3:'The Admiralty reports the Royal Navy has maintained its operations at sea with continued vigilance.',rh1:'THE HOME FRONT',rdk:'The Nation Sustains the War Effort',rps:['The civilian population of Britain continues to sustain the war effort with a steadiness and resolution that speaks well of the national character.','The Government has introduced measures to ensure the equitable distribution of food and essential supplies.'],rh2:'ALLIED DIPLOMACY',rps2:['Ministers of the Allied nations have been in consultation regarding the coordination of their military and economic strategies.'],rh3:'ROLL OF HONOUR',rb3:'This newspaper publishes today the names of officers and men who have fallen in the service of their King and Country.',bh1:'WOMEN IN THE WAR',bb1:'The contribution of British women to the war effort continues to grow. Factory output, nursing services, and voluntary organisations all depend increasingly on female labour.',bh2:'FOOD AND ECONOMY',bb2:'The Food Controller appealed for economy in the use of bread, meat and sugar, reminding the public that every saving at home assists the fighting man at the Front.',ins:['War Office communique in full — Page 4','Roll of Honour — Pages 5, 6','Parliamentary debates — Page 7','Shipping intelligence — Page 9','Casualty lists — Pages 10, 11']};
-  if(yr<1940)return{h:'CRISIS IN EUROPE: THE DIPLOMATIC SITUATION',dk:'Governments in Urgent Consultation as International Tension Mounts',ps:['The diplomatic situation in Europe continued to deteriorate yesterday, as the intentions of the German government remain a matter of profound anxiety to France, Britain and the nations of Central Europe.','His Majesty\'s Government has made clear its preference for a negotiated settlement of all outstanding differences while maintaining that the fundamental principles of international law cannot be set aside.','The House of Commons will meet today to hear a statement from the Foreign Secretary on the present state of negotiations.','The German Chancellor has not yet responded to the latest communication from London, though official circles in Berlin have signalled that any response will be delivered through diplomatic channels.'],cap:'European foreign ministers in consultation as the diplomatic crisis deepens.',s1h1:'EUROPEAN CRISIS: LATEST',s1sub:'Diplomatic Efforts Continue in All Capitals',s1b1:'Diplomatic activity intensified yesterday as governments sought a basis for negotiation. The British Foreign Secretary held conversations with his French counterpart.',s1b2:'The Prime Minister is expected to make a statement in the House of Commons today outlining the Government\'s assessment of the situation.',s1h2:'HOUSE OF COMMONS: DEBATE',s1b2t:'Members of Parliament called for clarity regarding British obligations in the event of a general European conflict.',s1h3:'GERMANY: OFFICIAL REACTION',s1b3:'Official circles in Berlin maintained that Germany\'s demands are reasonable and that the responsibility for any breakdown of negotiations lies with those who refuse to acknowledge them.',rh1:'BRITAIN\'S REARMAMENT PROGRAMME',rdk:'Accelerated Production of Aircraft and Naval Vessels',rps:['The Government\'s rearmament programme is proceeding with an urgency that reflects the gravity of the international situation. Aircraft production has increased significantly.','The Air Ministry reported that Fighter Command strength has increased substantially over the past twelve months.'],rh2:'THE ECONOMY: REARMAMENT\'S EFFECT',rps2:['The rearmament programme has had a measurable stimulative effect on British industry, reducing unemployment in the manufacturing districts.'],rh3:'AMERICA WATCHES FROM AFAR',rb3:'President Roosevelt has expressed concern at the European situation while reaffirming America\'s intention to remain neutral.',bh1:'ARP: PREPARATIONS CONTINUE',bb1:'Air Raid Precautions exercises continued in several British cities, with wardens and rescue services practising their procedures.',bh2:'FINANCIAL MARKETS: ANXIETY',bb2:'London stock markets fell sharply yesterday as anxiety over the diplomatic situation prompted selling across all sectors.',ins:['European crisis — Pages 2, 3','House of Commons debates — Page 7','Financial news — Pages 13, 14','Letters to the Editor — Page 15','ARP information — Page 16']};
-  return{h:'WORLD AFFAIRS: DEVELOPMENTS ON EVERY FRONT',dk:'Our Correspondents Report the Leading Events of the Day',ps:['The affairs of the world continued to unfold yesterday with the mixture of progress and difficulty that characterises these complex times. The governments of the principal capitals continued their deliberations on the pressing questions of the hour.','The economic situation in several countries continues to attract attention from ministers and market observers alike. The relationship between the great powers remains subject to the tensions that have defined the post-war era.','Scientific and technological progress continues at a rate unprecedented in human history, transforming the conditions of daily life in ways that previous generations could not have imagined.','This newspaper will continue to bring its readers the fullest possible account of these momentous events.'],cap:'World leaders gather as the events of this historic period continue to unfold.',s1h1:'INTERNATIONAL AFFAIRS',s1sub:'Governments in Consultation',s1b1:'Ministers of the major nations continued their deliberations yesterday on the pressing questions of the international agenda. Progress was reported in certain areas while significant differences remain in others.',s1b2:'Diplomatic sources suggested that further meetings are planned at the highest level in the coming days.',s1h2:'ECONOMIC NEWS',s1b2t:'Financial markets reflected the general mood of cautious optimism yesterday, with modest movements across most sectors.',s1h3:'HOME AFFAIRS',s1b3:'Domestic political events continued to attract close attention, with the Government facing questions on several fronts from an Opposition determined to press its advantages.',rh1:'THE POLITICAL SITUATION',rdk:'Analysis of the Current Affairs',rps:['The political situation at home and abroad presents a complex picture. The Government continues to pursue its programme while managing the external pressures that bear upon every administration in these challenging times.','Public opinion, as measured by the most recent surveys, reflects the uncertainty that characterises this period.'],rh2:'SCIENCE AND TECHNOLOGY',rps2:['The pace of scientific advance continues to accelerate, with announcements from research institutions suggesting further breakthroughs in fields that will transform human life.'],rh3:'FINANCIAL MARKETS',rb3:'Markets closed with modest movement yesterday. Analysts await further economic data before drawing firm conclusions.',bh1:'THE ARTS',bb1:'The cultural life of the capital continues with a programme of exhibitions, performances and literary events.',bh2:'SPORT',bb2:'Sporting events continued to attract large and enthusiastic crowds, providing the public with welcome relief from the anxieties of the political situation.',ins:['World news — Pages 2, 3','Political analysis — Page 5','Financial markets — Pages 12, 13','Arts and letters — Page 10','Weather — Page 14']};
-}
-
-function fallbackLang(yr,lang){
-  const generic={
-    es:{h:'ASUNTOS MUNDIALES: NOVEDADES EN TODOS LOS FRENTES',dk:'Nuestros Corresponsales Informan de los Principales Hechos del D\u00eda',ps:['Los asuntos del mundo continuaron ayer su evoluci\u00f3n habitual, con esa mezcla de progreso y dificultad que caracteriza estos tiempos de r\u00e1pido cambio.','Los gobiernos de las principales capitales prosiguieron sus deliberaciones sobre las cuestiones m\u00e1s urgentes del momento.','El progreso cient\u00edfico y tecnol\u00f3gico avanza a un ritmo sin precedentes en la historia de la humanidad.','Este peri\u00f3dico seguir\u00e1 ofreciendo a sus lectores la informaci\u00f3n m\u00e1s completa posible sobre estos trascendentales acontecimientos.'],cap:'L\u00edderes mundiales reunidos mientras los hechos de este per\u00edodo hist\u00f3rico siguen desarrollandose.',s1h1:'ASUNTOS INTERNACIONALES',s1sub:'Los Gobiernos en Consulta',s1b1:'Los ministros de las principales naciones prosiguieron ayer sus deliberaciones sobre los asuntos m\u00e1s urgentes de la agenda internacional.',s1b2:'Fuentes diplom\u00e1ticas apuntaron que est\u00e1n previstas nuevas reuniones al m\u00e1s alto nivel en los pr\u00f3ximos d\u00edas.',s1h2:'NOTICIAS ECON\u00d3MICAS',s1b2t:'Los mercados financieros reflejaron ayer el clima general de cauto optimismo, con movimientos moderados en la mayor\u00eda de los sectores.',s1h3:'POL\u00cdTICA INTERIOR',s1b3:'Los sucesos pol\u00edticos internos siguieron acaparando la atenci\u00f3n.',rh1:'LA SITUACI\u00d3N POL\u00cdTICA',rdk:'An\u00e1lisis de la Actualidad',rps:['La situaci\u00f3n pol\u00edtica en el pa\u00eds y en el exterior presenta un cuadro complejo. El Gobierno pros\u00edgue su programa.','La opini\u00f3n p\u00fablica refleja la incertidumbre que caracteriza este per\u00edodo.'],rh2:'CIENCIA Y TECNOLOG\u00cdA',rps2:['El ritmo del avance cient\u00edfico sigue aceler\u00e1ndose.'],rh3:'MERCADOS FINANCIEROS',rb3:'Los mercados cerraron ayer con movimientos moderados.',bh1:'CULTURA Y SOCIEDAD',bb1:'La vida cultural prost\u00edgue con una oferta de exposiciones y eventos que refleja la vitalidad art\u00edstica.',bh2:'DEPORTES',bb2:'Los eventos deportivos siguieron atrayendo a un p\u00fablico numeroso y entusiasta.',ins:['Noticias del mundo \u2014 P\u00e1ginas 2, 3','An\u00e1lisis pol\u00edtico \u2014 P\u00e1gina 5','Mercados financieros \u2014 P\u00e1ginas 12, 13','Cultura \u2014 P\u00e1gina 10','El Tiempo \u2014 P\u00e1gina 14']},
-    fr:{h:'AFFAIRES DU MONDE: D\u00c9VELOPPEMENTS SUR TOUS LES FRONTS',dk:'Nos Correspondants Rapportent les Principaux \u00c9v\u00e9nements du Jour',ps:['Les affaires du monde ont continu\u00e9 hier \u00e0 se d\u00e9rouler avec le m\u00e9lange habituel de progr\u00e8s et de difficult\u00e9s.','Les gouvernements des principales capitales ont poursuivi leurs d\u00e9lib\u00e9rations sur les questions les plus urgentes du moment.','Le progr\u00e8s scientifique et technologique avance \u00e0 un rythme sans pr\u00e9c\u00e9dent.','Ce journal continuera d\'offrir \u00e0 ses lecteurs le compte rendu le plus complet possible.'],cap:'Des dirigeants mondiaux se r\u00e9unissent alors que les \u00e9v\u00e9nements de cette p\u00e9riode historique continuent.',s1h1:'AFFAIRES INTERNATIONALES',s1sub:'Les Gouvernements en Consultation',s1b1:'Les ministres des principales nations ont poursuivi hier leurs d\u00e9lib\u00e9rations sur les questions urgentes de l\'agenda international.',s1b2:'Des sources diplomatiques ont indiqu\u00e9 que de nouvelles r\u00e9unions au plus haut niveau sont pr\u00e9vues.',s1h2:'NOUVELLES \u00c9CONOMIQUES',s1b2t:'Les march\u00e9s financiers ont refl\u00e9t\u00e9 hier le climat g\u00e9n\u00e9ral d\'optimisme prudent.',s1h3:'POLITIQUE INT\u00c9RIEURE',s1b3:'Les \u00e9v\u00e9nements politiques int\u00e9rieurs ont continu\u00e9 d\'attirer une attention soutenue.',rh1:'LA SITUATION POLITIQUE',rdk:'Analyse de la Conjoncture Actuelle',rps:['La situation politique en France et \u00e0 l\'\\u00e9tranger pr\u00e9sente un tableau complexe.','L\'opinion publique refl\u00e8te l\'incertitude qui caract\u00e9rise cette p\u00e9riode.'],rh2:'SCIENCE ET TECHNOLOGIE',rps2:['Le rythme du progr\u00e8s scientifique continue de s\'acc\u00e9l\u00e9rer.'],rh3:'MARCH\u00c9S FINANCIERS',rb3:'Les march\u00e9s ont cl\u00f4tur\u00e9 hier avec des mouvements mod\u00e9r\u00e9s.',bh1:'CULTURE ET SOCI\u00c9T\u00c9',bb1:'La vie culturelle se poursuit avec une programmation qui refl\u00e8te la vitalit\u00e9 artistique.',bh2:'SPORTS',bb2:'Les \u00e9v\u00e9nements sportifs ont continu\u00e9 d\'attirer un public nombreux.',ins:['Actualit\u00e9 mondiale \u2014 Pages 2, 3','Analyse politique \u2014 Page 5','March\u00e9s financiers \u2014 Pages 12, 13','Culture \u2014 Page 10','M\u00e9t\u00e9o \u2014 Page 14']},
-    de:{h:'WELTGESCHEHEN: ENTWICKLUNGEN AUF ALLEN FRONTEN',dk:'Unsere Korrespondenten Berichten \u00fcber die Wichtigsten Ereignisse des Tages',ps:['Die Weltgeschehen nahmen gestern ihren gew\u00f6hnlichen Lauf, mit jener Mischung aus Fortschritt und Schwierigkeiten, die diese Zeit des schnellen Wandels kennzeichnet.','Die Regierungen der wichtigsten Hauptst\u00e4dte setzten ihre Beratungen \u00fcber die dringendsten Fragen des Augenblicks fort.','Der wissenschaftliche und technologische Fortschritt schreitet in einem Tempo voran, das in der Geschichte der Menschheit ohne Pr\u00e4zedenz ist.','Diese Zeitung wird ihren Lesern weiterhin den umfassendsten m\u00f6glichen Bericht \u00fcber diese bedeutsamen Ereignisse liefern.'],cap:'Staatsm\u00e4nner kommen zusammen, w\u00e4hrend die Ereignisse dieser historischen Periode sich weiterentwickeln.',s1h1:'INTERNATIONALE ANGELEGENHEITEN',s1sub:'Regierungen in Konsultation',s1b1:'Die Minister der wichtigsten Nationen setzten gestern ihre Beratungen \u00fcber die dr\u00e4ngenden Fragen der internationalen Agenda fort.',s1b2:'Diplomatische Quellen deuteten an, dass in den n\u00e4chsten Tagen weitere Treffen auf h\u00f6chster Ebene geplant sind.',s1h2:'WIRTSCHAFTSNACHRICHTEN',s1b2t:'Die Finanzm\u00e4rkte spiegelten gestern das allgemeine Klima vorsichtigen Optimismus wider.',s1h3:'INNENPOLITIK',s1b3:'Die innenpolitischen Ereignisse zogen weiterhin gro\u00dfe Aufmerksamkeit auf sich.',rh1:'DIE POLITISCHE LAGE',rdk:'Analyse der Aktuellen Situation',rps:['Die politische Lage im In- und Ausland bietet ein komplexes Bild.','Die \u00f6ffentliche Meinung spiegelt die Unsicherheit wider, die diese Zeit kennzeichnet.'],rh2:'WISSENSCHAFT UND TECHNOLOGIE',rps2:['Das Tempo des wissenschaftlichen Fortschritts beschleunigt sich weiter.'],rh3:'FINANZM\u00c4RKTE',rb3:'Die M\u00e4rkte schlossen gestern mit moderaten Bewegungen.',bh1:'KULTUR UND GESELLSCHAFT',bb1:'Das Kulturleben geht weiter mit einem Programm von Ausstellungen und Veranstaltungen.',bh2:'SPORT',bb2:'Sportveranstaltungen zogen weiterhin ein zahlreiches und begeistertes Publikum an.',ins:['Weltnachrichten \u2014 Seiten 2, 3','Politische Analyse \u2014 Seite 5','Finanzm\u00e4rkte \u2014 Seiten 12, 13','Kultur \u2014 Seite 10','Wetter \u2014 Seite 14']},
-    pt:{h:'ASSUNTOS MUNDIAIS: DESENVOLVIMENTOS EM TODAS AS FRENTES',dk:'Os Nossos Correspondentes Relatam os Principais Acontecimentos do Dia',ps:['Os assuntos mundiais continuaram ontem a desenvolver-se com a habitual mistura de progresso e dificuldades.','Os governos das principais capitais prosseguiram as suas delibera\u00e7\u00f5es sobre as quest\u00f5es mais urgentes do momento.','O progresso cient\u00edfico e tecnol\u00f3gico avan\u00e7a a um ritmo sem precedentes na hist\u00f3ria da humanidade.','Este jornal continuar\u00e1 a oferecer aos seus leitores o relato mais completo poss\u00edvel.'],cap:'L\u00edderes mundiais re\u00fanem-se enquanto os acontecimentos deste per\u00edodo hist\u00f3rico continuam.',s1h1:'ASSUNTOS INTERNACIONAIS',s1sub:'Governos em Consulta',s1b1:'Os ministros das principais na\u00e7\u00f5es prosseguiram ontem as suas delibera\u00e7\u00f5es sobre as quest\u00f5es urgentes da agenda internacional.',s1b2:'Fontes diplom\u00e1ticas indicaram que est\u00e3o previstas novas reuni\u00f5es ao mais alto n\u00edvel.',s1h2:'NOT\u00cdCIAS ECON\u00d3MICAS',s1b2t:'Os mercados financeiros reflectiram ontem o clima geral de optimismo cauteloso.',s1h3:'POL\u00cdTICA INTERNA',s1b3:'Os acontecimentos pol\u00edticos internos continuaram a atrair grande aten\u00e7\u00e3o.',rh1:'A SITUA\u00c7\u00c3O POL\u00cdTICA',rdk:'An\u00e1lise da Conjuntura Actual',rps:['A situa\u00e7\u00e3o pol\u00edtica no pa\u00eds e no estrangeiro apresenta um quadro complexo.','A opini\u00e3o p\u00fablica reflecte a incerteza que caracteriza este per\u00edodo.'],rh2:'CI\u00caNCIA E TECNOLOGIA',rps2:['O ritmo do progresso cient\u00edfico continua a acelerar.'],rh3:'MERCADOS FINANCEIROS',rb3:'Os mercados fecharam ontem com movimentos moderados.',bh1:'CULTURA E SOCIEDADE',bb1:'A vida cultural prossegue com uma programa\u00e7\u00e3o que reflecte a vitalidade art\u00edstica.',bh2:'DESPORTOS',bb2:'Os eventos desportivos continuaram a atrair um p\u00fablico numeroso.',ins:['Not\u00edcias do mundo \u2014 P\u00e1ginas 2, 3','An\u00e1lise pol\u00edtica \u2014 P\u00e1gina 5','Mercados financeiros \u2014 P\u00e1ginas 12, 13','Cultura \u2014 P\u00e1gina 10','Tempo \u2014 P\u00e1gina 14']}
-  };
-  return generic[lang]||null;
-}
-
-const PC={
-  times:{mo:'',alT:'BARNETT',alL:['The Best Thing','in Pork Sausages','7d. at all stores'],arT:'BOAC',arL:['VC10 Tri-jet','Now in Service','See Times Survey'],it:'Inside To-Day'},
-  nyt:{mo:'"All the News That\'s Fit to Print"',alT:"MACY'S",alL:['New York\'s','Greatest Store','Open Daily'],arT:'PAN AM',arL:['Jet Clipper Service','New York to the World'],it:'News Index'},
-  mirror:{mo:'Forward with the People',alT:"POOL'S",alL:['Football Pools','Win This Week','Entry 6d.'],arT:'BOVRIL',arL:['Prevents that','Sinking Feeling'],it:'Inside Today'},
-  wp:{mo:'Democracy Dies in Darkness',alT:"GARFINKEL'S",alL:["Washington's",'Finest Store','F St. at 14th'],arT:'UNITED AIR',arL:['Fly United','Coast to Coast'],it:"Today's Index"},
-  lemonde:{mo:'',alT:'AIR FRANCE',alL:['Voyagez','avec style','Paris - Monde'],arT:'RENAULT',arL:['La Renault','pour tous'],it:'Sommaire'},
-  figaro:{mo:'Le Figaro',alT:'CITROEN',alL:['Citroen DS','La deesse','Chez votre concessionnaire'],arT:'TOTAL',arL:['Essence Total','Sur toutes les routes'],it:'Sommaire'},
-  faz:{mo:'Fur Deutschland',alT:'VOLKSWAGEN',alL:['Das Auto','fur alle','Ihr Handler'],arT:'LUFTHANSA',arL:['Fliegen Sie','Lufthansa'],it:'Inhalt'},
-  welt:{mo:'Die Welt',alT:'MERCEDES-BENZ',alL:['Mercedes-Benz','Das Beste oder nichts'],arT:'ARAL',arL:['ARAL Super','An jeder Ecke'],it:'Inhalt'},
-  elpais:{mo:'El periodico global en espanol',alT:'IBERIA',alL:['Vuele con Iberia','Madrid al Mundo'],arT:'SEAT',arL:['SEAT 600','El coche de Espana'],it:'En este numero'},
-  abc:{mo:'El diario de los espanoles',alT:'CAMPSA',alL:['Combustibles CAMPSA','En todas las rutas'],arT:'NESTLE',arL:['Productos Nestle','Calidad garantizada'],it:'En este numero'},
-  oglobo:{mo:'',alT:'VARIG',alL:['VARIG Airlines','Rio de Janeiro'],arT:'VOLKSWAGEN',arL:['VW Fusca','O carro do Brasil'],it:'Neste numero'},
-  folha:{mo:'',alT:'TAM',alL:['TAM Linhas Aereas','Brasil e Mundo'],arT:'PETROBRAS',arL:['Petrobras','Energia do Brasil'],it:'Neste numero'},
-  default:{mo:'',alT:'ADVERTISEMENT',alL:['Quality Goods','Est. 1890'],arT:'ADVERTISEMENT',arL:['Finest Products'],it:'Inside Today'}
-};
-
-function getCfg(pid,yr){
-  const c=PC[pid]||PC.default;
-  return{...c,issueNo:'No. '+(54000+(yr-1960)*365).toLocaleString()};
-}
-
-function getPrice(yr,lang,ctry){
-  if(lang==='en'&&ctry==='gb')return yr<1971?'Price 3d.':yr<1985?'Price 8p':'Price 30p';
-  if(lang==='en')return yr<1970?'Price 5c':'Price 25c';
-  if(lang==='de')return yr<1970?'30 Pf.':'0,80 DM';
-  if(lang==='fr')return yr<1970?'25c':'1F';
-  if(lang==='es')return yr<1975?'1 Pta':'15 Ptas';
-  if(lang==='pt')return yr<1970?'Cr$2':'Cr$10';
-  if(lang==='ja')return yr<1970?'5\u5186':'50\u5186';
-  return '';
-}
-
-function getAds(yr,lang){
-  if(yr<1950)return{a1t:'THOMAS COOK & SON',a1c:'Continental Tours - Cruises - Escorted Parties\n45 Berkeley Street, London W.1',a2t:'BOVRIL',a2c:'Prevents that Sinking Feeling - At all grocers'};
-  if(yr<1970)return{a1t:lang==='fr'?'SNCF':lang==='de'?'DEUTSCHE BUNDESBAHN':lang==='es'?'RENFE':'BRITISH RAIL',a1c:lang==='fr'?'Service Inter-Cites - Rapide - Confortable':lang==='de'?'Schnell - Bequem - Zuverlassig':'Inter-City Service - Fast - Frequent - Comfortable',a2t:'ESSO',a2c:'Put a Tiger in your Tank - At Esso stations everywhere'};
-  if(yr<1990)return{a1t:lang==='fr'?'AIR FRANCE':lang==='de'?'LUFTHANSA':lang==='es'?'IBERIA':'BRITISH AIRWAYS',a1c:lang==='fr'?'Volez Air France - Paris et le Monde':lang==='de'?'Fliegen Sie Lufthansa - Deutschland und die Welt':lang==='es'?'Vuele Iberia - Madrid y el Mundo':'We\'ll Take More Care of You - London to the World',a2t:'SONY',a2c:'The Sound of the Future - At leading retailers'};
-  return{a1t:'VODAFONE',a1c:'Stay Connected - Mobile phones for everyone',a2t:lang==='es'?'TESCO ESPANA':lang==='fr'?'CARREFOUR':lang==='de'?'ALDI':'TESCO',a2c:lang==='fr'?'Chaque jour des prix bas':'Every Little Helps - Quality and Value'};
-}
-
-function fmtDate(ds,lang){
-  const d=new Date(ds+'T12:00:00');
-  const DA={en:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],es:['domingo','lunes','martes','mi\u00e9rcoles','jueves','viernes','s\u00e1bado'],fr:['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'],de:['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],pt:['domingo','segunda-feira','ter\u00e7a-feira','quarta-feira','quinta-feira','sexta-feira','s\u00e1bado'],ja:['\u65e5\u66dc\u65e5','\u6708\u66dc\u65e5','\u706b\u66dc\u65e5','\u6c34\u66dc\u65e5','\u6728\u66dc\u65e5','\u91d1\u66dc\u65e5','\u571f\u66dc\u65e5']};
-  const MO={en:['January','February','March','April','May','June','July','August','September','October','November','December'],es:['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],fr:['janvier','f\u00e9vrier','mars','avril','mai','juin','juillet','ao\u00fbt','septembre','octobre','novembre','d\u00e9cembre'],de:['Januar','Februar','M\u00e4rz','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],pt:['janeiro','fevereiro','mar\u00e7o','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],ja:['1\u6708','2\u6708','3\u6708','4\u6708','5\u6708','6\u6708','7\u6708','8\u6708','9\u6708','10\u6708','11\u6708','12\u6708']};
-  const dn=(DA[lang]||DA.en)[d.getDay()],mn=(MO[lang]||MO.en)[d.getMonth()],day=d.getDate(),yr=d.getFullYear();
-  if(lang==='ja')return yr+'\u5e74'+mn+day+'\u65e5\uff08'+dn+'\uff09';
-  if(lang==='de')return dn+', '+day+'. '+mn+' '+yr;
-  if(lang==='fr')return dn+' '+day+' '+mn+' '+yr;
-  if(lang==='es'||lang==='pt')return dn+', '+day+' de '+mn+' de '+yr;
-  return dn+', '+mn+' '+day+', '+yr;
-}
-
-function tx(k,l){
-  const T={
-    ed:{en:'Late City Edition',es:'\u00daltima Edici\u00f3n',fr:'Derni\u00e8re \u00c9dition',de:'Abendausgabe',pt:'\u00daltima Edi\u00e7\u00e3o',ja:'\u5915\u520a'},
-    br:{en:'Breaking News',es:'\u00daltima Hora',fr:'Flash Infos',de:'Eilmeldung',pt:'\u00daltima Hora',ja:'\u901f\u5831'},
-    ph:{en:'Associated Press Photograph',es:'Fotograf\u00eda AP',fr:'Photo AP',de:'AP-Foto',pt:'Fotografia AP',ja:'AP\u901a\u4fe1 \u5199\u771f'},
-    by:{en:'From Our Special Correspondent',es:'De Nuestro Corresponsal Especial',fr:'De Notre Correspondant Sp\u00e9cial',de:'Von unserem Sonderkorrespondenten',pt:'Do Nosso Correspondente Especial',ja:'\u672c\u7d19\u7279\u6d3e\u54e1\u3088\u308a'},
-    we:{en:'Weather: Cloudy, mild',es:'Tiempo: Nublado, suave',fr:'M\u00e9t\u00e9o: Nuageux, doux',de:'Wetter: Bew\u00f6lkt, mild',pt:'Tempo: Nublado, ameno',ja:'\u5929\u6c17\uff1a\u66c7\u308a\u3001\u7a4f\u3084\u304b'},
-    se:{en:'Overseas',es:'Internacional',fr:'\u00c9tranger',de:'Ausland',pt:'Internacional',ja:'\u56fd\u969b'}
-  };
-  return (T[k]||{})[l]||(T[k]||{}).en||'';
-}
-
-function findEv(ds,lang){
-  const LDB={es:HDB_ES,fr:HDB_FR,de:HDB_DE};
-  const ldb=LDB[lang];
-  if(ldb){
-    if(ldb[ds])return ldb[ds];
-    const ym=ds.slice(0,7);
-    const k1=Object.keys(ldb).find(k=>k.startsWith(ym));
-    if(k1)return ldb[k1];
-    const yr=ds.slice(0,4);
-    const k2=Object.keys(ldb).find(k=>k.startsWith(yr));
-    if(k2)return ldb[k2];
-    const lf=fallbackLang(parseInt(yr),lang);
-    if(lf)return lf;
-  }
-  if(HDB[ds])return HDB[ds];
-  const ym=ds.slice(0,7);
-  const k1=Object.keys(HDB).find(k=>k.startsWith(ym));
-  if(k1)return HDB[k1];
-  const yr2=ds.slice(0,4);
-  const k2=Object.keys(HDB).find(k=>k.startsWith(yr2));
-  if(k2)return HDB[k2];
-  return fallback(parseInt(yr2));
-}
-
-let sL=null,sC=null,sP=null,sPbl=false;
-function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-
-function pickL(code){
-  sL=code;sP=null;sC=null;
-  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('on'));
-  document.querySelector('[data-l="'+code+'"]').classList.add('on');
-  const cs=CT[code];
-  const sel=document.getElementById('csel');
-  sel.innerHTML='<option value="">\u2014 Choose a country \u2014</option>';
-  cs.forEach(c=>{const o=document.createElement('option');o.value=c.c;o.textContent=c.n;sel.appendChild(o);});
-  document.getElementById('cw').style.display='block';
-  document.getElementById('pw').style.display='none';
-  document.getElementById('gb').style.display='none';
-  chk();
-}
-
-function loadP(){
-  const code=document.getElementById('csel').value;
-  if(!code){document.getElementById('pw').style.display='none';return;}
-  sC=code;sP=null;
-  const cd=CT[sL].find(c=>c.c===code);
-  if(!cd)return;
-  const grid=document.getElementById('pg');
-  grid.innerHTML='';
-  cd.p.forEach(p=>{
-    const btn=document.createElement('button');
-    btn.className='pb';
-    btn.innerHTML='<span class="pn">'+p.n+'</span><span class="pd">'+p.d+'</span>';
-    btn.onclick=()=>{sP=p.id;sPbl=p.bl;document.querySelectorAll('.pb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');chk();};
-    grid.appendChild(btn);});
-  document.getElementById('pw').style.display='block';
-  document.getElementById('gb').style.display='none';
-}
-
-function chk(){const d=document.getElementById('din').value;const show=(d&&sL&&sP);document.getElementById('gb').style.display=show?'block':'none';const ts=document.getElementById('tsw');if(ts)ts.style.display=show?'block':'none';}
-
-function animS(){
-  const STEPS={en:['Searching the archives...','Researching the headlines...','Setting the type...','Pressing the front page...','Ageing the paper...'],es:['Buscando en los archivos...','Investigando los titulares...','Componiendo la tipograf\u00eda...','Imprimiendo la portada...','Envejeciendo el papel...'],fr:['Recherche dans les archives...','Recherche des manchettes...','Composition typographique...','Impression de la une...','Vieillissement du papier...'],de:['Durchsuche die Archive...','Recherchiere die Schlagzeilen...','Setze den Text...','Drucke die Titelseite...','Alterne das Papier...'],pt:['Pesquisando nos arquivos...','Investigando as manchetes...','Compondo a tipografia...','Imprimindo a capa...','Envelhecendo o papel...'],ja:['\u30a2\u30fc\u30ab\u30a4\u30d6\u3092\u691c\u7d22\u4e2d...','\u898b\u51fa\u3057\u3092\u8abf\u67fb\u4e2d...','\u6d3b\u5b57\u3092\u7d44\u3093\u3067\u3044\u307e\u3059...','\u4e00\u9762\u3092\u5370\u5237\u4e2d...','\u7d19\u3092\u5e74\u4ee3\u7269\u306b\u3057\u3066\u3044\u307e\u3059...']};
-  const steps=STEPS[sL]||STEPS.en;
-  const ids=['ls1','ls2','ls3','ls4','ls5'];
-  ids.forEach((id,i)=>{const el=document.getElementById(id);el.className='lstep';el.textContent=steps[i];});
-  let i=0;
-  return setInterval(()=>{if(i>0)document.getElementById(ids[i-1]).className='lstep done';if(i<ids.length){document.getElementById(ids[i]).className='lstep active';i++;}},800);
-}
-
-function renderNP(ev,pid,ds,lang,bl){
-  const mName=MN[pid]||pid;
-  const d=new Date(ds+'T12:00:00');
-  const yr=d.getFullYear();
-  const cfg=getCfg(pid,yr);
-  const ads=getAds(yr,lang);
-  const ins=ev.ins||['World news — Page 2','Home affairs — Page 5','Financial markets — Page 10','Weather — Page 14'];
-  const nc=bl?'nbl':'nsr';
-  const dateDisp=fmtDate(ds,lang);
-  document.getElementById('npo').innerHTML=
-    '<div class="fox" style="width:15px;height:10px;background:rgba(110,70,15,.1);top:13%;left:7%;transform:rotate(12deg);"></div>'+
-    '<div class="fox" style="width:8px;height:8px;background:rgba(100,60,10,.09);top:39%;left:93%;"></div>'+
-    '<div class="fox" style="width:11px;height:7px;background:rgba(120,80,20,.08);top:77%;left:4%;"></div>'+
-    '<div class="fox" style="width:40px;height:36px;border-radius:50%;border:2px solid rgba(80,50,10,.09);background:transparent;top:89%;left:80%;"></div>'+
-    '<div class="fold"></div>'+
-    '<div class="npc">'+
-    '<div class="mast">'+
-    '<div class="mtp"><span>'+cfg.issueNo+'</span><span style="flex:1;text-align:center;font-style:italic;">'+yr+'</span><span>'+getPrice(yr,lang,sC)+'</span></div>'+
-    '<div class="mads">'+
-    '<div class="adb"><strong>'+cfg.alT+'</strong>'+cfg.alL.map(l=>'<span style="display:block;">'+l+'</span>').join('')+'</div>'+
-    '<div class="nw"><div class="'+nc+'">'+mName+'</div>'+(cfg.mo?'<div class="nmo">'+cfg.mo+'</div>':'')+'</div>'+
-    '<div class="adb"><strong>'+cfg.arT+'</strong>'+cfg.arL.map(l=>'<span style="display:block;">'+l+'</span>').join('')+'</div>'+
-    '</div>'+
-    '<div class="dtl"><span>'+tx('ed',lang)+'</span><span style="flex:1;text-align:center;">'+dateDisp+'</span><span>'+tx('we',lang)+'</span></div>'+
-    '</div>'+
-    '<div class="rb"><span class="rbl">'+tx('br',lang)+'</span><span style="font-style:italic;">'+ev.h.substring(0,60)+(ev.h.length>60?'...':'')+'</span></div>'+
-    '<div class="cols c6" style="border-top:1px solid #2a1f0f;">'+
-    '<div class="col">'+
-    '<div class="sect">'+tx('se',lang)+'</div>'+
-    '<div class="hed hsm">'+ev.s1h1+'</div>'+
-    (ev.s1sub?'<div class="dk">'+ev.s1sub+'</div>':'')+
-    '<div class="body"><p>'+ev.s1b1+'</p>'+(ev.s1b2?'<p>'+ev.s1b2+'</p>':'')+'</div>'+
-    (ev.s1h2?'<div class="cr"></div><div class="hed hxs">'+ev.s1h2+'</div><div class="body"><p>'+ev.s1b2t+'</p></div>':'')+
-    (ev.s1h3?'<div class="cr"></div><div class="hed hxs">'+ev.s1h3+'</div><div class="body"><p>'+ev.s1b3+'</p></div>':'')+
-    '<div class="ins"><div class="inst">'+cfg.it+'</div>'+ins.map(x=>'<div class="insi">'+x+'</div>').join('')+'</div>'+
-    '</div>'+
-    '<div class="col s3" style="border-right:1.5px solid #5a4030;">'+
-    '<div class="hed hxl" style="text-align:center;border-bottom:2px solid #5a4030;padding-bottom:8px;margin-bottom:7px;">'+ev.h+'</div>'+
-    (ev.dk?'<div class="dk" style="text-align:center;margin-bottom:6px;">'+ev.dk+'</div>':'')+
-    '<div class="by" style="text-align:center;">'+tx('by',lang)+'</div>'+
-    '<div class="ph2" style="aspect-ratio:16/7;"><div class="phl2">'+tx('ph',lang)+'</div></div>'+
-    (ev.cap?'<div class="cap">'+ev.cap+'</div>':'')+
-    '<div class="body" style="margin-top:8px;column-count:2;column-gap:15px;">'+ev.ps.map(p=>'<p>'+p+'</p>').join('')+'</div>'+
-    '</div>'+
-    '<div class="col s2">'+
-    '<div class="hed hlg" style="border-bottom:1px solid #7a6040;padding-bottom:5px;margin-bottom:5px;">'+ev.rh1+'</div>'+
-    (ev.rdk?'<div class="dk">'+ev.rdk+'</div>':'')+
-    '<div class="by">'+tx('by',lang)+'</div>'+
-    '<div class="body">'+ev.rps.map(p=>'<p>'+p+'</p>').join('')+'</div>'+
-    (ev.rh2?'<div class="cr"></div><div class="hed hmd">'+ev.rh2+'</div><div class="body">'+ev.rps2.map(p=>'<p>'+p+'</p>').join('')+'</div>':'')+
-    (ev.rh3?'<div class="cr"></div><div class="hed hxs">'+ev.rh3+'</div><div class="body"><p>'+ev.rb3+'</p></div>':'')+
-    '<div class="smad"><div class="smat">'+ads.a1t+'</div><div class="smac">'+ads.a1c+'</div></div>'+
-    '</div>'+
-    '</div>'+
-    '<div class="cols c3" style="border-top:1px solid #8a7050;">'+
-    '<div class="col"><div class="hed hxs">'+ev.bh1+'</div><div class="body"><p>'+ev.bb1+'</p></div></div>'+
-    '<div class="col"><div class="hed hxs">'+ev.bh2+'</div><div class="body"><p>'+ev.bb2+'</p></div></div>'+
-    '<div class="col"><div class="smad" style="margin-top:0;"><div class="smat">'+ads.a2t+'</div><div class="smac">'+ads.a2c+'</div></div></div>'+
-    '</div>'+
-    '<div class="wm"><div class="wml">INKDATE</div><div class="wmt">Generated by Inkdate &middot; The day that made history</div><div class="wmu">inkdateapp.com</div></div>'+
-    '</div>';
-}
-
-
-let sTier = 'standard'; // 'standard' or 'premium'
-
-function pickTier(tier, btn) {
-  sTier = tier;
-  document.querySelectorAll('.tob').forEach(b => {
-    b.classList.remove('on', 'red');
-  });
-  btn.classList.add('on');
-  if (tier === 'standard') btn.classList.add('red');
-}
-
-// chk is defined below - tier selection shown with generate button
-
-function buildImagePrompt(ev, pid, ds, lang) {
-  const PAPER_CFG = {
-    times:    { name:'The Times', font:'ornate blackletter gothic', cols:6, city:'London' },
-    mirror:   { name:'Daily Mirror', font:'bold condensed serif', cols:5, city:'London' },
-    nyt:      { name:'The New York Times', font:'Old English blackletter', cols:8, city:'New York' },
-    wp:       { name:'The Washington Post', font:'bold serif', cols:6, city:'Washington D.C.' },
-    smh:      { name:'The Sydney Morning Herald', font:'classical serif', cols:7, city:'Sydney' },
-    globe:    { name:'The Globe and Mail', font:'bold serif', cols:7, city:'Toronto' },
-    iti:      { name:'The Irish Times', font:'classical serif', cols:7, city:'Dublin' },
-    toi:      { name:'The Times of India', font:'bold serif', cols:7, city:'Mumbai' },
-    hindu:    { name:'The Hindu', font:'classical serif', cols:7, city:'Chennai' },
-    mail:     { name:'Mail & Guardian', font:'bold sans-serif', cols:5, city:'Johannesburg' },
-    elpais:   { name:'El País', font:'Spanish serif', cols:6, city:'Madrid' },
-    abc:      { name:'ABC', font:'ornate Spanish serif', cols:6, city:'Madrid' },
-    lemonde:  { name:'Le Monde', font:'elegant French serif', cols:5, city:'Paris' },
-    figaro:   { name:'Le Figaro', font:'classical French serif', cols:6, city:'Paris' },
-    faz:      { name:'Frankfurter Allgemeine Zeitung', font:'German blackletter Fraktur', cols:6, city:'Frankfurt' },
-    welt:     { name:'Die Welt', font:'bold German serif', cols:6, city:'Hamburg' },
-    sz:       { name:'Süddeutsche Zeitung', font:'clean German serif', cols:7, city:'Munich' },
-    oglobo:   { name:'O Globo', font:'Brazilian serif', cols:6, city:'Rio de Janeiro' },
-    folha:    { name:'Folha de S.Paulo', font:'Brazilian serif', cols:6, city:'São Paulo' },
-    yomiuri:  { name:'読売新聞', font:'Japanese mincho with Roman headers', cols:9, city:'Tokyo' },
-    asahi:    { name:'朝日新聞', font:'Japanese mincho with Roman headers', cols:9, city:'Tokyo' },
-  };
-
-  const yr = parseInt(ds.slice(0, 4));
-  const p = PAPER_CFG[pid] || { name: MN[pid] || pid, font: 'classical serif', cols: 6, city: 'London' };
-
-  const ageDesc = yr < 1920 ? 'extremely aged and fragile, very dark brown with heavy foxing, significant creasing' :
-                  yr < 1960 ? 'yellowed and foxed with brown age spots, creased down the centre fold, warm amber tone' :
-                  yr < 1990 ? 'slightly yellowed, light foxing, paper has warm cream tone, minor fold crease' :
-                              'minimal aging, slightly warm white paper, clean fold line';
-
-  const era = yr < 1900 ? 'Victorian era letterpress, ornate column rules, dense Gothic type' :
-              yr < 1945 ? 'inter-war period hot metal typesetting, classic Linotype composition' :
-              yr < 1970 ? 'post-war era traditional letterpress, Linotype hot metal type' :
-              yr < 1990 ? 'late analogue era offset lithography printing' :
-                          'modern broadsheet layout with traditional typography';
-
-  const headline = ev.h || 'NEWS OF THE DAY';
-  const sub1 = ev.s1h1 || ev.rh1 || '';
-  const sub2 = ev.bh1 || ev.rh2 || '';
-  const photo = ev.cap || 'the events of the day unfolding';
-
-  return `A highly realistic, aged newspaper front page photograph. The paper is ${ageDesc}. The masthead reads "${p.name}" in ${p.font} font at the top centre. Date: ${fmtDate(ds, lang)}. Published in ${p.city}. ${p.cols}-column broadsheet layout with dense letterpress typography throughout. The dominant headline reads: "${headline}" in large bold serif type across the centre columns.${sub1 ? ` Smaller headline includes "${sub1}".` : ''}${sub2 ? ` And "${sub2}".` : ''} A halftone wirephoto of ${photo} sits beneath the lead headline. ${era}. Ink is slightly uneven — authentic letterpress bleed on headlines. Shot flat on a dark wooden surface, soft natural side-lighting, ultra-realistic macro photography, 8K detail. No modern fonts. No colour photographs. Photorealistic aged newsprint texture throughout.`;
-}
-
-async function generateImage(prompt) {
-  try {
-    const response = await fetch('https://api.openai.com/v1/images/generations', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + OPENAI_KEY
+    const tierConfig = {
+      premium: {
+        desc: 'One date. One historically verified front page.',
+        date1Label: '◆ Date',
+        date1Placeholder: 'e.g. June 15, 1985',
+        showDate2: false,
+        surface: 'pale grey marble surface',
+        lighting: 'warm golden hour 7am light from the upper left, casting long soft shadows',
       },
-      body: JSON.stringify({
-        model: 'dall-e-3',
-        prompt: prompt,
-        n: 1,
-        size: '1024x1792',
-        quality: 'hd',
-        style: 'natural'
-      })
-    });
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error?.message || 'Generation failed');
-    }
-    const data = await response.json();
-    return data.data[0].url;
-  } catch(e) {
-    // If CORS blocks the request (common when running as local file)
-    // fall through to the prompt copy fallback
-    if(e.name === 'TypeError' || e.message.includes('fetch')) {
-      throw new Error('CORS_ERROR');
-    }
-    throw e;
-  }
-}
+      thennow: {
+        desc: 'Two dates. One story. A powerful visual timeline.',
+        date1Label: '◆ Then — Date 1',
+        date1Placeholder: 'e.g. June 15, 1985',
+        date2Label: '◆ Now — Date 2',
+        date2Placeholder: 'e.g. June 15, 2025',
+        showDate2: true,
+        surface: 'warm aged oak reading table',
+        lighting: 'warm golden hour 7am light from the upper left, casting long soft shadows',
+      },
+      memorial: {
+        desc: 'A life bookended in print. Tender and timeless.',
+        date1Label: '◆ Date of Birth',
+        date1Placeholder: 'e.g. March 12, 1942',
+        date2Label: '◆ Date of Passing',
+        date2Placeholder: 'e.g. September 4, 2019',
+        showDate2: true,
+        surface: 'antique mahogany surface with a single white flower resting beside the paper',
+        lighting: 'warm amber lamp light from the right, deep atmospheric shadows',
+      },
+    };
 
-function animateProgress(steps, delays) {
-  let i = 0;
-  const bar = document.getElementById('imgBar');
-  const status = document.getElementById('imgStatus');
-  const sub = document.getElementById('imgSub');
-  function next() {
-    if (i < steps.length) {
-      status.textContent = steps[i].msg;
-      if (steps[i].sub) sub.textContent = steps[i].sub;
-      bar.style.width = steps[i].pct + '%';
-      i++;
-      setTimeout(next, delays[i - 1] || 2000);
-    }
-  }
-  next();
-}
-
-let genImgUrl = '';
-let genDateStr = '';
-
-async function startGen() {
-  const ds = document.getElementById('din').value;
-  if (!ds || !sL || !sP) return;
-
-  if (sTier === 'standard') {
-    // Standard HTML newspaper flow
-    go('sl');
-    const lv = animS();
-    setTimeout(() => {
-      clearInterval(lv);
-      ['ls1','ls2','ls3','ls4','ls5'].forEach(id => document.getElementById(id).className = 'lstep done');
-      const ev = findEv(ds, sL);
-      renderNP(ev, sP, ds, sL, sPbl);
-      setTimeout(() => go('sp'), 400);
-    }, 4200);
-
-  } else if (sTier === 'free') {
-    // Free tier - HTML newspaper with watermark
-    go('sl');
-    const lv = animS();
-    setTimeout(() => {
-      clearInterval(lv);
-      ['ls1','ls2','ls3','ls4','ls5'].forEach(id => document.getElementById(id).className = 'lstep done');
-      const ev = findEv(ds, sL);
-      renderNP(ev, sP, ds, sL, sPbl);
-      // Add watermark overlay for free tier - multiple positions
-      const npo = document.getElementById('npo');
-      npo.style.position = 'relative';
-      const wmWrap = document.createElement('div');
-      wmWrap.style.cssText = 'position:absolute;inset:0;z-index:50;pointer-events:none;overflow:hidden;';
-      const wmPositions = [
-        {top:'15%',left:'50%',transform:'translateX(-50%) rotate(-35deg)'},
-        {top:'42%',left:'50%',transform:'translateX(-50%) rotate(-35deg)'},
-        {top:'68%',left:'50%',transform:'translateX(-50%) rotate(-35deg)'},
-      ];
-      wmPositions.forEach(pos => {
-        const wm = document.createElement('div');
-        wm.style.cssText = `position:absolute;top:${pos.top};left:${pos.left};transform:${pos.transform};font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(1.2rem,4vw,2rem);color:rgba(139,32,32,0.15);letter-spacing:6px;text-transform:uppercase;white-space:nowrap;user-select:none;border:2px solid rgba(139,32,32,0.1);padding:6px 20px;`;
-        wm.textContent = 'INKDATE';
-        wmWrap.appendChild(wm);
-      });
-      npo.appendChild(wmWrap);
-      setTimeout(() => go('sp'), 400);
-    }, 4200);
-
-  } else {
-    // Premium photorealistic flow
-    // Build prompt first
-    const ev = findEv(ds, sL);
-    const prompt = buildImagePrompt(ev, sP, ds, sL);
-    window._lastPrompt = prompt;
-    window._lastPromptDs = ds;
-    genDateStr = ds;
-
-    // Try the API - if it fails for any reason, show the prompt copy screen
-    go('si');
-
-    animateProgress([
-      { msg: 'Composing your prompt...', pct: 20, sub: 'Building from your date and newspaper' },
-      { msg: 'Sending to DALL-E 3...', pct: 40, sub: 'Connecting to OpenAI image generation' },
-      { msg: 'Generating your newspaper...', pct: 60, sub: 'This takes 15-20 seconds' },
-      { msg: 'Adding period detail...', pct: 80, sub: 'Authentic letterpress, aged paper' },
-      { msg: 'Finishing touches...', pct: 92, sub: 'Almost ready' },
-    ], [800, 1500, 8000, 3000, 2000]);
-
-    // Attempt API call with timeout
-    let apiSucceeded = false;
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000);
-
-      const response = await fetch('https://api.openai.com/v1/images/generations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + OPENAI_KEY
-        },
-        body: JSON.stringify({
-          model: 'dall-e-3',
-          prompt: prompt,
-          n: 1,
-          size: '1024x1792',
-          quality: 'hd',
-          style: 'natural'
-        }),
-        signal: controller.signal
-      });
-
-      clearTimeout(timeoutId);
-
-      if (response.ok) {
-        const data = await response.json();
-        const imgUrl = data.data[0].url;
-        genImgUrl = imgUrl;
-        document.getElementById('genImg').src = imgUrl;
-        document.getElementById('imgBar').style.width = '100%';
-        document.getElementById('imgStatus').textContent = 'Your front page is ready.';
-        apiSucceeded = true;
-        setTimeout(() => go('sg'), 800);
+    function selectTier(tier, btn) {
+      currentTier = tier;
+      document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cfg = tierConfig[tier];
+      document.getElementById('tier-desc').textContent = cfg.desc;
+      document.getElementById('date1-label').textContent = cfg.date1Label;
+      document.getElementById('date1').placeholder = cfg.date1Placeholder;
+      const d2wrap = document.getElementById('date2-wrap');
+      const dateRow = document.getElementById('date-row');
+      if (cfg.showDate2) {
+        d2wrap.style.display = 'block';
+        dateRow.className = 'field-row two';
+        document.getElementById('date2-label').textContent = cfg.date2Label;
+        document.getElementById('date2').placeholder = cfg.date2Placeholder;
       } else {
-        // API returned an error - fall through to prompt screen
-        apiSucceeded = false;
+        d2wrap.style.display = 'none';
+        dateRow.className = 'field-row one';
       }
-    } catch(e) {
-      // Any error (CORS, network, timeout) - fall through to prompt screen
-      apiSucceeded = false;
+      // Set default surface and lighting
+      document.getElementById('surface').value = cfg.surface;
+      document.getElementById('lighting').value = cfg.lighting;
+      document.getElementById('date2').value = '';
+      checkReady();
     }
 
-    // If API didn't work, show the prompt copy screen
-    if (!apiSucceeded) {
-      // Show what the status code was for 5 seconds then go to copy screen
-      document.getElementById('imgBar').style.width = '100%';
-      document.getElementById('imgBar').style.background = 'var(--gold)';
-      setTimeout(() => {
-        document.getElementById('imgStatus').textContent = 'Your prompt is ready!';
-        document.getElementById('imgSub').textContent = 'Copy it into Midjourney or ChatGPT';
-        showCopyScreen();
-      }, 5000);
+    function checkReady() {
+      const newspaper = document.getElementById('newspaper').value.trim();
+      const date1 = document.getElementById('date1').value.trim();
+      const date2 = document.getElementById('date2').value.trim();
+      const needTwo = tierConfig[currentTier].showDate2;
+      const ready = newspaper && date1 && (!needTwo || date2);
+      const btn = document.getElementById('btn-generate');
+      btn.classList.toggle('ready', ready);
     }
-  }
-}
 
-function downloadImg() {
-  if (!genImgUrl) return;
-  const a = document.createElement('a');
-  a.href = genImgUrl;
-  a.download = 'inkdate-premium-' + genDateStr + '.jpg';
-  a.target = '_blank';
-  a.click();
-}
+    function buildPrompt() {
+      const newspaper = document.getElementById('newspaper').value.trim();
+      const date1 = document.getElementById('date1').value.trim();
+      const date2 = document.getElementById('date2').value.trim();
+      const surface = document.getElementById('surface').value;
+      const lighting = document.getElementById('lighting').value;
 
+      if (currentTier === 'thennow') {
+        return `Ultra-photorealistic museum-quality photograph of two authentic physical copies of ${newspaper} arranged as a premium "Then & Now" keepsake display. Both newspapers folded to show their front pages — a powerful visual timeline of two historic moments.
 
-function copyToClipboard() {
-  const prompt = window._lastPrompt || '';
-  navigator.clipboard.writeText(prompt).then(() => {
-    const btn = document.getElementById('copyPromptBtn');
-    btn.textContent = '✦ Copied!';
-    btn.style.background = 'linear-gradient(135deg,#3a6a18,#2a5010)';
-    setTimeout(() => {
-      btn.textContent = 'Copy Prompt to Clipboard';
-      btn.style.background = 'linear-gradient(135deg,var(--red),var(--red2))';
-    }, 2500);
-  }).catch(() => {
-    const el = document.getElementById('promptDisplay');
-    if(el){const range=document.createRange();range.selectNodeContents(el);window.getSelection().removeAllRanges();window.getSelection().addRange(range);}
-  });
-}
+ARRANGEMENT: The THEN newspaper (${date1}) lies at the top, slightly angled, upper half fully readable — masthead, banner headline, dominant photograph. The NOW newspaper (${date2}) lies beneath and slightly forward, equally prominent. Both rest on a ${surface}. ${lighting} falls across both papers creating natural depth and shadow between layers. A brass carriage clock sits softly out of focus at the upper edge, anchoring the theme of time passing.
 
-function showCopyScreen() {
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('sc').classList.add('active');
-  window.scrollTo(0,0);
-  const el = document.getElementById('promptDisplay');
-  if(el && window._lastPrompt) el.textContent = window._lastPrompt;
-}
+THEN NEWSPAPER — ${date1}: ${newspaper} front page. Masthead clearly showing "${newspaper}" and date "${date1}". Enormous bold serif banner headline reflecting the most significant news story of ${date1}. Dominant editorial press photograph from that day.
 
-</script>
+NOW NEWSPAPER — ${date2}: ${newspaper} front page. Masthead clearly showing "${newspaper}" and date "${date2}". Enormous bold serif banner headline reflecting the most significant news story of ${date2}. Dominant editorial press photograph from that day.
 
-<div id="si" class="screen">
-  <div class="ii">
-    <div class="il">INKDATE</div>
-    <div class="img-spinner">
-      <div class="img-ring"></div>
-      <div class="img-icon">&#127912;</div>
-    </div>
-    <div class="img-status" id="imgStatus">Composing your prompt...</div>
-    <div class="img-sub" id="imgSub">This takes 15&ndash;20 seconds</div>
-    <div class="img-progress"><div class="img-progress-bar" id="imgBar"></div></div>
-    <div class="img-sub" style="margin-top:8px;">&ldquo;Every date has a front page.&rdquo;</div>
-  </div>
-</div>
+PHYSICAL DETAILS: Both papers show authentic newsprint texture for their respective eras. Fold creases on both. Natural shadow between layers. Individual newsprint fibres at macro level.
 
-<div id="sg" class="screen">
-  <div class="gph">
-    <div class="gphl">INKDATE</div>
-    <div class="gpa">
-      <button class="gabt" onclick="go('ss')">&larr; New Date</button>
-      <button class="gabt" onclick="go('sp')">View Standard</button>
-      <button class="gabt gold" id="dlBtn" onclick="downloadImg()">&#8595; Download</button>
-    </div>
-  </div>
-  <div class="gen-content">
-    <div class="gen-badge">&#10022; <span>Edition Premium</span> &mdash; Photorealistic AI Generation</div>
-    <div class="gen-img-wrap">
-      <img id="genImg" src="" alt="Generated newspaper front page">
-      <div class="wm-overlay">INKDATE</div>
-    </div>
-  </div>
-</div>
+STYLE: Medium-format camera. Both mastheads and headlines tack sharp. Gentle bokeh toward edges. No digital elements. 8K. Museum quality.`;
+      }
 
-<div id="sc" class="screen" style="background:#1a150e;align-items:center;justify-content:center;padding:32px 24px;">
-  <div style="max-width:600px;width:100%;text-align:center;">
-    <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.8rem;
-      background:linear-gradient(135deg,#f5f0e8,var(--gold));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-      margin-bottom:8px;">Your Prompt is Ready</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;
-      font-size:1rem;color:rgba(245,240,232,0.65);margin-bottom:28px;">
-      Copy this into Midjourney or ChatGPT to generate your photorealistic newspaper
-    </div>
-    
-    <!-- Prompt box -->
-    <div style="background:#111009;border:1px solid rgba(196,149,106,0.3);
-      padding:20px;text-align:left;margin-bottom:16px;
-      font-family:'Old Standard TT',serif;font-size:0.9rem;
-      color:rgba(245,240,232,0.88);line-height:1.7;
-      max-height:220px;overflow-y:auto;border-radius:2px;" id="promptDisplay">
-    </div>
-    
-    <!-- Copy button -->
-    <button onclick="copyToClipboard()" style="width:100%;
-      background:linear-gradient(135deg,var(--red),var(--red2));
-      color:#fff;border:none;padding:16px;
-      font-family:'Playfair Display',serif;font-weight:700;
-      font-size:1rem;letter-spacing:3px;text-transform:uppercase;
-      cursor:pointer;margin-bottom:12px;" id="copyPromptBtn">
-      Copy Prompt to Clipboard
-    </button>
-    
-    <!-- Platform buttons -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
-      <a href="https://www.midjourney.com" target="_blank"
-        style="display:block;padding:12px;text-align:center;
-        background:rgba(196,149,106,0.08);border:1px solid rgba(196,149,106,0.3);
-        color:var(--gold);text-decoration:none;
-        font-family:'Old Standard TT',serif;font-size:0.85rem;letter-spacing:1px;
-        text-transform:uppercase;">
-        Open Midjourney &#8599;
-      </a>
-      <a href="https://chat.openai.com" target="_blank"
-        style="display:block;padding:12px;text-align:center;
-        background:rgba(196,149,106,0.08);border:1px solid rgba(196,149,106,0.3);
-        color:var(--gold);text-decoration:none;
-        font-family:'Old Standard TT',serif;font-size:0.85rem;letter-spacing:1px;
-        text-transform:uppercase;">
-        Open ChatGPT &#8599;
-      </a>
-    </div>
-    
-    <div style="font-size:0.8rem;color:rgba(245,240,232,0.4);
-      font-family:'Cormorant Garamond',serif;font-style:italic;margin-bottom:24px;">
-      Note: Copy the prompt, open Midjourney or ChatGPT, paste and generate.<br>
-      This will be fully automatic in Phase 3 once hosted on a server.
-    </div>
-    
-    <button onclick="go('ss')" style="background:transparent;
-      border:1px solid rgba(245,240,232,0.25);color:var(--white);
-      padding:12px 32px;font-family:'Old Standard TT',serif;
-      font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;
-      cursor:pointer;">
-      &larr; New Date
-    </button>
-  </div>
-</div>
+      if (currentTier === 'memorial') {
+        return `Ultra-photorealistic museum-quality photograph of two authentic physical copies of ${newspaper} as a tender memorial keepsake — bookending a life between two dates, captured forever in print.
+
+ARRANGEMENT: BIRTH newspaper (${date1}) at top, slightly angled, upper half readable. PASSING newspaper (${date2}) beneath and forward. Both on a ${surface}. ${lighting}. A single white lily at the composition edge, gently out of focus. Mood: contemplative, deeply respectful, quietly beautiful.
+
+BIRTH DATE — ${date1}: ${newspaper} front page. Masthead clearly showing "${newspaper}" and date "${date1}". Bold serif banner headline reflecting the significant news of ${date1}. Dominant editorial press photograph from that day.
+
+PASSING DATE — ${date2}: ${newspaper} front page. Masthead clearly showing "${newspaper}" and date "${date2}". Bold serif banner headline reflecting the news of ${date2}. Dominant editorial press photograph from that day.
+
+EMOTIONAL TONE: A keepsake a family frames for generations. Tender. Dignified. Profound.
+
+STYLE: Medium-format. Both dates and mastheads tack sharp. Warm soft focus at edges. Intimate golden afternoon light. No digital elements. 8K. Museum quality.`;
+      }
+
+      // Premium single
+      return `Ultra-photorealistic museum-quality photograph of an authentic physical copy of ${newspaper} dated ${date1}. The broadsheet lies flat on a ${surface}, photographed from a slight overhead angle with ${lighting}.
+
+The newsprint has the authentic texture and tone of a real printed broadsheet — fine fibre grain visible in raking light, ink saturation showing period-authentic offset print characteristics.
+
+MASTHEAD: ${newspaper} logotype at the very top in classic bold serif typeface, deep black ink, centered. Date "${date1}" printed clearly below the masthead. Thin decorative rule separating masthead from content.
+
+BANNER HEADLINE: An enormous historically accurate bold serif banner headline spanning the full page width — the most significant news story of ${date1} as it would have appeared on the front page of ${newspaper}.
+
+DECK HEADLINE: A secondary headline in approximately 38pt type below the banner providing context to the lead story.
+
+DOMINANT PHOTOGRAPH: A large high-contrast editorial press photograph — slightly grainy, authentic wire-service quality — showing the central subject of the day's lead story.
+
+SECONDARY STORIES: Two or three additional headline columns visible below the fold, reflecting other significant news of ${date1}.
+
+BODY TEXT: Dense justified 9pt serif body copy in multiple columns — authentic broadsheet layout.
+
+PHYSICAL DETAILS: Centre fold crease runs horizontally across the lower third. Adjacent copies visible beneath. Individual newsprint fibres at macro level.
+
+STYLE: Medium-format camera. Tack sharp on masthead and banner headline. Gentle focus fall-off toward paper edges. No digital borders, no mockups, no frames. 8K resolution. Museum quality. Cinematic realism.`;
+    }
+
+    function setStage(stage) {
+      const btn = document.getElementById('btn-generate');
+      const progress = document.getElementById('progress');
+      const bar1 = document.getElementById('bar1');
+      const bar2 = document.getElementById('bar2');
+      const lbl1 = document.getElementById('label1');
+      const lbl2 = document.getElementById('label2');
+
+      if (stage === 'idle') {
+        btn.textContent = 'Generate My Newspaper';
+        btn.classList.add('ready');
+        progress.classList.remove('show');
+      } else if (stage === 'building') {
+        btn.textContent = '◆  Building Prompt ...';
+        btn.classList.remove('ready');
+        progress.classList.add('show');
+        bar1.className = 'progress-bar active';
+        bar2.className = 'progress-bar';
+        lbl1.className = 'progress-label active';
+        lbl2.className = 'progress-label';
+      } else if (stage === 'generating') {
+        btn.textContent = '◆  Generating Image ...';
+        bar1.className = 'progress-bar done';
+        bar2.className = 'progress-bar active';
+        lbl1.className = 'progress-label done';
+        lbl1.textContent = '✓ Building Prompt';
+        lbl2.className = 'progress-label active';
+      } else if (stage === 'done') {
+        btn.textContent = '↺  Create Another';
+        btn.classList.add('ready');
+        btn.onclick = resetEngine;
+        bar1.className = 'progress-bar done';
+        bar2.className = 'progress-bar done';
+        lbl2.className = 'progress-label done';
+        lbl2.textContent = '✓ Generating Image';
+        progress.classList.remove('show');
+      }
+    }
+
+    async function runEngine() {
+      const btn = document.getElementById('btn-generate');
+      if (!btn.classList.contains('ready')) return;
+
+      document.getElementById('error-box').classList.remove('show');
+      document.getElementById('result').classList.remove('show');
+      document.getElementById('date1').style.display = '';
+      lbl1text = 'Building Prompt';
+      document.getElementById('label1').textContent = 'Building Prompt';
+      document.getElementById('label2').textContent = 'Generating Image';
+
+      try {
+        setStage('building');
+        const prompt = buildPrompt();
+        currentPrompt = prompt;
+
+        setStage('generating');
+        const res = await fetch('/.netlify/functions/generate-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt, tier: currentTier }),
+        });
+
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        if (!data.imageUrl) throw new Error('No image returned — please try again');
+
+        document.getElementById('result-img').src = data.imageUrl;
+        document.getElementById('result-link').href = data.imageUrl;
+        document.getElementById('result').classList.add('show');
+        setStage('done');
+
+      } catch(e) {
+        const eb = document.getElementById('error-box');
+        eb.textContent = '⚠ ' + (e.message || 'Something went wrong. Please try again.');
+        eb.classList.add('show');
+        setStage('idle');
+      }
+    }
+
+    function resetEngine() {
+      document.getElementById('result').classList.remove('show');
+      document.getElementById('error-box').classList.remove('show');
+      document.getElementById('progress').classList.remove('show');
+      document.getElementById('label1').textContent = 'Building Prompt';
+      document.getElementById('label2').textContent = 'Generating Image';
+      const btn = document.getElementById('btn-generate');
+      btn.textContent = 'Generate My Newspaper';
+      btn.onclick = runEngine;
+      currentPrompt = '';
+    }
+
+    function copyPrompt() {
+      if (!currentPrompt) return;
+      navigator.clipboard.writeText(currentPrompt).then(() => {
+        const btn = document.getElementById('btn-copy');
+        btn.textContent = '✓ Prompt Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy Prompt';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Init
+    checkReady();
+  </script>
+
 </body>
 </html>
