@@ -28,7 +28,8 @@ exports.handler = async function(event, context) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "No prompt provided" }) };
     }
 
-    const size = tier === "thennow" ? "1792x1024" : "1024x1792";
+    // Try gpt-image-1 first, fall back to dall-e-2
+    const size = tier === "thennow" ? "1536x1024" : "1024x1536";
 
     const response = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
@@ -37,25 +38,50 @@ exports.handler = async function(event, context) {
         "Authorization": `Bearer ${OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "dall-e-3",
+        model: "gpt-image-1",
         prompt: prompt,
         n: 1,
         size: size,
-        quality: "hd",
-  
+        quality: "high",
       }),
     });
 
     const data = await response.json();
 
+    // If gpt-image-1 fails, try dall-e-2
     if (data.error) {
-      return { statusCode: 400, headers, body: JSON.stringify({ error: data.error.message }) };
+      const response2 = await fetch("https://api.openai.com/v1/images/generations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "dall-e-2",
+          prompt: prompt.slice(0, 1000),
+          n: 1,
+          size: "1024x1024",
+        }),
+      });
+      const data2 = await response2.json();
+      if (data2.error) {
+        return { statusCode: 400, headers, body: JSON.stringify({ error: data2.error.message }) };
+      }
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ imageUrl: data2.data[0].url, model: "dall-e-2" }),
+      };
     }
+
+    // gpt-image-1 returns base64
+    const imageData = data.data[0].b64_json;
+    const imageUrl = `data:image/png;base64,${imageData}`;
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ imageUrl: data.data[0].url }),
+      body: JSON.stringify({ imageUrl, model: "gpt-image-1" }),
     };
 
   } catch (err) {
