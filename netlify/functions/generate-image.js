@@ -42,7 +42,7 @@ exports.handler = async function(event, context) {
         n: 1,
         size: size,
         quality: "hd",
-        style: "natural",
+  
       }),
     });
 
