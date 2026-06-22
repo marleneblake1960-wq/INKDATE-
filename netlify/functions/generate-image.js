@@ -43,7 +43,7 @@ exports.handler = async function(event, context) {
         prompt: p,
         n: 1,
         size: "1024x1024",
-        quality: "standard",
+        quality: "high",
       }),
     });
 
