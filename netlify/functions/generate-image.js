@@ -1,4 +1,4 @@
- exports.handler = async function(event, context) {
+exports.handler = async function(event, context) {
 
   const headers = {
     "Access-Control-Allow-Origin": "*",
@@ -49,7 +49,7 @@
         prompt: prompt,
         n: 1,
         size: "1024x1024",
-        quality: "high",
+        quality: "medium",
       }),
     });
 
