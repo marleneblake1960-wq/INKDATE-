@@ -686,16 +686,10 @@ STYLE: Medium-format camera. Tack sharp on masthead and banner headline. Gentle 
           body: JSON.stringify({ research, tier: currentTier, surface, lighting }),
         });
 
-        const contentType = imgRes.headers.get('content-type') || '';
-        let imageUrl;
-        if (contentType.includes('image/png')) {
-          const blob = await imgRes.blob();
-          imageUrl = URL.createObjectURL(blob);
-        } else {
-          const data = await imgRes.json();
-          if (data.error) throw new Error(data.error);
-          imageUrl = data.imageUrl;
-        }
+        const data = await imgRes.json();
+        if (data.error) throw new Error(data.error);
+        const imageUrl = data.imageUrl;
+        if (!imageUrl) throw new Error('No image returned');
 
         document.getElementById('result-img').src = imageUrl;
         document.getElementById('result-link').href = imageUrl;
