@@ -17,23 +17,11 @@ exports.handler = async function(event, context) {
     return { statusCode: 500, headers, body: JSON.stringify({ error: "API key not configured" }) };
   }
 
-  // GET request — diagnostic mode, show available models
   if (event.httpMethod === "GET") {
-    const modelsRes = await fetch("https://api.openai.com/v1/models", {
-      headers: { "Authorization": `Bearer ${OPENAI_API_KEY}` },
-    });
-    const modelsData = await modelsRes.json();
-    const imageModels = modelsData.data
-      ? modelsData.data.filter(m => m.id.includes("dall") || m.id.includes("image")).map(m => m.id)
-      : ["error fetching models"];
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({
-        diagnostic: true,
-        keyPrefix: OPENAI_API_KEY.slice(0, 10),
-        imageModels
-      }),
+      body: JSON.stringify({ status: "Inkdate image function running", keyPrefix: OPENAI_API_KEY.slice(0, 10) }),
     };
   }
 
@@ -42,48 +30,48 @@ exports.handler = async function(event, context) {
   }
 
   try {
-    const { prompt } = JSON.parse(event.body || "{}");
+    const { prompt, tier } = JSON.parse(event.body || "{}");
 
     if (!prompt) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "No prompt provided" }) };
     }
 
-    const models = [
-      { id: "dall-e-3", body: { model: "dall-e-3", prompt: prompt.slice(0, 4000), n: 1, size: "1024x1792", quality: "hd" } },
-      { id: "dall-e-2", body: { model: "dall-e-2", prompt: prompt.slice(0, 1000), n: 1, size: "1024x1024" } },
-      { id: "gpt-image-1", body: { model: "gpt-image-1", prompt: prompt.slice(0, 4000), n: 1, size: "1024x1024", quality: "high" } },
-    ];
+    // Use gpt-image-1 — confirmed available on this account
+    const size = tier === "thennow" ? "1536x1024" : "1024x1536";
 
-    let lastError = "";
-    for (const model of models) {
-      const res = await fetch("https://api.openai.com/v1/images/generations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify(model.body),
-      });
-      const data = await res.json();
+    const response = await fetch("https://api.openai.com/v1/images/generations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-image-1",
+        prompt: prompt,
+        n: 1,
+        size: size,
+        quality: "high",
+      }),
+    });
 
-      if (!data.error) {
-        const imageUrl = data.data[0].url ||
-          (data.data[0].b64_json ? `data:image/png;base64,${data.data[0].b64_json}` : null);
-        if (imageUrl) {
-          return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify({ imageUrl, model: model.id }),
-          };
-        }
-      }
-      lastError = data.error ? data.error.message : "No image returned";
+    const data = await response.json();
+
+    if (data.error) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: data.error.message }),
+      };
     }
 
+    // gpt-image-1 returns base64
+    const b64 = data.data[0].b64_json;
+    const imageUrl = `data:image/png;base64,${b64}`;
+
     return {
-      statusCode: 400,
+      statusCode: 200,
       headers,
-      body: JSON.stringify({ error: `All models failed. Last error: ${lastError}` }),
+      body: JSON.stringify({ imageUrl, model: "gpt-image-1" }),
     };
 
   } catch (err) {
