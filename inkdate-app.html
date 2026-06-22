@@ -409,11 +409,15 @@
     <div class="progress" id="progress">
       <div class="progress-step">
         <div class="progress-bar" id="bar1"></div>
-        <div class="progress-label" id="label1">Building Prompt</div>
+        <div class="progress-label" id="label1">Researching</div>
       </div>
       <div class="progress-step">
         <div class="progress-bar" id="bar2"></div>
-        <div class="progress-label" id="label2">Generating Image</div>
+        <div class="progress-label" id="label2">Building Prompt</div>
+      </div>
+      <div class="progress-step">
+        <div class="progress-bar" id="bar3"></div>
+        <div class="progress-label" id="label3">Generating Image</div>
       </div>
     </div>
 
@@ -573,36 +577,51 @@ STYLE: Medium-format camera. Tack sharp on masthead and banner headline. Gentle 
       const progress = document.getElementById('progress');
       const bar1 = document.getElementById('bar1');
       const bar2 = document.getElementById('bar2');
+      const bar3 = document.getElementById('bar3');
       const lbl1 = document.getElementById('label1');
       const lbl2 = document.getElementById('label2');
+      const lbl3 = document.getElementById('label3');
 
       if (stage === 'idle') {
         btn.textContent = 'Generate My Newspaper';
         btn.classList.add('ready');
         progress.classList.remove('show');
-      } else if (stage === 'building') {
-        btn.textContent = '◆  Building Prompt ...';
+        lbl1.textContent = 'Researching';
+        lbl2.textContent = 'Building Prompt';
+        lbl3.textContent = 'Generating Image';
+      } else if (stage === 'researching') {
+        btn.textContent = '◆  Researching Date ...';
         btn.classList.remove('ready');
         progress.classList.add('show');
         bar1.className = 'progress-bar active';
         bar2.className = 'progress-bar';
+        bar3.className = 'progress-bar';
         lbl1.className = 'progress-label active';
         lbl2.className = 'progress-label';
-      } else if (stage === 'generating') {
-        btn.textContent = '◆  Generating Image ...';
+        lbl3.className = 'progress-label';
+      } else if (stage === 'building') {
+        btn.textContent = '◆  Building Prompt ...';
         bar1.className = 'progress-bar done';
         bar2.className = 'progress-bar active';
+        bar3.className = 'progress-bar';
         lbl1.className = 'progress-label done';
-        lbl1.textContent = '✓ Building Prompt';
+        lbl1.textContent = '✓ Researching';
         lbl2.className = 'progress-label active';
+        lbl3.className = 'progress-label';
+      } else if (stage === 'generating') {
+        btn.textContent = '◆  Generating Image ...';
+        bar2.className = 'progress-bar done';
+        bar3.className = 'progress-bar active';
+        lbl2.className = 'progress-label done';
+        lbl2.textContent = '✓ Building Prompt';
+        lbl3.className = 'progress-label active';
       } else if (stage === 'done') {
         btn.textContent = '↺  Create Another';
         btn.classList.add('ready');
         btn.onclick = resetEngine;
-        bar1.className = 'progress-bar done';
-        bar2.className = 'progress-bar done';
-        lbl2.className = 'progress-label done';
-        lbl2.textContent = '✓ Generating Image';
+        bar3.className = 'progress-bar done';
+        lbl3.className = 'progress-label done';
+        lbl3.textContent = '✓ Generating Image';
         progress.classList.remove('show');
       }
     }
@@ -613,36 +632,73 @@ STYLE: Medium-format camera. Tack sharp on masthead and banner headline. Gentle 
 
       document.getElementById('error-box').classList.remove('show');
       document.getElementById('result').classList.remove('show');
-      document.getElementById('date1').style.display = '';
-      lbl1text = 'Building Prompt';
-      document.getElementById('label1').textContent = 'Building Prompt';
-      document.getElementById('label2').textContent = 'Generating Image';
+
+      const newspaper = document.getElementById('newspaper').value.trim();
+      const date1 = document.getElementById('date1').value.trim();
+      const date2 = document.getElementById('date2').value.trim();
+      const surface = document.getElementById('surface').value;
+      const lighting = document.getElementById('lighting').value;
 
       try {
-        setStage('building');
-        const prompt = buildPrompt();
-        currentPrompt = prompt;
+        // STAGE 1 — Research
+        setStage('researching');
+        let research;
 
+        if (currentTier === 'thennow' || currentTier === 'memorial') {
+          // Research both dates
+          const [res1, res2] = await Promise.all([
+            fetch('/.netlify/functions/research-date', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ newspaper, date: date1 }),
+            }),
+            fetch('/.netlify/functions/research-date', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ newspaper, date: date2 }),
+            }),
+          ]);
+          const [data1, data2] = await Promise.all([res1.json(), res2.json()]);
+          if (data1.error) throw new Error('Research failed for date 1: ' + data1.error);
+          if (data2.error) throw new Error('Research failed for date 2: ' + data2.error);
+          research = { date1: data1.research, date2: data2.research };
+        } else {
+          // Research single date
+          const res = await fetch('/.netlify/functions/research-date', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ newspaper, date: date1 }),
+          });
+          const data = await res.json();
+          if (data.error) throw new Error('Research failed: ' + data.error);
+          research = data.research;
+        }
+
+        // STAGE 2 — Build prompt (handled server side)
+        setStage('building');
+        await new Promise(r => setTimeout(r, 500));
+
+        // STAGE 3 — Generate image
         setStage('generating');
-        const res = await fetch('/.netlify/functions/generate-image', {
+        const imgRes = await fetch('/.netlify/functions/generate-image', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt, tier: currentTier }),
+          body: JSON.stringify({ research, tier: currentTier, surface, lighting }),
         });
 
-        const contentType = res.headers.get("content-type") || "";
+        const contentType = imgRes.headers.get('content-type') || '';
         let imageUrl;
-        if (contentType.includes("image/png")) {
-          const blob = await res.blob();
+        if (contentType.includes('image/png')) {
+          const blob = await imgRes.blob();
           imageUrl = URL.createObjectURL(blob);
         } else {
-          const data = await res.json();
+          const data = await imgRes.json();
           if (data.error) throw new Error(data.error);
-          if (!data.imageUrl) throw new Error("No image returned");
           imageUrl = data.imageUrl;
         }
-        document.getElementById("result-img").src = imageUrl;
-        document.getElementById("result-link").href = imageUrl;
+
+        document.getElementById('result-img').src = imageUrl;
+        document.getElementById('result-link').href = imageUrl;
         document.getElementById('result').classList.add('show');
         setStage('done');
 
