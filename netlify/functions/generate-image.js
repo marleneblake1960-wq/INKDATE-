@@ -19,19 +19,10 @@ exports.handler = async function(event, context) {
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
     if (!OPENAI_API_KEY) throw new Error("API key not configured");
 
-    let prompt = "";
-    try {
-      const parsed = JSON.parse(event.body);
-      prompt = parsed.prompt || "";
-    } catch(e) {
-      throw new Error("Could not parse request: " + e.message);
-    }
-
+    const { prompt } = JSON.parse(event.body);
     if (!prompt) throw new Error("No prompt provided");
 
-    // Keep prompt under 3000 chars
-    const p = prompt.slice(0, 3000);
-
+    // Use low quality and small size to keep response fast and small
     const res = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
@@ -40,31 +31,29 @@ exports.handler = async function(event, context) {
       },
       body: JSON.stringify({
         model: "gpt-image-1",
-        prompt: p,
+        prompt: prompt.slice(0, 2000),
         n: 1,
         size: "1024x1024",
-        quality: "high",
+        quality: "low",
       }),
     });
 
-    const text = await res.text();
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch(e) {
-      throw new Error("OpenAI returned invalid JSON: " + text.slice(0, 200));
-    }
-
+    const data = await res.json();
     if (data.error) throw new Error(data.error.message);
-    if (!data.data || !data.data[0]) throw new Error("No image in response");
 
     const b64 = data.data[0].b64_json;
-    if (!b64) throw new Error("No base64 image data");
+    if (!b64) throw new Error("No image returned");
 
+    // Return as image/png directly — bypasses JSON size limit
     return {
       statusCode: 200,
-      headers,
-      body: JSON.stringify({ imageUrl: "data:image/png;base64," + b64 }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "image/png",
+        "Content-Transfer-Encoding": "base64",
+      },
+      body: b64,
+      isBase64Encoded: true,
     };
 
   } catch(err) {
