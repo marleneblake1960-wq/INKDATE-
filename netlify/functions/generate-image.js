@@ -21,7 +21,7 @@ exports.handler = async function(event, context) {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ status: "Inkdate image function running", keyPrefix: OPENAI_API_KEY.slice(0, 10) }),
+      body: JSON.stringify({ status: "Inkdate function running", keyPrefix: OPENAI_API_KEY.slice(0, 10) }),
     };
   }
 
@@ -36,28 +36,47 @@ exports.handler = async function(event, context) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "No prompt provided" }) };
     }
 
+    // gpt-image-1 has a 32768 character limit but keep it short for reliability
+    const trimmedPrompt = prompt.slice(0, 3000);
+
+    const reqBody = {
+      model: "gpt-image-1",
+      prompt: trimmedPrompt,
+      n: 1,
+      size: "1024x1024",
+      quality: "high",
+    };
+
     const response = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${OPENAI_API_KEY}`,
       },
-      body: JSON.stringify({
-        model: "gpt-image-1",
-        prompt: prompt,
-        n: 1,
-        size: "1024x1024",
-        quality: "high",
-      }),
+      body: JSON.stringify(reqBody),
     });
 
     const data = await response.json();
 
+    // Return full error details for debugging
     if (data.error) {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ error: data.error.message }),
+        body: JSON.stringify({
+          error: data.error.message,
+          errorCode: data.error.code,
+          errorType: data.error.type,
+          promptLength: trimmedPrompt.length,
+        }),
+      };
+    }
+
+    if (!data.data || !data.data[0]) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: "No image data returned", rawResponse: JSON.stringify(data).slice(0, 500) }),
       };
     }
 
