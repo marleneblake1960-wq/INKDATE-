@@ -11,89 +11,67 @@ exports.handler = async function(event, context) {
     return { statusCode: 200, headers, body: "" };
   }
 
-  const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
-  if (!OPENAI_API_KEY) {
-    return { statusCode: 500, headers, body: JSON.stringify({ error: "API key not configured" }) };
-  }
-
   if (event.httpMethod === "GET") {
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({ status: "Inkdate function running", keyPrefix: OPENAI_API_KEY.slice(0, 10) }),
-    };
-  }
-
-  if (event.httpMethod !== "POST") {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allowed" }) };
+    return { statusCode: 200, headers, body: JSON.stringify({ status: "ok" }) };
   }
 
   try {
-    const { prompt } = JSON.parse(event.body || "{}");
+    const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+    if (!OPENAI_API_KEY) throw new Error("API key not configured");
 
-    if (!prompt) {
-      return { statusCode: 400, headers, body: JSON.stringify({ error: "No prompt provided" }) };
+    let prompt = "";
+    try {
+      const parsed = JSON.parse(event.body);
+      prompt = parsed.prompt || "";
+    } catch(e) {
+      throw new Error("Could not parse request: " + e.message);
     }
 
-    // gpt-image-1 has a 32768 character limit but keep it short for reliability
-    const trimmedPrompt = prompt.slice(0, 3000);
+    if (!prompt) throw new Error("No prompt provided");
 
-    const reqBody = {
-      model: "gpt-image-1",
-      prompt: trimmedPrompt,
-      n: 1,
-      size: "1024x1024",
-      quality: "high",
-    };
+    // Keep prompt under 3000 chars
+    const p = prompt.slice(0, 3000);
 
-    const response = await fetch("https://api.openai.com/v1/images/generations", {
+    const res = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`,
+        "Authorization": "Bearer " + OPENAI_API_KEY,
       },
-      body: JSON.stringify(reqBody),
+      body: JSON.stringify({
+        model: "gpt-image-1",
+        prompt: p,
+        n: 1,
+        size: "1024x1024",
+        quality: "standard",
+      }),
     });
 
-    const data = await response.json();
-
-    // Return full error details for debugging
-    if (data.error) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({
-          error: data.error.message,
-          errorCode: data.error.code,
-          errorType: data.error.type,
-          promptLength: trimmedPrompt.length,
-        }),
-      };
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch(e) {
+      throw new Error("OpenAI returned invalid JSON: " + text.slice(0, 200));
     }
 
-    if (!data.data || !data.data[0]) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ error: "No image data returned", rawResponse: JSON.stringify(data).slice(0, 500) }),
-      };
-    }
+    if (data.error) throw new Error(data.error.message);
+    if (!data.data || !data.data[0]) throw new Error("No image in response");
 
     const b64 = data.data[0].b64_json;
-    const imageUrl = `data:image/png;base64,${b64}`;
+    if (!b64) throw new Error("No base64 image data");
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ imageUrl, model: "gpt-image-1" }),
+      body: JSON.stringify({ imageUrl: "data:image/png;base64," + b64 }),
     };
 
-  } catch (err) {
+  } catch(err) {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: err.message || "Server error" }),
+      body: JSON.stringify({ error: err.message }),
     };
   }
 };
