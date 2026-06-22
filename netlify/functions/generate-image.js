@@ -30,14 +30,11 @@ exports.handler = async function(event, context) {
   }
 
   try {
-    const { prompt, tier } = JSON.parse(event.body || "{}");
+    const { prompt } = JSON.parse(event.body || "{}");
 
     if (!prompt) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "No prompt provided" }) };
     }
-
-    // Use gpt-image-1 — confirmed available on this account
-    const size = tier === "thennow" ? "1536x1024" : "1024x1536";
 
     const response = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
@@ -49,7 +46,7 @@ exports.handler = async function(event, context) {
         model: "gpt-image-1",
         prompt: prompt,
         n: 1,
-        size: size,
+        size: "1024x1024",
         quality: "high",
       }),
     });
@@ -64,7 +61,6 @@ exports.handler = async function(event, context) {
       };
     }
 
-    // gpt-image-1 returns base64
     const b64 = data.data[0].b64_json;
     const imageUrl = `data:image/png;base64,${b64}`;
 
