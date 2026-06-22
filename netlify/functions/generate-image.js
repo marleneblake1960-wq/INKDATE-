@@ -107,12 +107,8 @@ Authentic broadsheet newsprint texture, fold crease across lower third, 8K museu
 
     return {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "image/png",
-      },
-      body: b64,
-      isBase64Encoded: true,
+      headers,
+      body: JSON.stringify({ imageUrl: "data:image/png;base64," + b64 }),
     };
 
   } catch(err) {
