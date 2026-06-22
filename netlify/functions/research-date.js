@@ -22,32 +22,15 @@ exports.handler = async function(event, context) {
     const { newspaper, date } = JSON.parse(event.body || "{}");
     if (!newspaper || !date) throw new Error("Newspaper and date are required");
 
-    const prompt = `You are a newspaper archive researcher. Research the front page of ${newspaper} dated ${date}.
+    const prompt = `You are a newspaper archive expert with deep knowledge of historical front pages.
 
-Search the web and find the EXACT details. Return ONLY a JSON object with these fields:
+Research the front page of "${newspaper}" dated ${date}.
 
-{
-  "newspaper": "${newspaper}",
-  "date": "${date}",
-  "masthead": {
-    "logotype_style": "describe the exact font style of the masthead",
-    "masthead_color": "color of masthead text",
-    "cover_price": "price shown on the paper"
-  },
-  "banner_headline": "the exact main headline as it appeared",
-  "deck_headline": "the secondary headline below the main one",
-  "lead_story": "2-3 sentence summary of the lead story",
-  "dominant_photograph": "detailed description of the main front page photograph",
-  "photo_caption": "the caption under the main photograph",
-  "secondary_stories": [
-    "headline of second story",
-    "headline of third story"
-  ],
-  "weather": "weather in the city that day if known",
-  "historical_context": "brief note on the printing era and paper style"
-}
+Return ONLY a valid JSON object with no other text, no markdown, no backticks:
 
-Be precise. Use real verified facts only. Return ONLY the JSON, no other text.`;
+{"newspaper":"${newspaper}","date":"${date}","masthead":{"logotype_style":"classic bold serif","masthead_color":"deep black","cover_price":""},"banner_headline":"","deck_headline":"","lead_story":"","dominant_photograph":"","photo_caption":"","secondary_stories":["",""],"historical_context":""}
+
+Fill in all fields with accurate historical information for that exact date. The banner_headline must be the real headline that appeared on the front page. Be precise and factual.`;
 
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -58,27 +41,30 @@ Be precise. Use real verified facts only. Return ONLY the JSON, no other text.`;
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
-        max_tokens: 1500,
-        tools: [{ type: "web_search_20250305", name: "web_search" }],
+        max_tokens: 1000,
         messages: [{ role: "user", content: prompt }],
       }),
     });
 
-    const data = await res.json();
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch(e) {
+      throw new Error("Invalid response from Anthropic API");
+    }
+
     if (data.error) throw new Error(data.error.message);
 
-    // Extract text from response
-    const text = data.content
-      .filter(b => b.type === "text")
-      .map(b => b.text)
-      .join("");
+    const content = data.content && data.content[0] && data.content[0].text;
+    if (!content) throw new Error("No content returned");
 
     // Parse JSON from response
     let research;
     try {
-      research = JSON.parse(text.replace(/```json|```/g, "").trim());
+      research = JSON.parse(content.replace(/```json|```/g, "").trim());
     } catch {
-      const match = text.match(/\{[\s\S]*\}/);
+      const match = content.match(/\{[\s\S]*\}/);
       if (match) {
         research = JSON.parse(match[0]);
       } else {
