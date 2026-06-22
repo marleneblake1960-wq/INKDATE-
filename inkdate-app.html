@@ -630,12 +630,19 @@ STYLE: Medium-format camera. Tack sharp on masthead and banner headline. Gentle 
           body: JSON.stringify({ prompt, tier: currentTier }),
         });
 
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-        if (!data.imageUrl) throw new Error('No image returned — please try again');
-
-        document.getElementById('result-img').src = data.imageUrl;
-        document.getElementById('result-link').href = data.imageUrl;
+        const contentType = res.headers.get("content-type") || "";
+        let imageUrl;
+        if (contentType.includes("image/png")) {
+          const blob = await res.blob();
+          imageUrl = URL.createObjectURL(blob);
+        } else {
+          const data = await res.json();
+          if (data.error) throw new Error(data.error);
+          if (!data.imageUrl) throw new Error("No image returned");
+          imageUrl = data.imageUrl;
+        }
+        document.getElementById("result-img").src = imageUrl;
+        document.getElementById("result-link").href = imageUrl;
         document.getElementById('result').classList.add('show');
         setStage('done');
 
