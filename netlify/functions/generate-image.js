@@ -36,7 +36,15 @@ exports.handler = async function(event, context) {
     let prompt;
     if (tier === "thennow") {
       const r2 = research.date2 || {};
-      prompt = `Ultra-photorealistic museum photograph of two ${r.newspaper} newspapers as Then and Now keepsake on ${surfaceStr} with ${lightingStr}. THEN (${r.date}): masthead "${r.newspaper}", headline "${r.banner_headline}". NOW (${r2.date}): masthead "${r2.newspaper || r.newspaper}", headline "${r2.banner_headline}". Brass clock background. Aged newsprint. 8K museum quality.`;
+      prompt = `Ultra-photorealistic museum-quality photograph of two ${r.newspaper} newspapers arranged as a Then and Now keepsake. The newspapers fill the entire frame with minimal empty space around them.
+
+ARRANGEMENT: The THEN newspaper (${r.date}) lies at the TOP of the composition, slightly angled, taking up the upper half of the image. The NOW newspaper (${r2.date}) lies beneath it, slightly overlapping, taking up the lower half. Both newspapers are stacked vertically — THEN on top, NOW underneath. A brass carriage clock is visible in the background behind the papers. The whole scene sits on a ${surfaceStr} with ${lightingStr}.
+
+THEN NEWSPAPER — top paper: masthead "${r.newspaper}", date "${r.date}" visible, headline "${r.banner_headline}", photograph below headline.
+
+NOW NEWSPAPER — bottom paper: masthead "${r2.newspaper || r.newspaper}", date "${r2.date}" visible, headline "${r2.banner_headline}", photograph below headline.
+
+The two newspapers together fill 90% of the frame. Authentic aged newsprint. All text readable. 8K museum quality.`;
     } else if (tier === "memorial") {
       const r2 = research.date2 || {};
       prompt = `Ultra-photorealistic museum photograph of two ${r.newspaper} newspapers as memorial keepsake on ${surfaceStr} with ${lightingStr}. White lily. BIRTH (${r.date}): masthead "${r.newspaper}", headline "${r.banner_headline}". PASSING (${r2.date}): masthead "${r2.newspaper || r.newspaper}", headline "${r2.banner_headline}". Dignified. Aged newsprint. 8K museum quality.`;
