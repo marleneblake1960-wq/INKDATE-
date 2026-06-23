@@ -495,6 +495,18 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
   });
 });
+
+// Add to Home Screen banner
+function dismissA2HS(){
+  document.getElementById('a2hs-banner').style.display='none';
+}
+setTimeout(()=>{
+  const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+  if(!isStandalone){
+    const b = document.getElementById('a2hs-banner');
+    if(b) b.style.display='block';
+  }
+}, 2000);
 </script>
 </body>
 </html>
