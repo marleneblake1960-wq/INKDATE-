@@ -2,3 +2,4 @@
   from = "/"
   to = "/inkdate-landing.html"
   status = 200
+
