@@ -1,14 +1,4 @@
-[build]
-  publish = "."
-  functions = "netlify/functions"
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
-    Access-Control-Allow-Headers = "Content-Type"
-    
-
-
-
+[[redirects]]
+  from = "/"
+  to = "/inkdate-landing.html"
+  status = 200
