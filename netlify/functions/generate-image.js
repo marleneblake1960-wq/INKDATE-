@@ -19,37 +19,41 @@ exports.handler = async function(event, context) {
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
     if (!OPENAI_API_KEY) throw new Error("OpenAI API key not configured");
 
-    const body = JSON.parse(event.body || "{}");
+    let body;
+    try {
+      body = JSON.parse(event.body || "{}");
+    } catch(e) {
+      throw new Error("Could not parse request: " + e.message);
+    }
+
     const { research, tier, surface, lighting } = body;
-    if (!research) throw new Error("No research data");
+    if (!research) throw new Error("No research data provided");
 
     const r = (tier === "thennow" || tier === "memorial") ? research.date1 : research;
     const surfaceStr = surface || "pale grey marble surface";
-    const lightingStr = lighting || "warm golden hour light";
+    const lightingStr = lighting || "warm golden hour light from the upper left";
 
     let prompt;
+
     if (tier === "thennow") {
       const r2 = research.date2 || {};
-      prompt = `A museum-quality photorealistic image of two authentic vintage newspaper front pages displayed as a keepsake on a ${surfaceStr} with ${lightingStr}. The first newspaper is dated ${r.date} with the title "${r.newspaper}" in classic serif masthead lettering and the headline "${r.banner_headline}". The second newspaper below is dated ${r2.date} with the title "${r2.newspaper || r.newspaper}" and headline "${r2.banner_headline}". An antique brass clock sits beside the papers. Both newspapers show authentic aged newsprint texture with realistic typography. Fine art photography style. 8K resolution.`;
+      prompt = `Ultra-photorealistic museum-quality photograph of two authentic physical copies of ${r.newspaper} arranged as a Then and Now keepsake on a ${surfaceStr} with ${lightingStr}. The THEN newspaper (${r.date}) lies at the top showing masthead "${r.newspaper}", date "${r.date}", and headline "${r.banner_headline}". The NOW newspaper (${r2.date}) lies beneath showing masthead "${r2.newspaper || r.newspaper}", date "${r2.date}", and headline "${r2.banner_headline}". Brass carriage clock in background. Authentic aged newsprint. All text perfectly readable. 8K museum quality.`;
+
     } else if (tier === "memorial") {
       const r2 = research.date2 || {};
-      prompt = `A museum-quality photorealistic image of two authentic vintage newspaper front pages displayed as a tribute keepsake on a ${surfaceStr} with ${lightingStr}. A single white lily rests elegantly beside the papers. The first newspaper is dated ${r.date} with the title "${r.newspaper}" in classic serif masthead lettering and the headline "${r.banner_headline}". The second newspaper is dated ${r2.date} with the title "${r2.newspaper || r.newspaper}" and headline "${r2.banner_headline}". Both newspapers show authentic aged newsprint texture. Peaceful and dignified composition. Fine art photography. 8K resolution.`;
+      prompt = `Ultra-photorealistic museum-quality photograph of two authentic physical copies of ${r.newspaper} as a memorial keepsake on a ${surfaceStr} with ${lightingStr}. Single white lily beside the papers. BIRTH newspaper (${r.date}) showing masthead "${r.newspaper}" and headline "${r.banner_headline}". PASSING newspaper (${r2.date}) showing masthead "${r2.newspaper || r.newspaper}" and headline "${r2.banner_headline}". Tender dignified mood. Authentic newsprint. All text readable. 8K museum quality.`;
+
     } else {
-      prompt = `Ultra-photorealistic museum-quality photograph of an authentic ${r.newspaper} newspaper front page dated ${r.date}, lying flat on a ${surfaceStr} with ${lightingStr}.
+      prompt = `Ultra-photorealistic museum-quality photograph of an authentic ${r.newspaper} newspaper front page lying flat on a ${surfaceStr} with ${lightingStr}.
 
-MASTHEAD: At the very top of the page the masthead reads exactly "${r.newspaper}" in large classic Gothic serif typeface, deep black ink, centered. On the line immediately below the masthead, clearly printed in small readable type: "${r.date}" — VOL. I — PRICE 25 CENTS. This date line is CRITICAL and must be fully legible. Two thin horizontal rules, one above and one below this date line, separate the masthead from the headlines below.
-
-BANNER HEADLINE: Enormous bold serif type spanning the full page width, all text within page edges, reads: "${r.banner_headline}"
-
-DECK HEADLINE: Secondary headline below the banner reads: "${r.deck_headline}"
-
-PHOTOGRAPH: A wide establishing shot of thousands of jubilant supporters celebrating at night in a large outdoor venue, hands raised in celebration, the scene lit by stadium lights. Black and white, high contrast, authentic wire service press photography. No individual faces identifiable. American flags visible in the crowd but shown naturally, not prominently.
-
-SECONDARY STORIES: Two or three additional smaller headlines visible in columns below the fold.
-
-BODY TEXT: Dense justified serif copy in multiple columns filling the lower portion of the page.
-
-PHYSICAL DETAILS: Authentic aged newsprint texture throughout. Centre fold crease across lower third. All headlines fully readable, no text cut off at edges. Sharp focus on masthead and headline. 8K resolution. Museum quality. Cinematic realism.`;
+MASTHEAD: "${r.newspaper}" in Gothic serif typeface at the very top, deep black ink, centered.
+DATE LINE directly below masthead: "${r.date}" — clearly legible in small type.
+BANNER HEADLINE in enormous bold serif: "${r.banner_headline}"
+DECK HEADLINE below that: "${r.deck_headline}"
+PHOTOGRAPH: Wide crowd scene celebrating at night, stadium lights, black and white press photography.
+SECONDARY STORIES in columns below.
+BODY TEXT in dense serif columns.
+Authentic aged newsprint, fold crease, sharp focus on headline and date. 8K museum quality.`;
     }
 
     const res = await fetch("https://api.openai.com/v1/images/generations", {
@@ -68,21 +72,24 @@ PHYSICAL DETAILS: Authentic aged newsprint texture throughout. Centre fold creas
     });
 
     const data = await res.json();
+
     if (data.error) throw new Error(data.error.message);
-    if (!data.data || !data.data[0] || !data.data[0].b64_json) throw new Error("No image returned");
+    if (!data.data || !data.data[0]) throw new Error("No image returned");
 
-    const b64 = data.data[0].b64_json;
+    // Handle both base64 and URL responses
+    let imageUrl;
+    if (data.data[0].b64_json) {
+      imageUrl = "data:image/png;base64," + data.data[0].b64_json;
+    } else if (data.data[0].url) {
+      imageUrl = data.data[0].url;
+    } else {
+      throw new Error("No image data in response");
+    }
 
-    // Return as binary PNG — browser loads it directly as an image src
     return {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "image/png",
-        "Cache-Control": "no-cache",
-      },
-      body: b64,
-      isBase64Encoded: true,
+      headers,
+      body: JSON.stringify({ imageUrl }),
     };
 
   } catch(err) {
