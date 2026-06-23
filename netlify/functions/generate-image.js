@@ -1,5 +1,3 @@
-const { getStore } = require("@netlify/blobs");
-
 exports.handler = async function(event, context) {
 
   const headers = {
@@ -46,7 +44,7 @@ exports.handler = async function(event, context) {
       prompt = `Ultra-photorealistic museum-quality photograph of ${r.newspaper} newspaper dated ${r.date} lying flat on ${surfaceStr} with ${lightingStr}. Masthead reads "${r.newspaper}". Date "${r.date}" clearly printed below masthead. Banner headline "${r.banner_headline}". Deck "${r.deck_headline}". Crowd celebration photo below. Dense body columns. Aged newsprint texture. Fold crease. 8K museum quality.`;
     }
 
-    // Generate image
+    // Generate with smaller size to keep response under 6MB
     const res = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
@@ -57,29 +55,20 @@ exports.handler = async function(event, context) {
         model: "chatgpt-image-latest",
         prompt: prompt,
         n: 1,
-        size: "1024x1536",
-        quality: "medium",
+        size: "1024x1024",
+        quality: "low",
+        output_compression: 50,
       }),
     });
 
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
     if (!data.data || !data.data[0] || !data.data[0].b64_json) {
-      throw new Error("No image data returned from OpenAI");
+      throw new Error("No image data returned");
     }
 
-    // Store image in Netlify Blobs
-    const b64 = data.data[0].b64_json;
-    const imageBuffer = Buffer.from(b64, "base64");
-    const key = `newspaper-${Date.now()}.png`;
-
-    const store = getStore("inkdate-images");
-    await store.set(key, imageBuffer, {
-      metadata: { contentType: "image/png" }
-    });
-
-    // Return the key so frontend can fetch via get-image function
-    const imageUrl = `/.netlify/functions/get-image?key=${key}`;
+    // Return as data URL — small enough at low quality + compressed
+    const imageUrl = "data:image/png;base64," + data.data[0].b64_json;
 
     return {
       statusCode: 200,
