@@ -63,7 +63,7 @@ nav.scrolled{background:rgba(26,21,14,0.96);border-bottom-color:rgba(196,149,106
 /* ── HERO ── */
 .hero{min-height:100vh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;text-align:center;
-  padding:120px 24px 120px;position:relative;overflow:hidden;
+  padding:80px 24px 80px;position:relative;overflow:hidden;
   background:radial-gradient(ellipse at 50% 0%,#2d1f0a 0%,var(--ink) 60%);}
 .hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0;
   display:flex;align-items:stretch;justify-content:center;gap:0;opacity:0.04;overflow:hidden;}
@@ -71,7 +71,7 @@ nav.scrolled{background:rgba(26,21,14,0.96);border-bottom-color:rgba(196,149,106
   background:repeating-linear-gradient(to bottom,transparent 0px,transparent 14px,
   rgba(196,149,106,0.5) 14px,rgba(196,149,106,0.5) 15px);}
 .hero-inner{position:relative;z-index:2;max-width:900px;padding:0 16px;}
-.hero-edition{display:inline-flex;align-items:center;gap:16px;margin-bottom:32px;animation:fadeUp 0.8s 0.2s both;}
+.hero-edition{display:inline-flex;align-items:center;gap:16px;margin-bottom:16px;animation:fadeUp 0.8s 0.2s both;}
 .hero-edition .rule{width:40px;height:1px;background:linear-gradient(to right,transparent,var(--gold));}
 .hero-edition .rule:last-child{background:linear-gradient(to left,transparent,var(--gold));}
 .hero-edition span{font-size:1.1rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);}
@@ -185,7 +185,7 @@ footer{padding:32px 40px;border-top:1px solid rgba(196,149,106,0.15);display:fle
 .reveal-d1{transition-delay:0.1s;}.reveal-d2{transition-delay:0.2s;}
 .reveal-d3{transition-delay:0.3s;}.reveal-d4{transition-delay:0.4s;}
 @media(max-width:768px){
-  nav{padding:14px 20px;}.nav-links{display:none;}
+  nav{padding:14px 20px;justify-content:center;}.nav-logo{font-size:1.6rem;}.nav-links{display:none;}
   .hero-ctas{flex-direction:column;align-items:center;gap:12px;}
   .btn-primary,.btn-secondary{width:100%;max-width:360px;text-align:center;padding:18px 32px;}
   .steps-grid{grid-template-columns:1fr;}
@@ -443,61 +443,49 @@ footer{padding:32px 40px;border-top:1px solid rgba(196,149,106,0.15);display:fle
 
 <!-- ADD TO HOME SCREEN BANNER -->
 <div id="a2hs-banner" style="
-  display:none;
-  position:fixed;
-  bottom:0;left:0;right:0;
-  z-index:9999;
-  background:#1a1008;
-  border-top:2px solid #c4956a;
-  padding:20px 24px 24px;
-  font-family:'Old Standard TT',serif;
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;
+  background:#1a1008;border-top:2px solid #c4956a;
+  padding:14px 20px 18px;font-family:'Old Standard TT',serif;
   box-shadow:0 -8px 32px rgba(0,0,0,0.6);
 ">
   <div style="max-width:560px;margin:0 auto;">
-    <!-- Title row -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-      <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1rem;
         background:linear-gradient(135deg,#f5f0e8,#c4956a);
         -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
         Install Inkdate as an App
       </div>
       <button onclick="dismissA2HS()" style="background:transparent;border:none;
-        color:rgba(245,240,232,0.4);font-size:1.6rem;cursor:pointer;padding:0 4px;line-height:1;">
+        color:rgba(245,240,232,0.5);font-size:1.4rem;cursor:pointer;padding:0 4px;line-height:1;">
         &times;
       </button>
     </div>
-    <!-- Steps -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;">
-      <!-- Step 1 -->
-      <div style="background:rgba(196,149,106,0.08);border:1px solid rgba(196,149,106,0.2);padding:12px;text-align:center;">
-        <div style="font-size:2rem;margin-bottom:6px;">⬆️</div>
-        <div style="font-size:0.75rem;color:#c4956a;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Step 1</div>
-        <div style="font-size:0.85rem;color:#f5f0e8;line-height:1.3;">Tap the <strong>Share</strong> icon in your browser toolbar</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+      <button onclick="tryShare()" style="background:rgba(196,149,106,0.08);border:1px solid rgba(196,149,106,0.25);
+        padding:8px 6px;text-align:center;cursor:pointer;width:100%;">
+        <div style="font-size:1.4rem;margin-bottom:3px;">⬆️</div>
+        <div style="font-size:0.65rem;color:#c4956a;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">Step 1</div>
+        <div style="font-size:0.75rem;color:#f5f0e8;line-height:1.2;">Tap <strong>Share</strong> in toolbar</div>
+      </button>
+      <div style="background:rgba(196,149,106,0.08);border:1px solid rgba(196,149,106,0.25);
+        padding:8px 6px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:3px;">📲</div>
+        <div style="font-size:0.65rem;color:#c4956a;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">Step 2</div>
+        <div style="font-size:0.75rem;color:#f5f0e8;line-height:1.2;">Tap <strong>"Add to Home Screen"</strong></div>
       </div>
-      <!-- Step 2 -->
-      <div style="background:rgba(196,149,106,0.08);border:1px solid rgba(196,149,106,0.2);padding:12px;text-align:center;">
-        <div style="font-size:2rem;margin-bottom:6px;">📲</div>
-        <div style="font-size:0.75rem;color:#c4956a;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Step 2</div>
-        <div style="font-size:0.85rem;color:#f5f0e8;line-height:1.3;">Tap <strong>"Add to Home Screen"</strong> from the menu</div>
-      </div>
-      <!-- Step 3 -->
-      <div style="background:rgba(196,149,106,0.08);border:1px solid rgba(196,149,106,0.2);padding:12px;text-align:center;">
-        <div style="font-size:2rem;margin-bottom:6px;">✅</div>
-        <div style="font-size:0.75rem;color:#c4956a;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Step 3</div>
-        <div style="font-size:0.85rem;color:#f5f0e8;line-height:1.3;">Tap <strong>"Add"</strong> — Inkdate appears on your home screen!</div>
+      <div style="background:rgba(196,149,106,0.08);border:1px solid rgba(196,149,106,0.25);
+        padding:8px 6px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:3px;">✅</div>
+        <div style="font-size:0.65rem;color:#c4956a;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">Step 3</div>
+        <div style="font-size:0.75rem;color:#f5f0e8;line-height:1.2;">Tap <strong>"Add"</strong> — done!</div>
       </div>
     </div>
-    <!-- Or just enter a date -->
-    <div style="text-align:center;border-top:1px solid rgba(196,149,106,0.15);padding-top:16px;">
-      <div style="font-size:0.8rem;color:rgba(245,240,232,0.4);margin-bottom:10px;letter-spacing:1px;">OR SKIP THIS AND START NOW</div>
-      <a href="inkdate-app.html" style="
-        display:inline-block;
-        background:linear-gradient(135deg,#8b2020,#b02828);
-        color:#fff;padding:12px 32px;
-        font-family:'Old Standard TT',serif;
-        font-size:0.9rem;letter-spacing:3px;text-transform:uppercase;
-        text-decoration:none;
-      ">Enter a Date →</a>
+    <div style="text-align:center;">
+      <a href="inkdate-app.html" style="display:inline-block;background:linear-gradient(135deg,#8b2020,#b02828);
+        color:#fff;padding:10px 28px;font-family:'Old Standard TT',serif;
+        font-size:0.85rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;">
+        Enter a Date →
+      </a>
     </div>
   </div>
 </div>
@@ -518,6 +506,17 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 });
 
 // Add to Home Screen banner
+function tryShare(){
+  if(navigator.share){
+    navigator.share({
+      title: 'Inkdate — The Day That Made History',
+      url: window.location.href
+    }).catch(()=>{});
+  } else if(navigator.clipboard){
+    navigator.clipboard.writeText(window.location.href);
+    alert('Link copied! Open it in Safari to add to Home Screen.');
+  }
+}
 function dismissA2HS(){
   document.getElementById('a2hs-banner').style.display='none';
 }
