@@ -64,7 +64,6 @@ PHYSICAL DETAILS: Authentic aged newsprint texture throughout. Centre fold creas
         n: 1,
         size: "1024x1792",
         quality: "hd",
-        style: "natural",
       }),
     });
 
