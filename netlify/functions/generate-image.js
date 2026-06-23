@@ -37,7 +37,7 @@ exports.handler = async function(event, context) {
     } else {
       prompt = `Ultra-photorealistic museum-quality photograph of an authentic ${r.newspaper} newspaper front page dated ${r.date}, lying flat on a ${surfaceStr} with ${lightingStr}.
 
-MASTHEAD: The masthead at the very top reads exactly "${r.newspaper}" in classic Gothic serif typeface, deep black ink. Immediately below the masthead on a single line, the publication details read: "${r.date}" clearly printed in small uppercase type — this date line MUST be visible and legible. A thin horizontal rule separates the masthead from the content below.
+MASTHEAD: At the very top of the page the masthead reads exactly "${r.newspaper}" in large classic Gothic serif typeface, deep black ink, centered. On the line immediately below the masthead, clearly printed in small readable type: "${r.date}" — VOL. I — PRICE 25 CENTS. This date line is CRITICAL and must be fully legible. Two thin horizontal rules, one above and one below this date line, separate the masthead from the headlines below.
 
 BANNER HEADLINE: Enormous bold serif type spanning the full page width, all text within page edges, reads: "${r.banner_headline}"
 
