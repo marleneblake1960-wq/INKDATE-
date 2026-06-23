@@ -37,13 +37,13 @@ exports.handler = async function(event, context) {
     } else {
       prompt = `Ultra-photorealistic museum-quality photograph of an authentic ${r.newspaper} newspaper front page dated ${r.date}, lying flat on a ${surfaceStr} with ${lightingStr}.
 
-MASTHEAD: The masthead at the very top reads exactly "${r.newspaper}" in classic Gothic serif typeface, deep black ink. Directly below the masthead the date "${r.date}" is printed clearly and legibly in small type. A thin decorative rule separates the masthead from the content.
+MASTHEAD: The masthead at the very top reads exactly "${r.newspaper}" in classic Gothic serif typeface, deep black ink. Immediately below the masthead on a single line, the publication details read: "${r.date}" clearly printed in small uppercase type — this date line MUST be visible and legible. A thin horizontal rule separates the masthead from the content below.
 
 BANNER HEADLINE: Enormous bold serif type spanning the full page width, all text within page edges, reads: "${r.banner_headline}"
 
 DECK HEADLINE: Secondary headline below the banner reads: "${r.deck_headline}"
 
-PHOTOGRAPH: A wide establishing crowd scene — thousands of jubilant supporters celebrating at night, waving flags, faces lit with collective joy. Black and white, high contrast, authentic wire service press photography. No individual faces identifiable.
+PHOTOGRAPH: A wide establishing shot of thousands of jubilant supporters celebrating at night in a large outdoor venue, hands raised in celebration, the scene lit by stadium lights. Black and white, high contrast, authentic wire service press photography. No individual faces identifiable. American flags visible in the crowd but shown naturally, not prominently.
 
 SECONDARY STORIES: Two or three additional smaller headlines visible in columns below the fold.
 
