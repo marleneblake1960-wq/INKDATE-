@@ -59,11 +59,11 @@ PHYSICAL DETAILS: Authentic aged newsprint texture throughout. Centre fold creas
         "Authorization": "Bearer " + OPENAI_API_KEY,
       },
       body: JSON.stringify({
-        model: "dall-e-3",
+        model: "chatgpt-image-latest",
         prompt: prompt,
         n: 1,
-        size: "1024x1792",
-        quality: "hd",
+        size: "1024x1536",
+        quality: "high",
       }),
     });
 
