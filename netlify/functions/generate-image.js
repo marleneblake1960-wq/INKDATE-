@@ -47,7 +47,15 @@ NOW NEWSPAPER — lower paper (${r2.date}): lying flat directly below, slightly 
 Both newspapers together fill 95% of the image. Authentic aged newsprint texture. Warm golden light. All headlines and dates perfectly readable. Shot from directly above. 8K museum quality photorealistic.`;
     } else if (tier === "memorial") {
       const r2 = research.date2 || {};
-      prompt = `Ultra-photorealistic museum photograph of two ${r.newspaper} newspapers as memorial keepsake on ${surfaceStr} with ${lightingStr}. White lily. BIRTH (${r.date}): masthead "${r.newspaper}", headline "${r.banner_headline}". PASSING (${r2.date}): masthead "${r2.newspaper || r.newspaper}", headline "${r2.banner_headline}". Dignified. Aged newsprint. 8K museum quality.`;
+      prompt = `Ultra-photorealistic museum-quality photograph of two ${r.newspaper} newspaper front pages as a tender memorial keepsake on a ${surfaceStr} with ${lightingStr}. A beautiful white lily rests beside the papers.
+
+ARRANGEMENT: Two newspapers stacked vertically, BIRTH paper on top, PASSING paper beneath. Both fill the frame. Shot from slight overhead angle.
+
+BIRTH NEWSPAPER — top paper: masthead "${r.newspaper}" at very top. Immediately below the masthead the date "${r.date}" is printed in LARGE BOLD type — this date must be the most prominent text after the masthead, clearly readable, centered. Headline "${r.banner_headline}" below. Photograph and body columns below that.
+
+PASSING NEWSPAPER — bottom paper: masthead "${r.newspaper}" at very top. Immediately below the masthead the date "${r2.date}" is printed in LARGE BOLD type — clearly readable, centered, prominent. Headline "${r2.banner_headline}" below. Photograph and body columns below that.
+
+Both dates MUST be large, bold and clearly legible — they are the most important information for the customer. Authentic aged newsprint. Warm amber light. Tender dignified mood. 8K museum quality.`;
     } else {
       prompt = `Ultra-photorealistic museum-quality photograph of a single flat unfolded ${r.newspaper} newspaper front page lying completely flat on a ${surfaceStr} with ${lightingStr}. The newspaper is NOT folded — it is fully open showing the complete front page from top to bottom.
 
