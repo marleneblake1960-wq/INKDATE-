@@ -57,7 +57,6 @@ exports.handler = async function(event, context) {
         n: 1,
         size: "1024x1024",
         quality: "low",
-        output_compression: 50,
       }),
     });
 
