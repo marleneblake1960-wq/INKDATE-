@@ -2,11 +2,14 @@
   publish = "."
   functions = "netlify/functions"
 
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
+
 [functions."generate-image"]
   timeout = 120
 
-[functions."get-image"]
-  timeout = 10
+[functions."research-date"]
+  timeout = 30
 
 [[redirects]]
   from = "/"
