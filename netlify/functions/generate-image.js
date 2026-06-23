@@ -55,8 +55,8 @@ exports.handler = async function(event, context) {
         model: "chatgpt-image-latest",
         prompt: prompt,
         n: 1,
-        size: "1024x1024",
-        quality: "low",
+        size: "1024x1536",
+        quality: "medium",
       }),
     });
 
