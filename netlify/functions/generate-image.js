@@ -36,15 +36,15 @@ exports.handler = async function(event, context) {
     let prompt;
     if (tier === "thennow") {
       const r2 = research.date2 || {};
-      prompt = `Ultra-photorealistic museum-quality photograph of two ${r.newspaper} newspapers displayed side by side as a Then and Now keepsake on a ${surfaceStr} with ${lightingStr}.
+      prompt = `Ultra-photorealistic museum-quality photograph of two ${r.newspaper} newspaper front pages displayed as a framed Then and Now keepsake. Shot from directly overhead looking straight down. ${lightingStr}.
 
-ARRANGEMENT: The two newspapers lie flat side by side, NOT overlapping each other. The THEN newspaper (${r.date}) is on the LEFT, slightly angled. The NOW newspaper (${r2.date}) is on the RIGHT, slightly angled the other way. A brass carriage clock sits between them in the background. Both newspapers fill the frame equally — each taking up roughly half the image width. Minimal empty space around them.
+The scene is on a ${surfaceStr}. Two physical newspapers lie flat, stacked vertically one above the other, filling nearly the entire frame.
 
-THEN NEWSPAPER — left paper: masthead "${r.newspaper}" clearly visible at top, date "${r.date}" below masthead, headline "${r.banner_headline}", deck headline "${r.deck_headline}", photograph below, secondary story headlines visible in columns below photograph.
+THEN NEWSPAPER — upper paper (${r.date}): lying flat, full front page visible from masthead to fold. Masthead "${r.newspaper}" at very top. Date "${r.date}" clearly printed below masthead. Enormous headline "${r.banner_headline}". Deck "${r.deck_headline}". Large press photograph below. Secondary story headlines visible in columns below the photograph. The paper fills the entire upper half of the frame.
 
-NOW NEWSPAPER — right paper: masthead "${r2.newspaper || r.newspaper}" clearly visible at top, date "${r2.date}" below masthead, headline "${r2.banner_headline}", deck headline "${r2.deck_headline}", photograph below, secondary story headlines visible in columns below photograph.
+NOW NEWSPAPER — lower paper (${r2.date}): lying flat directly below, slightly overlapping the bottom edge of the THEN paper. Full front page visible from masthead to fold. Masthead "${r2.newspaper || r.newspaper}" at top. Date "${r2.date}" clearly visible. Enormous headline "${r2.banner_headline}". Deck "${r2.deck_headline}". Large press photograph. Secondary stories in columns. The paper fills the entire lower half of the frame.
 
-Both papers show their full upper two-thirds clearly. No overlapping. Authentic aged newsprint. All mastheads, dates and headlines readable. 8K museum quality.`;
+Both newspapers together fill 95% of the image. Authentic aged newsprint texture. Warm golden light. All headlines and dates perfectly readable. Shot from directly above. 8K museum quality photorealistic.`;
     } else if (tier === "memorial") {
       const r2 = research.date2 || {};
       prompt = `Ultra-photorealistic museum photograph of two ${r.newspaper} newspapers as memorial keepsake on ${surfaceStr} with ${lightingStr}. White lily. BIRTH (${r.date}): masthead "${r.newspaper}", headline "${r.banner_headline}". PASSING (${r2.date}): masthead "${r2.newspaper || r.newspaper}", headline "${r2.banner_headline}". Dignified. Aged newsprint. 8K museum quality.`;
