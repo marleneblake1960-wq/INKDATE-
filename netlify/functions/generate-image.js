@@ -23,37 +23,25 @@ exports.handler = async function(event, context) {
     try {
       body = JSON.parse(event.body || "{}");
     } catch(e) {
-      throw new Error("Could not parse request: " + e.message);
+      throw new Error("Request parse failed: " + e.message);
     }
 
     const { research, tier, surface, lighting } = body;
-    if (!research) throw new Error("No research data provided");
+    if (!research) throw new Error("No research data");
 
     const r = (tier === "thennow" || tier === "memorial") ? research.date1 : research;
     const surfaceStr = surface || "pale grey marble surface";
-    const lightingStr = lighting || "warm golden hour light from the upper left";
+    const lightingStr = lighting || "warm golden hour light";
 
     let prompt;
-
     if (tier === "thennow") {
       const r2 = research.date2 || {};
-      prompt = `Ultra-photorealistic museum-quality photograph of two authentic physical copies of ${r.newspaper} arranged as a Then and Now keepsake on a ${surfaceStr} with ${lightingStr}. The THEN newspaper (${r.date}) lies at the top showing masthead "${r.newspaper}", date "${r.date}", and headline "${r.banner_headline}". The NOW newspaper (${r2.date}) lies beneath showing masthead "${r2.newspaper || r.newspaper}", date "${r2.date}", and headline "${r2.banner_headline}". Brass carriage clock in background. Authentic aged newsprint. All text perfectly readable. 8K museum quality.`;
-
+      prompt = `Ultra-photorealistic museum photograph of two ${r.newspaper} newspapers as Then and Now keepsake on ${surfaceStr} with ${lightingStr}. THEN (${r.date}): headline "${r.banner_headline}". NOW (${r2.date}): headline "${r2.banner_headline}". Brass clock background. Aged newsprint. 8K.`;
     } else if (tier === "memorial") {
       const r2 = research.date2 || {};
-      prompt = `Ultra-photorealistic museum-quality photograph of two authentic physical copies of ${r.newspaper} as a memorial keepsake on a ${surfaceStr} with ${lightingStr}. Single white lily beside the papers. BIRTH newspaper (${r.date}) showing masthead "${r.newspaper}" and headline "${r.banner_headline}". PASSING newspaper (${r2.date}) showing masthead "${r2.newspaper || r.newspaper}" and headline "${r2.banner_headline}". Tender dignified mood. Authentic newsprint. All text readable. 8K museum quality.`;
-
+      prompt = `Ultra-photorealistic museum photograph of two ${r.newspaper} newspapers as memorial keepsake on ${surfaceStr} with ${lightingStr}. White lily. BIRTH (${r.date}): headline "${r.banner_headline}". PASSING (${r2.date}): headline "${r2.banner_headline}". Dignified. Aged newsprint. 8K.`;
     } else {
-      prompt = `Ultra-photorealistic museum-quality photograph of an authentic ${r.newspaper} newspaper front page lying flat on a ${surfaceStr} with ${lightingStr}.
-
-MASTHEAD: "${r.newspaper}" in Gothic serif typeface at the very top, deep black ink, centered.
-DATE LINE directly below masthead: "${r.date}" — clearly legible in small type.
-BANNER HEADLINE in enormous bold serif: "${r.banner_headline}"
-DECK HEADLINE below that: "${r.deck_headline}"
-PHOTOGRAPH: Wide crowd scene celebrating at night, stadium lights, black and white press photography.
-SECONDARY STORIES in columns below.
-BODY TEXT in dense serif columns.
-Authentic aged newsprint, fold crease, sharp focus on headline and date. 8K museum quality.`;
+      prompt = `Ultra-photorealistic museum photograph of ${r.newspaper} newspaper dated ${r.date} on ${surfaceStr} with ${lightingStr}. Masthead "${r.newspaper}". Date "${r.date}" clearly visible. Headline "${r.banner_headline}". Deck "${r.deck_headline}". Crowd celebration photo. Aged newsprint texture. 8K.`;
     }
 
     const res = await fetch("https://api.openai.com/v1/images/generations", {
@@ -66,25 +54,21 @@ Authentic aged newsprint, fold crease, sharp focus on headline and date. 8K muse
         model: "chatgpt-image-latest",
         prompt: prompt,
         n: 1,
-        size: "1024x1536",
-        quality: "high",
+        size: "1024x1024",
+        quality: "medium",
+        output_format: "url",
       }),
     });
 
     const data = await res.json();
-
     if (data.error) throw new Error(data.error.message);
-    if (!data.data || !data.data[0]) throw new Error("No image returned");
+    if (!data.data || !data.data[0]) throw new Error("No image in response");
 
-    // Handle both base64 and URL responses
-    let imageUrl;
-    if (data.data[0].b64_json) {
-      imageUrl = "data:image/png;base64," + data.data[0].b64_json;
-    } else if (data.data[0].url) {
-      imageUrl = data.data[0].url;
-    } else {
-      throw new Error("No image data in response");
-    }
+    // Try URL first, then base64
+    const imageUrl = data.data[0].url ||
+      (data.data[0].b64_json ? "data:image/png;base64," + data.data[0].b64_json : null);
+
+    if (!imageUrl) throw new Error("No image URL or base64 in response");
 
     return {
       statusCode: 200,
