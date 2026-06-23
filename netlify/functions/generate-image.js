@@ -41,7 +41,17 @@ exports.handler = async function(event, context) {
       const r2 = research.date2 || {};
       prompt = `Ultra-photorealistic museum photograph of two ${r.newspaper} newspapers as memorial keepsake on ${surfaceStr} with ${lightingStr}. White lily. BIRTH (${r.date}): masthead "${r.newspaper}", headline "${r.banner_headline}". PASSING (${r2.date}): masthead "${r2.newspaper || r.newspaper}", headline "${r2.banner_headline}". Dignified. Aged newsprint. 8K museum quality.`;
     } else {
-      prompt = `Ultra-photorealistic museum-quality photograph of ${r.newspaper} newspaper dated ${r.date} lying flat on ${surfaceStr} with ${lightingStr}. Masthead reads "${r.newspaper}". Date "${r.date}" clearly printed below masthead. Banner headline "${r.banner_headline}". Deck "${r.deck_headline}". Crowd celebration photo below. Dense body columns. Aged newsprint texture. Fold crease. 8K museum quality.`;
+      prompt = `Ultra-photorealistic museum-quality photograph of a single flat unfolded ${r.newspaper} newspaper front page lying completely flat on a ${surfaceStr} with ${lightingStr}. The newspaper is NOT folded — it is fully open showing the complete front page from top to bottom.
+
+MASTHEAD at very top: "${r.newspaper}" in Gothic serif typeface, deep black ink.
+DATE LINE directly below masthead: "${r.date}" — clearly legible.
+BANNER HEADLINE in enormous bold serif spanning full width: "${r.banner_headline}"
+DECK HEADLINE below: "${r.deck_headline}"
+LARGE PHOTOGRAPH below headline: celebration crowd scene, black and white press photography.
+SECONDARY STORIES in columns below photograph: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}"
+BODY TEXT in dense serif columns filling lower half of page.
+
+The newspaper lies completely FLAT — not folded, not stacked. Full front page visible. Authentic aged newsprint. Sharp focus throughout. 8K museum quality.`;
     }
 
     // Generate with smaller size to keep response under 6MB
