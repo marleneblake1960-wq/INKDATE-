@@ -35,7 +35,21 @@ exports.handler = async function(event, context) {
       const r2 = research.date2 || {};
       prompt = `A museum-quality photorealistic image of two authentic vintage newspaper front pages displayed as a tribute keepsake on a ${surfaceStr} with ${lightingStr}. A single white lily rests elegantly beside the papers. The first newspaper is dated ${r.date} with the title "${r.newspaper}" in classic serif masthead lettering and the headline "${r.banner_headline}". The second newspaper is dated ${r2.date} with the title "${r2.newspaper || r.newspaper}" and headline "${r2.banner_headline}". Both newspapers show authentic aged newsprint texture. Peaceful and dignified composition. Fine art photography. 8K resolution.`;
     } else {
-      prompt = `A museum-quality photorealistic image of an authentic vintage newspaper front page lying flat on a ${surfaceStr} with ${lightingStr}. The newspaper title "${r.newspaper}" appears in elegant classic serif masthead lettering at the top. The date "${r.date}" is printed below the masthead. The main headline reads "${r.banner_headline}". Below that a secondary headline reads "${r.deck_headline}". The newspaper shows authentic aged newsprint texture, a centre fold crease, and realistic period typography throughout. Fine art photography style, sharp focus on the masthead and headline, gentle bokeh toward edges. 8K resolution.`;
+      prompt = `Ultra-photorealistic museum-quality photograph of an authentic ${r.newspaper} newspaper front page dated ${r.date}, lying flat on a ${surfaceStr} with ${lightingStr}.
+
+MASTHEAD: The masthead at the very top reads exactly "${r.newspaper}" in classic Gothic serif typeface, deep black ink. Directly below the masthead the date "${r.date}" is printed clearly and legibly in small type. A thin decorative rule separates the masthead from the content.
+
+BANNER HEADLINE: Enormous bold serif type spanning the full page width, all text within page edges, reads: "${r.banner_headline}"
+
+DECK HEADLINE: Secondary headline below the banner reads: "${r.deck_headline}"
+
+PHOTOGRAPH: A wide establishing crowd scene — thousands of jubilant supporters celebrating at night, waving flags, faces lit with collective joy. Black and white, high contrast, authentic wire service press photography. No individual faces identifiable.
+
+SECONDARY STORIES: Two or three additional smaller headlines visible in columns below the fold.
+
+BODY TEXT: Dense justified serif copy in multiple columns filling the lower portion of the page.
+
+PHYSICAL DETAILS: Authentic aged newsprint texture throughout. Centre fold crease across lower third. All headlines fully readable, no text cut off at edges. Sharp focus on masthead and headline. 8K resolution. Museum quality. Cinematic realism.`;
     }
 
     const res = await fetch("https://api.openai.com/v1/images/generations", {
