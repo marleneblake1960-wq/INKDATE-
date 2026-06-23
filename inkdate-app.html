@@ -685,46 +685,15 @@ STYLE: Medium-format camera. Tack sharp on masthead and banner headline. Gentle 
         const timestamp = Date.now();
         const payload = JSON.stringify({ research, tier: currentTier, surface, lighting });
 
-        // Use XMLHttpRequest to get binary response
-        const imageUrl = await new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', '/.netlify/functions/generate-image');
-          xhr.setRequestHeader('Content-Type', 'application/json');
-          xhr.responseType = 'blob';
-          xhr.onload = function() {
-            if (xhr.status === 200) {
-              const contentType = xhr.getResponseHeader('Content-Type') || '';
-              if (contentType.includes('image')) {
-                resolve(URL.createObjectURL(xhr.response));
-              } else {
-                // Error response — read as text
-                const reader = new FileReader();
-                reader.onload = () => {
-                  try {
-                    const errData = JSON.parse(reader.result);
-                    reject(new Error(errData.error || 'Image generation failed'));
-                  } catch(e) {
-                    reject(new Error('Image generation failed'));
-                  }
-                };
-                reader.readAsText(xhr.response);
-              }
-            } else {
-              const reader = new FileReader();
-              reader.onload = () => {
-                try {
-                  const errData = JSON.parse(reader.result);
-                  reject(new Error(errData.error || 'Server error ' + xhr.status));
-                } catch(e) {
-                  reject(new Error('Server error ' + xhr.status));
-                }
-              };
-              reader.readAsText(xhr.response);
-            }
-          };
-          xhr.onerror = () => reject(new Error('Network error'));
-          xhr.send(payload);
+        const imgRes = await fetch('/.netlify/functions/generate-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payload,
         });
+        const imgData = await imgRes.json();
+        if (imgData.error) throw new Error(imgData.error);
+        const imageUrl = imgData.imageUrl;
+        if (!imageUrl) throw new Error('No image returned');
 
         document.getElementById('result-img').src = imageUrl;
         document.getElementById('result-link').href = imageUrl;
