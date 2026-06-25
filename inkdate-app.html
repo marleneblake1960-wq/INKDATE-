@@ -1,905 +1,736 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inkdate — Generate Your Newspaper</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inkdate — The Day That Made History</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:#1a0f0a;color:#e8d5b0;font-family:'Old Standard TT',serif;min-height:100vh;}
 
-    body {
-      font-family: Georgia, serif;
-      background: #1a0f0a;
-      color: #d4c4a8;
-      min-height: 100vh;
-    }
+/* APP SHELL */
+.app{max-width:640px;margin:0 auto;padding:0 20px 40px;min-height:100vh;display:flex;flex-direction:column;}
 
-    /* HEADER */
-    .header {
-      text-align: center;
-      padding: 40px 32px 32px;
-      border-bottom: 1px solid #3a2415;
-    }
-    .header-sub {
-      font-size: 12px;
-      letter-spacing: 5px;
-      color: #d4c4a8;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-    .header-logo {
-      font-size: 48px;
-      font-weight: 900;
-      color: #e8d5b0;
-      letter-spacing: 6px;
-      line-height: 1;
-      margin-bottom: 14px;
-    }
-    .header-diamonds {
-      color: #c8a855;
-      letter-spacing: 6px;
-      margin-bottom: 16px;
-      font-size: 20px;
-    }
-    .header-tagline {
-      font-size: 16px;
-      font-style: italic;
-      color: #e8d5b0;
-      margin-bottom: 10px;
-    }
-    .header-desc {
-      font-size: 14px;
-      color: #d4c4a8;
-    }
+/* HEADER */
+.app-header{text-align:center;padding:32px 0 24px;}
+.app-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:2rem;
+  background:linear-gradient(135deg,#f5f0e8,#c8a855);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:3px;text-decoration:none;display:block;margin-bottom:4px;}
+.app-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:0.95rem;color:rgba(200,168,85,0.7);letter-spacing:1px;}
 
-    /* MAIN */
-    .main {
-      max-width: 660px;
-      margin: 0 auto;
-      padding: 36px 28px 60px;
-    }
+/* STEP INDICATOR */
+.steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px;}
+.step-dot{width:28px;height:28px;border-radius:50%;border:1px solid #3a2415;
+  background:#1a0f0a;display:flex;align-items:center;justify-content:center;
+  font-size:0.7rem;color:#6a4828;font-family:'Old Standard TT',serif;
+  transition:all 0.3s;flex-shrink:0;}
+.step-dot.active{border-color:#c8a855;color:#c8a855;background:#221408;}
+.step-dot.done{border-color:#5a7a3a;background:#1e2a12;color:#7aaa4a;}
+.step-line{width:24px;height:1px;background:#3a2415;flex-shrink:0;}
 
-    /* LABELS */
-    .field-label {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #f0e0c0;
-      font-family: Georgia, serif;
-    }
+/* SCREENS */
+.screen{display:none;animation:fadeIn 0.3s ease;}
+.screen.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
-    /* INPUTS */
-    input[type="text"], input[type="password"], select {
-      width: 100%;
-      padding: 14px 16px;
-      background: #2a1a0e;
-      border: 1px solid #6a4028;
-      border-radius: 3px;
-      color: #f5ede0;
-      font-size: 14px;
-      font-family: Georgia, serif;
-      outline: none;
-      appearance: none;
-    }
-    input::placeholder { color: #9a7a58; }
-    select { cursor: pointer; }
+/* SCREEN TITLE */
+.screen-title{font-family:'Playfair Display',serif;font-weight:700;
+  font-size:1.4rem;color:#e8d5b0;text-align:center;margin-bottom:6px;}
+.screen-sub{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1rem;color:rgba(200,168,85,0.7);text-align:center;margin-bottom:24px;}
 
-    /* FIELD GROUPS */
-    .field { margin-bottom: 22px; }
-    .field-row { display: grid; gap: 16px; margin-bottom: 22px; }
-    .field-row.two { grid-template-columns: 1fr 1fr; }
-    .field-row.one { grid-template-columns: 1fr; }
+/* PRODUCT CARDS */
+.product-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:24px;}
+.product-card{background:#1e1208;border:1px solid #3a2415;padding:20px 20px;
+  cursor:pointer;transition:all 0.25s;position:relative;}
+.product-card:hover,.product-card.selected{border-color:#c8a855;background:#221810;}
+.product-card.selected::before{content:'✦';position:absolute;top:16px;right:16px;
+  color:#c8a855;font-size:0.8rem;}
+.product-name{font-family:'Playfair Display',serif;font-weight:700;
+  font-size:1.1rem;color:#e8d5b0;margin-bottom:4px;}
+.product-desc{font-size:0.85rem;color:#8a7355;line-height:1.5;margin-bottom:8px;}
+.product-price{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:0.9rem;color:#c8a855;}
 
-    /* INPUT WITH BUTTON INSIDE */
-    .input-wrap { position: relative; }
-    .input-wrap input { padding-right: 80px; }
-    .input-inner-btn {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      color: #f0e0c0;
-      cursor: pointer;
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      font-family: Georgia, serif;
-      padding: 0;
-    }
+/* DATE INPUTS */
+.field{margin-bottom:18px;}
+.field-label{display:block;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;
+  color:#8a7355;margin-bottom:8px;}
+.field input{width:100%;background:#1e1208;border:1px solid #3a2415;
+  color:#e8d5b0;padding:14px 16px;font-family:'Old Standard TT',serif;
+  font-size:1rem;outline:none;transition:border-color 0.2s;}
+.field input:focus{border-color:#c8a855;}
+.field input::placeholder{color:#5a4030;}
 
-    /* TIERS */
-    .tiers { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-    .tier-btn {
-      padding: 16px 12px 14px;
-      background: #1e1008;
-      border: 1px solid #6a4028;
-      border-radius: 3px;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.2s;
-      font-family: Georgia, serif;
-    }
-    .tier-btn.active {
-      background: #2e1208;
-      border-color: #8b2a2a;
-    }
-    .tier-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: #d4c4a8;
-      line-height: 1.4;
-      margin-bottom: 5px;
-    }
-    .tier-btn.active .tier-name { color: #e8d5b0; }
-    .tier-sub {
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #b8985c;
-    }
-    .tier-btn.active .tier-sub { color: #c8a855; }
-    .tier-desc {
-      font-size: 14px;
-      color: #d4c4a8;
-      font-style: italic;
-      text-align: center;
-      margin-bottom: 0;
-    }
+/* LANGUAGE GRID */
+.lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
+.lang-btn{background:#1e1208;border:1px solid #3a2415;padding:16px 12px;
+  cursor:pointer;transition:all 0.25s;text-align:center;}
+.lang-btn:hover,.lang-btn.selected{border-color:#c8a855;background:#221810;}
+.lang-flag{font-size:1.6rem;display:block;margin-bottom:6px;}
+.lang-name{font-family:'Playfair Display',serif;font-size:0.9rem;color:#e8d5b0;}
 
-    /* DIVIDER */
-    .divider {
-      text-align: center;
-      color: #c8a855;
-      letter-spacing: 8px;
-      font-size: 22px;
-      font-weight: bold;
-      margin: 0 0 32px;
-    }
+/* NEWSPAPER SELECT */
+.select-field{width:100%;background:#1e1208;border:1px solid #3a2415;
+  color:#e8d5b0;padding:14px 16px;font-family:'Old Standard TT',serif;
+  font-size:0.95rem;outline:none;transition:border-color 0.2s;
+  appearance:none;cursor:pointer;margin-bottom:8px;}
+.select-field:focus{border-color:#c8a855;}
+.select-field option{background:#1e1208;color:#e8d5b0;}
+.paper-info{font-size:0.78rem;color:#6a5040;font-style:italic;margin-bottom:18px;padding-left:2px;}
 
-    /* BUTTON */
-    .btn-generate {
-      width: 100%;
-      padding: 18px;
-      background: #3a2010;
-      border: none;
-      border-radius: 3px;
-      color: #9a8060;
-      font-size: 13px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      font-family: Georgia, serif;
-      cursor: not-allowed;
-      transition: background 0.3s, color 0.3s;
-      margin-bottom: 24px;
-    }
-    .btn-generate.ready {
-      background: #8b2a2a;
-      color: #f5ede0;
-      cursor: pointer;
-    }
+/* SURFACE & LIGHTING */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
 
-    /* PROGRESS */
-    .progress { display: none; margin-bottom: 28px; }
-    .progress.show { display: flex; gap: 8px; }
-    .progress-step { flex: 1; text-align: center; }
-    .progress-bar {
-      height: 3px;
-      background: #3a2415;
-      margin-bottom: 6px;
-      border-radius: 2px;
-      transition: all 0.4s;
-    }
-    .progress-bar.active, .progress-bar.done { background: #8b2a2a; }
-    .progress-label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #5a4030;
-      transition: all 0.3s;
-    }
-    .progress-label.active { color: #e8d5b0; }
-    .progress-label.done { color: #c8a855; }
+/* CONFIRMATION BOX */
+.confirm-box{background:#1e1208;border:1px solid #3a2415;padding:20px;margin-bottom:20px;}
+.confirm-row{display:flex;justify-content:space-between;align-items:flex-start;
+  padding:8px 0;border-bottom:1px solid #2a1a0a;font-size:0.9rem;}
+.confirm-row:last-child{border-bottom:none;}
+.confirm-label{color:#8a7355;font-size:0.78rem;letter-spacing:1px;text-transform:uppercase;flex-shrink:0;margin-right:16px;}
+.confirm-value{color:#e8d5b0;text-align:right;}
+.refund-warning{background:#2a1208;border-left:3px solid #c8a855;padding:12px 16px;
+  font-size:0.82rem;color:#c8a855;line-height:1.5;margin-bottom:20px;}
 
-    /* ERROR */
-    .error-box {
-      display: none;
-      background: #2a0808;
-      border: 1px solid #6a2020;
-      border-radius: 3px;
-      padding: 14px 16px;
-      margin-bottom: 20px;
-      color: #e08080;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    .error-box.show { display: block; }
+/* BUTTONS */
+.btn-primary{width:100%;background:linear-gradient(135deg,#8b2020,#b02828);
+  color:#f5ede0;padding:16px;font-family:'Old Standard TT',serif;
+  font-size:0.95rem;letter-spacing:3px;text-transform:uppercase;
+  border:none;cursor:pointer;transition:all 0.3s;margin-bottom:10px;}
+.btn-primary:hover{opacity:0.9;}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;}
+.btn-back{width:100%;background:transparent;border:1px solid #3a2415;
+  color:#8a7355;padding:13px;font-family:'Old Standard TT',serif;
+  font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+  transition:all 0.3s;margin-bottom:10px;}
+.btn-back:hover{border-color:#6a5040;color:#e8d5b0;}
 
-    /* RESULT */
-    .result { display: none; margin-top: 16px; }
-    .result.show { display: block; }
-    .result-label {
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #f0e0c0;
-      margin-bottom: 14px;
-      text-align: center;
-    }
-    .result img {
-      width: 100%;
-      border-radius: 4px;
-      display: block;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.8);
-    }
-    .result-btns {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 16px;
-    }
-    .btn-open {
-      display: block;
-      padding: 14px;
-      text-align: center;
-      background: #8b2a2a;
-      border-radius: 3px;
-      color: #f5ede0;
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      font-family: Georgia, serif;
-      text-decoration: none;
-    }
-    .btn-copy {
-      padding: 14px;
-      background: #2a1a0e;
-      border: 1px solid #6a4028;
-      border-radius: 3px;
-      color: #d4c4a8;
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      cursor: pointer;
-      font-family: Georgia, serif;
-      transition: all 0.2s;
-    }
-    .btn-copy.copied {
-      background: #0a2a0a;
-      border-color: #4a8a4a;
-      color: #90d090;
-    }
-    .result-note {
-      margin-top: 10px;
-      text-align: center;
-      font-size: 12px;
-      color: #9a8060;
-      font-style: italic;
-    }
+/* PROGRESS */
+.progress-wrap{margin:20px 0;}
+.progress-step-row{display:flex;align-items:center;gap:12px;padding:10px 0;
+  border-bottom:1px solid #2a1a0a;}
+.progress-step-row:last-child{border-bottom:none;}
+.progress-icon{width:20px;height:20px;border-radius:50%;border:1px solid #3a2415;
+  display:flex;align-items:center;justify-content:center;font-size:0.55rem;
+  flex-shrink:0;transition:all 0.3s;}
+.progress-icon.active{border-color:#c8a855;background:#221408;color:#c8a855;
+  animation:pulse 1.5s infinite;}
+.progress-icon.done{border-color:#5a7a3a;background:#1e2a12;color:#7aaa4a;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+.progress-label-text{font-size:0.85rem;color:#8a7355;letter-spacing:1px;}
+.progress-label-text.active{color:#c8a855;}
+.progress-label-text.done{color:#7aaa4a;}
 
-    /* FOOTER */
-    .footer {
-      margin-top: 48px;
-      text-align: center;
-      border-top: 1px solid #3a2415;
-      padding-top: 24px;
-    }
-    .footer-diamonds { color: #c8a855; letter-spacing: 6px; margin-bottom: 10px; font-size: 18px; }
-    .footer-text { font-size: 11px; letter-spacing: 4px; color: #d4c4a8; text-transform: uppercase; }
+/* RESULT */
+.result-img-wrap{margin:16px 0;border:1px solid #3a2415;}
+.result-img-wrap img{width:100%;display:block;}
+.result-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.btn-download{background:linear-gradient(135deg,#8b2020,#b02828);color:#f5ede0;
+  padding:14px;font-family:'Old Standard TT',serif;font-size:0.8rem;
+  letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;
+  text-align:center;text-decoration:none;display:block;}
+.btn-ghost{background:transparent;border:1px solid #3a2415;color:#8a7355;
+  padding:14px;font-family:'Old Standard TT',serif;font-size:0.8rem;
+  letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-align:center;}
+.result-note{font-size:0.75rem;color:#5a4030;font-style:italic;text-align:center;}
 
-    /* NAV */
-    .nav {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      padding: 16px 32px;
-      border-bottom: 1px solid #3a2415;
-    }
-    .nav a {
-      color: #b8985c;
-      text-decoration: none;
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-    .nav a:hover { color: #e8d5b0; }
+/* ERROR */
+.error-box{background:#2a1010;border-left:3px solid #8b2020;padding:12px 16px;
+  color:#cc6666;font-size:0.85rem;line-height:1.5;margin-bottom:16px;display:none;}
+.error-box.show{display:block;}
 
-    @media (max-width: 500px) {
-      .tiers { grid-template-columns: 1fr; }
-      .field-row.two { grid-template-columns: 1fr; }
-      .result-btns { grid-template-columns: 1fr; }
-      .header-logo { font-size: 36px; }
-    }
-  </style>
+/* ORNAMENT */
+.orn{display:flex;align-items:center;gap:10px;margin:16px 0;}
+.orn .line{flex:1;height:1px;background:rgba(200,168,85,0.15);}
+.orn .dm{width:4px;height:4px;background:#c8a855;transform:rotate(45deg);opacity:0.5;}
+
+/* FOOTER */
+.app-footer{text-align:center;padding:24px 0 8px;font-size:0.72rem;
+  letter-spacing:2px;color:#3a2415;text-transform:uppercase;}
+</style>
 </head>
 <body>
+<div class="app">
 
   <!-- HEADER -->
-  <div class="header">
-    <div class="header-sub">Historical Newspapers · Worldwide</div>
-    <div class="header-logo">INKDATE</div>
-    <div class="header-diamonds">◆ · ◆</div>
-    <div class="header-tagline">"The day that made history"</div>
-    <div class="header-desc">Historically Informed · Powered by DALL-E 3</div>
+  <div class="app-header">
+    <a href="inkdate-landing.html" class="app-logo">INKDATE</a>
+    <div class="app-tagline">"The day that made history"</div>
   </div>
 
-  <!-- NAV -->
-  <nav class="nav">
-    <a href="inkdate-landing.html">Home</a>
-    <a href="inkdate-pricing.html">Pricing</a>
-    <a href="inkdate-app.html">Generate</a>
-  </nav>
+  <!-- STEP INDICATOR -->
+  <div class="steps">
+    <div class="step-dot active" id="dot1">1</div>
+    <div class="step-line"></div>
+    <div class="step-dot" id="dot2">2</div>
+    <div class="step-line"></div>
+    <div class="step-dot" id="dot3">3</div>
+    <div class="step-line"></div>
+    <div class="step-dot" id="dot4">4</div>
+    <div class="step-line"></div>
+    <div class="step-dot" id="dot5">5</div>
+  </div>
 
-  <!-- MAIN -->
-  <div class="main">
+  <!-- SCREEN 1: CHOOSE PRODUCT -->
+  <div class="screen active" id="screen1">
+    <div class="screen-title">Choose Your Product</div>
+    <div class="screen-sub">What would you like to create today?</div>
+    <div class="product-grid">
+      <div class="product-card" id="card-premium" onclick="selectProduct('premium')">
+        <div class="product-name">◆ Single Front Page</div>
+        <div class="product-desc">One date. One authentic newspaper front page. The perfect gift for birthdays, anniversaries and retirements.</div>
+        <div class="product-price">Premium — £14.99</div>
+      </div>
+      <div class="product-card" id="card-thennow" onclick="selectProduct('thennow')">
+        <div class="product-name">◆ Then &amp; Now</div>
+        <div class="product-desc">Two dates. Two front pages. See how the world changed between two moments that mattered.</div>
+        <div class="product-price">Ultra-Premium — £24.99</div>
+      </div>
+      <div class="product-card" id="card-memorial" onclick="selectProduct('memorial')">
+        <div class="product-name">◆ Memorial</div>
+        <div class="product-desc">A life bookended in print. Birth date and date of passing — a tender, timeless keepsake.</div>
+        <div class="product-price">Ultra-Premium — £24.99</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn-s1" onclick="goTo(2)" disabled>Continue →</button>
+  </div>
 
-    <!-- TIERS -->
+  <!-- SCREEN 2: ENTER DATES -->
+  <div class="screen" id="screen2">
+    <div class="screen-title" id="s2-title">Enter Your Date</div>
+    <div class="screen-sub" id="s2-sub">Any date from 1850 to present</div>
     <div class="field">
-      <label class="field-label">◆ Choose Your Product Tier</label>
-      <div class="tiers">
-        <button class="tier-btn active" onclick="selectTier('premium', this)">
-          <div class="tier-name">Single Front Page</div>
-          <div class="tier-sub">Premium</div>
-        </button>
-        <button class="tier-btn" onclick="selectTier('thennow', this)">
-          <div class="tier-name">Then &amp; Now</div>
-          <div class="tier-sub">Ultra-Premium</div>
-        </button>
-        <button class="tier-btn" onclick="selectTier('memorial', this)">
-          <div class="tier-name">Memorial</div>
-          <div class="tier-sub">Ultra-Premium</div>
-        </button>
-      </div>
-      <p class="tier-desc" id="tier-desc">One date. One historically verified front page.</p>
+      <label class="field-label" id="date1-label">◆ Date</label>
+      <input type="text" id="date1" placeholder="e.g. November 5, 2008" oninput="checkS2()">
     </div>
+    <div class="field" id="date2-field" style="display:none;">
+      <label class="field-label" id="date2-label">◆ Second Date</label>
+      <input type="text" id="date2" placeholder="e.g. January 20, 2009" oninput="checkS2()">
+    </div>
+    <button class="btn-primary" id="btn-s2" onclick="goTo(3)" disabled>Continue →</button>
+    <button class="btn-back" onclick="goTo(1)">← Back</button>
+  </div>
 
-    <div class="divider">· · ·</div>
+  <!-- SCREEN 3: CHOOSE LANGUAGE -->
+  <div class="screen" id="screen3">
+    <div class="screen-title">Choose Language</div>
+    <div class="screen-sub">Select the language of your newspaper</div>
+    <div class="lang-grid">
+      <div class="lang-btn" onclick="selectLang('english','English')">
+        <span class="lang-flag">🇬🇧</span>
+        <div class="lang-name">English</div>
+      </div>
+      <div class="lang-btn" onclick="selectLang('french','Français')">
+        <span class="lang-flag">🇫🇷</span>
+        <div class="lang-name">Français</div>
+      </div>
+      <div class="lang-btn" onclick="selectLang('spanish','Español')">
+        <span class="lang-flag">🇪🇸</span>
+        <div class="lang-name">Español</div>
+      </div>
+      <div class="lang-btn" onclick="selectLang('german','Deutsch')">
+        <span class="lang-flag">🇩🇪</span>
+        <div class="lang-name">Deutsch</div>
+      </div>
+      <div class="lang-btn" onclick="selectLang('portuguese','Português')">
+        <span class="lang-flag">🇧🇷</span>
+        <div class="lang-name">Português</div>
+      </div>
+      <div class="lang-btn" onclick="selectLang('japanese','日本語')">
+        <span class="lang-flag">🇯🇵</span>
+        <div class="lang-name">日本語</div>
+      </div>
+    </div>
+    <button class="btn-back" onclick="goTo(2)">← Back</button>
+  </div>
 
-    <!-- NEWSPAPER -->
+  <!-- SCREEN 4: CHOOSE NEWSPAPER -->
+  <div class="screen" id="screen4">
+    <div class="screen-title">Choose Newspaper</div>
+    <div class="screen-sub" id="s4-sub">Select country and newspaper</div>
     <div class="field">
-      <label class="field-label">◆ Newspaper Title</label>
-      <input type="text" id="newspaper" placeholder="Any newspaper · Any country · Any language — e.g. The Washington Post, Daily Gleaner, Le Monde" oninput="checkReady()">
+      <label class="field-label">◆ Country / Region</label>
+      <select class="select-field" id="country-select" onchange="updateNewspapers()">
+        <option value="">— Select Country —</option>
+      </select>
     </div>
-
-    <!-- DATES -->
-    <div class="field-row one" id="date-row">
-      <div>
-        <label class="field-label" id="date1-label">◆ Date</label>
-        <input type="text" id="date1" placeholder="e.g. June 15, 1985" oninput="checkReady()">
-      </div>
-      <div id="date2-wrap" style="display:none">
-        <label class="field-label" id="date2-label">◆ Second Date</label>
-        <input type="text" id="date2" placeholder="e.g. June 15, 2025" oninput="checkReady()">
-      </div>
+    <div class="field" id="paper-field" style="display:none;">
+      <label class="field-label">◆ Newspaper</label>
+      <select class="select-field" id="newspaper-select" onchange="selectNewspaper()">
+        <option value="">— Select Newspaper —</option>
+      </select>
+      <div class="paper-info" id="paper-info"></div>
     </div>
-
-    <!-- SURFACE & LIGHTING -->
-    <div class="field-row two">
-      <div>
-        <label class="field-label">◆ Surface</label>
-        <select id="surface">
-          <option value="pale grey marble surface">Grey Marble — Premium</option>
-          <option value="warm aged oak reading table">Aged Oak — Classic</option>
-          <option value="worn leather desktop with warm reading lamp glow">Leather — Personal</option>
-          <option value="clean dark walnut boardroom table">Dark Walnut — Corporate</option>
-          <option value="antique mahogany surface with a single white flower resting beside the paper">Antique Mahogany — Memorial</option>
-        </select>
-      </div>
-      <div>
-        <label class="field-label">◆ Lighting Mood</label>
-        <select id="lighting">
-          <option value="warm golden hour 7am light from the upper left, casting long soft shadows">Morning — Golden Hour</option>
-          <option value="cold pale directional winter light, 5600K blue-white, clinical and historic">Winter — Cold &amp; Historic</option>
-          <option value="bright even daylight, soft diffused shadows, warm and optimistic">Summer — Bright &amp; Open</option>
-          <option value="warm amber lamp light from the right, deep atmospheric shadows">Evening — Warm Amber</option>
-          <option value="clean neutral studio light, even illumination, archival precision">Studio — Archival</option>
-        </select>
-      </div>
+    <div class="field">
+      <label class="field-label">◆ Surface</label>
+      <select class="select-field" id="surface">
+        <option value="pale grey marble surface">Grey Marble — Premium</option>
+        <option value="warm aged oak reading table">Oak Table — Classic</option>
+        <option value="antique mahogany writing desk">Mahogany Desk — Heritage</option>
+        <option value="dark walnut surface with brass accents">Walnut & Brass — Luxury</option>
+        <option value="weathered stone surface">Stone — Editorial</option>
+      </select>
     </div>
-
-    <!-- GENERATE BUTTON -->
-    <button class="btn-generate" id="btn-generate" onclick="showConfirm()">
-      Generate My Newspaper
-    </button>
-
-    <!-- CONFIRMATION MODAL -->
-    <div id="confirm-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:24px;">
-      <div style="background:#221408;border:1px solid #c4956a;max-width:480px;width:100%;padding:32px 28px;font-family:'Old Standard TT',serif;">
-        <div style="text-align:center;margin-bottom:24px;">
-          <div style="color:#c4956a;font-size:20px;margin-bottom:8px;">◆ · ◆</div>
-          <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.3rem;color:#e8d5b0;margin-bottom:6px;">Please Confirm Your Details</div>
-          <div style="font-size:0.85rem;color:#b8985c;line-height:1.5;">Check your details carefully before generating.<br><strong style="color:#e08080;">THERE IS NO REFUND ONCE AN IMAGE IS GENERATED.</strong></div>
-        </div>
-        <div style="background:#1a1008;border:1px solid #3a2415;padding:20px;margin-bottom:20px;">
-          <div id="confirm-details" style="font-size:0.95rem;color:#d4c4a8;line-height:2.2;"></div>
-        </div>
-        <div style="background:#2a1a08;border-left:3px solid #c4956a;padding:12px 16px;margin-bottom:24px;font-size:0.8rem;color:#b8985c;line-height:1.5;">
-          ⚠ Please ensure your newspaper title and date(s) are correct before proceeding.
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <button onclick="closeConfirm()" style="padding:14px;background:transparent;border:1px solid #6a4028;border-radius:3px;color:#d4c4a8;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Old Standard TT',serif;">← Go Back & Edit</button>
-          <button onclick="confirmAndGenerate()" style="padding:14px;background:#8b2020;border:none;border-radius:3px;color:#f5ede0;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Old Standard TT',serif;">Confirm & Generate ◆</button>
-        </div>
-      </div>
+    <div class="field">
+      <label class="field-label">◆ Lighting Mood</label>
+      <select class="select-field" id="lighting">
+        <option value="warm golden hour light from the upper left">Morning — Golden Hour</option>
+        <option value="cool bright midday light from directly above">Midday — Crisp & Clear</option>
+        <option value="warm amber candlelight from the right side">Evening — Candlelight</option>
+        <option value="dramatic chiaroscuro lighting from a single source">Dramatic — Chiaroscuro</option>
+        <option value="soft diffused studio light from above">Studio — Clean & Neutral</option>
+      </select>
     </div>
+    <button class="btn-primary" id="btn-s4" onclick="goTo(5)" disabled>Review My Order →</button>
+    <button class="btn-back" onclick="goTo(3)">← Back</button>
+  </div>
 
-    <!-- PROGRESS -->
-    <div class="progress" id="progress">
-      <div class="progress-step">
-        <div class="progress-bar" id="bar1"></div>
-        <div class="progress-label" id="label1">Researching</div>
+  <!-- SCREEN 5: CONFIRMATION -->
+  <div class="screen" id="screen5">
+    <div class="screen-title">Confirm Your Order</div>
+    <div class="screen-sub">Please check carefully before generating</div>
+    <div class="confirm-box" id="confirm-box"></div>
+    <div class="refund-warning">
+      ⚠ THERE IS NO REFUND ONCE AN IMAGE IS GENERATED.<br>
+      Please ensure all details above are correct before proceeding.
+    </div>
+    <button class="btn-primary" onclick="startGeneration()">Confirm &amp; Generate ◆</button>
+    <button class="btn-back" onclick="goTo(4)">← Go Back &amp; Edit</button>
+  </div>
+
+  <!-- SCREEN 6: GENERATING -->
+  <div class="screen" id="screen6">
+    <div class="screen-title">Creating Your Newspaper</div>
+    <div class="screen-sub">This takes about 30–45 seconds</div>
+    <div class="progress-wrap">
+      <div class="progress-step-row">
+        <div class="progress-icon" id="icon1">1</div>
+        <div class="progress-label-text" id="lbl1">Researching historical headlines</div>
       </div>
-      <div class="progress-step">
-        <div class="progress-bar" id="bar2"></div>
-        <div class="progress-label" id="label2">Building Prompt</div>
+      <div class="progress-step-row">
+        <div class="progress-icon" id="icon2">2</div>
+        <div class="progress-label-text" id="lbl2">Building image prompt</div>
       </div>
-      <div class="progress-step">
-        <div class="progress-bar" id="bar3"></div>
-        <div class="progress-label" id="label3">Generating Image</div>
+      <div class="progress-step-row">
+        <div class="progress-icon" id="icon3">3</div>
+        <div class="progress-label-text" id="lbl3">Generating your newspaper</div>
       </div>
     </div>
-
-    <!-- ERROR -->
     <div class="error-box" id="error-box"></div>
-
-    <!-- RESULT -->
-    <div class="result" id="result">
-      <div class="divider">· · ·</div>
-      <div class="result-label">◆ Your Newspaper</div>
-      <img id="result-img" src="" alt="Generated newspaper front page">
-      <div class="result-btns">
-        <a id="result-link" href="#" target="_blank" class="btn-open">Open Full Size</a>
-        <button class="btn-copy" id="btn-copy" onclick="copyPrompt()">Copy Prompt</button>
-      </div>
-      <div class="result-note">Image URLs expire after 60 minutes — tap Open Full Size to save yours.</div>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer">
-      <div class="footer-diamonds">◆ · ◆</div>
-      <div class="footer-text">INKDATEAPP.COM · 6 Languages · 30+ Countries</div>
-    </div>
-
+    <button class="btn-back" id="btn-retry" style="display:none;" onclick="goTo(5)">← Try Again</button>
   </div>
 
-  <script>
-    let currentTier = 'premium';
-    let currentPrompt = '';
+  <!-- SCREEN 7: RESULT -->
+  <div class="screen" id="screen7">
+    <div class="screen-title">◆ Your Newspaper</div>
+    <div class="result-img-wrap">
+      <img id="result-img" src="" alt="Your newspaper">
+    </div>
+    <div class="result-btns">
+      <a id="result-link" href="#" target="_blank" class="btn-download">Open Full Size</a>
+      <button class="btn-ghost" onclick="copyPromptText()">Copy Prompt</button>
+    </div>
+    <div class="result-note">Tap Open Full Size then long-press to save to your photos.</div>
+    <div class="orn"><div class="line"></div><div class="dm"></div><div class="line"></div></div>
+    <button class="btn-primary" onclick="startOver()">↺ Create Another</button>
+  </div>
 
-    const tierConfig = {
-      premium: {
-        desc: 'One date. One historically verified front page.',
-        date1Label: '◆ Date',
-        date1Placeholder: 'e.g. June 15, 1985',
-        showDate2: false,
-        surface: 'pale grey marble surface',
-        lighting: 'warm golden hour 7am light from the upper left, casting long soft shadows',
-      },
-      thennow: {
-        desc: 'Two dates. One story. A powerful visual timeline.',
-        date1Label: '◆ Then — Date 1',
-        date1Placeholder: 'e.g. June 15, 1985',
-        date2Label: '◆ Now — Date 2',
-        date2Placeholder: 'e.g. June 15, 2025',
-        showDate2: true,
-        surface: 'warm aged oak reading table',
-        lighting: 'warm golden hour 7am light from the upper left, casting long soft shadows',
-      },
-      memorial: {
-        desc: 'A life bookended in print. Tender and timeless.',
-        date1Label: '◆ Date of Birth',
-        date1Placeholder: 'e.g. March 12, 1942',
-        date2Label: '◆ Date of Passing',
-        date2Placeholder: 'e.g. September 4, 2019',
-        showDate2: true,
-        surface: 'antique mahogany surface with a single white flower resting beside the paper',
-        lighting: 'warm amber lamp light from the right, deep atmospheric shadows',
-      },
-    };
+  <div class="app-footer">inkdateapp.com · 6 Languages · 30+ Countries</div>
+</div>
 
-    function selectTier(tier, btn) {
-      currentTier = tier;
-      document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const cfg = tierConfig[tier];
-      document.getElementById('tier-desc').textContent = cfg.desc;
-      document.getElementById('date1-label').textContent = cfg.date1Label;
-      document.getElementById('date1').placeholder = cfg.date1Placeholder;
-      const d2wrap = document.getElementById('date2-wrap');
-      const dateRow = document.getElementById('date-row');
-      if (cfg.showDate2) {
-        d2wrap.style.display = 'block';
-        dateRow.className = 'field-row two';
-        document.getElementById('date2-label').textContent = cfg.date2Label;
-        document.getElementById('date2').placeholder = cfg.date2Placeholder;
-      } else {
-        d2wrap.style.display = 'none';
-        dateRow.className = 'field-row one';
-      }
-      // Set default surface and lighting
-      document.getElementById('surface').value = cfg.surface;
-      document.getElementById('lighting').value = cfg.lighting;
-      document.getElementById('date2').value = '';
-      checkReady();
-    }
+<script>
+// STATE
+let state = {
+  product: null,
+  date1: '',
+  date2: '',
+  language: null,
+  langName: '',
+  country: '',
+  newspaper: '',
+  newspaperEst: '',
+  surface: '',
+  lighting: '',
+  researchData: null,
+  lastPrompt: '',
+};
 
-    // Curated newspaper database — verified papers only
-    const NEWSPAPERS = {
-      uk: [
-        { value: "The Times", label: "The Times", est: 1785 },
-        { value: "The Guardian", label: "The Guardian", est: 1821 },
-        { value: "The Daily Telegraph", label: "The Daily Telegraph", est: 1855 },
-        { value: "Daily Mirror", label: "Daily Mirror", est: 1903 },
-        { value: "The Sun", label: "The Sun", est: 1964 },
-        { value: "Daily Mail", label: "Daily Mail", est: 1896 },
-        { value: "The Independent", label: "The Independent", est: 1986 },
-        { value: "Financial Times", label: "Financial Times", est: 1888 },
-        { value: "The Observer", label: "The Observer", est: 1791 },
-        { value: "Daily Express", label: "Daily Express", est: 1900 },
-      ],
-      usa: [
-        { value: "The New York Times", label: "The New York Times", est: 1851 },
-        { value: "The Washington Post", label: "The Washington Post", est: 1877 },
-        { value: "Chicago Tribune", label: "Chicago Tribune", est: 1847 },
-        { value: "Los Angeles Times", label: "Los Angeles Times", est: 1881 },
-        { value: "USA Today", label: "USA Today", est: 1982 },
-        { value: "New York Daily News", label: "New York Daily News", est: 1919 },
-        { value: "The Boston Globe", label: "The Boston Globe", est: 1872 },
-        { value: "The Wall Street Journal", label: "The Wall Street Journal", est: 1889 },
-      ],
-      caribbean: [
-        { value: "The Gleaner", label: "The Gleaner (Jamaica)", est: 1834 },
-        { value: "The Star", label: "The Star (Jamaica)", est: 1951 },
-        { value: "Trinidad Guardian", label: "Trinidad Guardian", est: 1917 },
-        { value: "The Barbados Advocate", label: "The Barbados Advocate", est: 1895, end: 2022 },
-        { value: "Barbados Nation", label: "Barbados Nation", est: 1973 },
-        { value: "Antigua Gazette", label: "Antigua Gazette", est: 1748 },
-      ],
-      caribbean_uk: [
-        { value: "The Voice", label: "The Voice", est: 1982 },
-        { value: "The Caribbean Times", label: "The Caribbean Times", est: 1981 },
-        { value: "Weekly Gleaner UK", label: "Weekly Gleaner UK", est: 1971 },
-      ],
-      africa: [
-        { value: "Daily Times of Nigeria", label: "Daily Times of Nigeria", est: 1926 },
-        { value: "The Natal Witness", label: "The Natal Witness / The Witness (South Africa)", est: 1846 },
-        { value: "Le Mauricien", label: "Le Mauricien (Mauritius)", est: 1908 },
-        { value: "The Mercury", label: "The Mercury (South Africa)", est: 1852 },
-        { value: "Cape Times", label: "Cape Times (South Africa)", est: 1876 },
-        { value: "The Daily Nation", label: "Daily Nation (Kenya)", est: 1960 },
-        { value: "Ghana Daily Graphic", label: "Daily Graphic (Ghana)", est: 1950 },
-      ],
-      europe: [
-        { value: "Le Monde", label: "Le Monde (France)", est: 1944 },
-        { value: "Le Figaro", label: "Le Figaro (France)", est: 1826 },
-        { value: "Frankfurter Allgemeine Zeitung", label: "Frankfurter Allgemeine (Germany)", est: 1949 },
-        { value: "Die Welt", label: "Die Welt (Germany)", est: 1946 },
-        { value: "El País", label: "El País (Spain)", est: 1976 },
-        { value: "ABC", label: "ABC (Spain)", est: 1903 },
-        { value: "Folha de S.Paulo", label: "Folha de S.Paulo (Brazil)", est: 1921 },
-        { value: "O Globo", label: "O Globo (Brazil)", est: 1925 },
-      ],
-      australia: [
-        { value: "The Sydney Morning Herald", label: "The Sydney Morning Herald", est: 1831 },
-        { value: "The Age", label: "The Age (Melbourne)", est: 1854 },
-        { value: "The Australian", label: "The Australian", est: 1964 },
-      ],
-      japan: [
-        { value: "Yomiuri Shimbun", label: "Yomiuri Shimbun", est: 1874 },
-        { value: "Asahi Shimbun", label: "Asahi Shimbun", est: 1879 },
-        { value: "Mainichi Shimbun", label: "Mainichi Shimbun", est: 1872 },
-      ],
-    };
+// NEWSPAPER DATABASE
+const PAPERS = {
+  english: {
+    'UK': [
+      {v:'The Times', l:'The Times', est:1785},
+      {v:'The Guardian', l:'The Guardian', est:1821},
+      {v:'The Daily Telegraph', l:'The Daily Telegraph', est:1855},
+      {v:'Daily Mirror', l:'Daily Mirror', est:1903},
+      {v:'The Sun', l:'The Sun', est:1964},
+      {v:'Daily Mail', l:'Daily Mail', est:1896},
+      {v:'The Independent', l:'The Independent', est:1986},
+      {v:'Financial Times', l:'Financial Times', est:1888},
+      {v:'The Observer', l:'The Observer', est:1791},
+      {v:'Daily Express', l:'Daily Express', est:1900},
+    ],
+    'USA': [
+      {v:'The New York Times', l:'The New York Times', est:1851},
+      {v:'The Washington Post', l:'The Washington Post', est:1877},
+      {v:'Chicago Tribune', l:'Chicago Tribune', est:1847},
+      {v:'Los Angeles Times', l:'Los Angeles Times', est:1881},
+      {v:'USA Today', l:'USA Today', est:1982},
+      {v:'New York Daily News', l:'New York Daily News', est:1919},
+      {v:'The Boston Globe', l:'The Boston Globe', est:1872},
+      {v:'The Wall Street Journal', l:'The Wall Street Journal', est:1889},
+    ],
+    'Jamaica': [
+      {v:'The Gleaner', l:'The Gleaner', est:1834},
+      {v:'The Star Jamaica', l:'The Star', est:1951},
+    ],
+    'Trinidad & Tobago': [
+      {v:'Trinidad Guardian', l:'Trinidad Guardian', est:1917},
+    ],
+    'Barbados': [
+      {v:'The Barbados Advocate', l:'The Barbados Advocate', est:1895, end:2022},
+      {v:'Barbados Nation', l:'Barbados Nation', est:1973},
+    ],
+    'Antigua': [
+      {v:'Antigua Gazette', l:'Antigua Gazette', est:1748},
+    ],
+    'Caribbean UK': [
+      {v:'The Voice', l:'The Voice', est:1982},
+      {v:'The Caribbean Times', l:'The Caribbean Times', est:1981},
+      {v:'Weekly Gleaner UK', l:'Weekly Gleaner UK', est:1971},
+    ],
+    'Nigeria': [
+      {v:'Daily Times of Nigeria', l:'Daily Times of Nigeria', est:1926},
+    ],
+    'South Africa': [
+      {v:'The Natal Witness', l:'The Natal Witness / The Witness', est:1846},
+      {v:'The Mercury', l:'The Mercury', est:1852},
+      {v:'Cape Times', l:'Cape Times', est:1876},
+    ],
+    'Kenya': [
+      {v:'Daily Nation', l:'Daily Nation', est:1960},
+    ],
+    'Ghana': [
+      {v:'Daily Graphic', l:'Daily Graphic', est:1950},
+    ],
+    'Australia': [
+      {v:'The Sydney Morning Herald', l:'The Sydney Morning Herald', est:1831},
+      {v:'The Age', l:'The Age', est:1854},
+      {v:'The Australian', l:'The Australian', est:1964},
+    ],
+  },
+  french: {
+    'France': [
+      {v:'Le Monde', l:'Le Monde', est:1944},
+      {v:'Le Figaro', l:'Le Figaro', est:1826},
+      {v:'Libération', l:'Libération', est:1973},
+    ],
+    'Mauritius': [
+      {v:'Le Mauricien', l:'Le Mauricien', est:1908},
+    ],
+  },
+  spanish: {
+    'Spain': [
+      {v:'El País', l:'El País', est:1976},
+      {v:'ABC', l:'ABC', est:1903},
+      {v:'El Mundo', l:'El Mundo', est:1989},
+    ],
+    'Mexico': [
+      {v:'Excélsior', l:'Excélsior', est:1917},
+      {v:'El Universal', l:'El Universal', est:1916},
+    ],
+    'Argentina': [
+      {v:'La Nación', l:'La Nación', est:1870},
+      {v:'Clarín', l:'Clarín', est:1945},
+    ],
+  },
+  german: {
+    'Germany': [
+      {v:'Frankfurter Allgemeine Zeitung', l:'Frankfurter Allgemeine', est:1949},
+      {v:'Die Welt', l:'Die Welt', est:1946},
+      {v:'Süddeutsche Zeitung', l:'Süddeutsche Zeitung', est:1945},
+    ],
+    'Austria': [
+      {v:'Der Standard', l:'Der Standard', est:1988},
+    ],
+  },
+  portuguese: {
+    'Brazil': [
+      {v:'Folha de S.Paulo', l:'Folha de S.Paulo', est:1921},
+      {v:'O Globo', l:'O Globo', est:1925},
+      {v:'O Estado de S. Paulo', l:'O Estado de S. Paulo', est:1875},
+    ],
+    'Portugal': [
+      {v:'Público', l:'Público', est:1990},
+      {v:'Jornal de Notícias', l:'Jornal de Notícias', est:1888},
+    ],
+  },
+  japanese: {
+    'Japan': [
+      {v:'Yomiuri Shimbun', l:'Yomiuri Shimbun', est:1874},
+      {v:'Asahi Shimbun', l:'Asahi Shimbun', est:1879},
+      {v:'Mainichi Shimbun', l:'Mainichi Shimbun', est:1872},
+    ],
+  },
+};
 
-    function updateCountries() {
-      const region = document.getElementById('region').value;
-      const select = document.getElementById('newspaper');
-      const info = document.getElementById('newspaper-info');
+// STEP MANAGEMENT
+function goTo(step) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen' + step).classList.add('active');
+  // Update dots
+  for(let i=1;i<=5;i++){
+    const dot = document.getElementById('dot'+i);
+    if(!dot) continue;
+    dot.classList.remove('active','done');
+    if(i < step) dot.classList.add('done');
+    else if(i === step) dot.classList.add('active');
+  }
+  window.scrollTo(0,0);
+}
 
-      select.innerHTML = '<option value="">— Select Newspaper —</option>';
+// SCREEN 1 — PRODUCT
+function selectProduct(p) {
+  state.product = p;
+  document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('card-'+p).classList.add('selected');
+  document.getElementById('btn-s1').disabled = false;
 
-      if (!region) {
-        select.style.display = 'none';
-        info.style.display = 'none';
-        checkReady();
-        return;
-      }
+  // Set up screen 2 based on product
+  if(p === 'premium') {
+    document.getElementById('s2-title').textContent = 'Enter Your Date';
+    document.getElementById('s2-sub').textContent = 'Any date from 1850 to present';
+    document.getElementById('date1-label').textContent = '◆ Date';
+    document.getElementById('date1').placeholder = 'e.g. November 5, 2008';
+    document.getElementById('date2-field').style.display = 'none';
+  } else if(p === 'thennow') {
+    document.getElementById('s2-title').textContent = 'Enter Your Two Dates';
+    document.getElementById('s2-sub').textContent = 'The "Then" date and the "Now" date';
+    document.getElementById('date1-label').textContent = '◆ Then — First Date';
+    document.getElementById('date1').placeholder = 'e.g. June 12, 1965';
+    document.getElementById('date2-field').style.display = 'block';
+    document.getElementById('date2-label').textContent = '◆ Now — Second Date';
+    document.getElementById('date2').placeholder = 'e.g. June 12, 2025';
+  } else if(p === 'memorial') {
+    document.getElementById('s2-title').textContent = 'Enter the Two Dates';
+    document.getElementById('s2-sub').textContent = 'Date of birth and date of passing';
+    document.getElementById('date1-label').textContent = '◆ Date of Birth';
+    document.getElementById('date1').placeholder = 'e.g. March 12, 1942';
+    document.getElementById('date2-field').style.display = 'block';
+    document.getElementById('date2-label').textContent = '◆ Date of Passing';
+    document.getElementById('date2').placeholder = 'e.g. September 4, 2019';
+  }
+}
 
-      const papers = NEWSPAPERS[region] || [];
-      papers.forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p.value;
-        const endNote = p.end ? ` (ceased ${p.end})` : '';
-        opt.textContent = `${p.label} (est. ${p.est}${endNote})`;
-        select.appendChild(opt);
+// SCREEN 2 — DATES
+function checkS2() {
+  const d1 = document.getElementById('date1').value.trim();
+  const d2 = document.getElementById('date2').value.trim();
+  const needTwo = state.product !== 'premium';
+  const ok = d1 && (!needTwo || d2);
+  document.getElementById('btn-s2').disabled = !ok;
+  if(ok) {
+    state.date1 = d1;
+    state.date2 = d2;
+  }
+}
+
+// SCREEN 3 — LANGUAGE
+function selectLang(lang, name) {
+  state.language = lang;
+  state.langName = name;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+
+  // Populate countries for screen 4
+  const countries = Object.keys(PAPERS[lang] || {});
+  const sel = document.getElementById('country-select');
+  sel.innerHTML = '<option value="">— Select Country —</option>';
+  countries.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    sel.appendChild(opt);
+  });
+  document.getElementById('s4-sub').textContent = `${name} newspapers`;
+  document.getElementById('paper-field').style.display = 'none';
+  document.getElementById('btn-s4').disabled = true;
+
+  setTimeout(() => goTo(4), 200);
+}
+
+// SCREEN 4 — NEWSPAPER
+function updateNewspapers() {
+  const country = document.getElementById('country-select').value;
+  state.country = country;
+  const papers = (PAPERS[state.language] || {})[country] || [];
+  const sel = document.getElementById('newspaper-select');
+  sel.innerHTML = '<option value="">— Select Newspaper —</option>';
+  papers.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.v;
+    const endNote = p.end ? ` (ceased ${p.end})` : '';
+    opt.textContent = `${p.l} (est. ${p.est}${endNote})`;
+    sel.appendChild(opt);
+  });
+  document.getElementById('paper-field').style.display = country ? 'block' : 'none';
+  document.getElementById('btn-s4').disabled = true;
+  document.getElementById('paper-info').textContent = '';
+}
+
+function selectNewspaper() {
+  const val = document.getElementById('newspaper-select').value;
+  const country = state.country;
+  const papers = (PAPERS[state.language] || {})[country] || [];
+  const paper = papers.find(p => p.v === val);
+  state.newspaper = val;
+  if(paper) {
+    state.newspaperEst = paper.est;
+    const endNote = paper.end ? ` — ceased ${paper.end}` : '';
+    document.getElementById('paper-info').textContent =
+      `Established ${paper.est}${endNote} · Dates available: ${paper.est} to ${paper.end || 'present'}`;
+  }
+  document.getElementById('btn-s4').disabled = !val;
+}
+
+// SCREEN 5 — CONFIRMATION
+function buildConfirmBox() {
+  state.surface = document.getElementById('surface').value;
+  state.lighting = document.getElementById('lighting').value;
+  state.date1 = document.getElementById('date1').value.trim();
+  state.date2 = document.getElementById('date2').value.trim();
+
+  const productNames = {premium:'Single Front Page — £14.99', thennow:'Then & Now — £24.99', memorial:'Memorial — £24.99'};
+  let html = '';
+  html += row('Product', productNames[state.product]);
+  html += row('Language', state.langName);
+  html += row('Country', state.country);
+  html += row('Newspaper', state.newspaper);
+  if(state.product === 'memorial') {
+    html += row('Date of Birth', state.date1);
+    html += row('Date of Passing', state.date2);
+  } else if(state.product === 'thennow') {
+    html += row('Then', state.date1);
+    html += row('Now', state.date2);
+  } else {
+    html += row('Date', state.date1);
+  }
+  document.getElementById('confirm-box').innerHTML = html;
+}
+
+function row(label, value) {
+  return `<div class="confirm-row">
+    <span class="confirm-label">${label}</span>
+    <span class="confirm-value">${value}</span>
+  </div>`;
+}
+
+// Override goTo to build confirm box when going to screen 5
+const _goTo = goTo;
+window.goTo = function(step) {
+  if(step === 5) buildConfirmBox();
+  _goTo(step);
+};
+
+// SCREEN 6 — GENERATION
+function setProgress(step, status) {
+  for(let i=1;i<=3;i++){
+    const icon = document.getElementById('icon'+i);
+    const lbl = document.getElementById('lbl'+i);
+    icon.classList.remove('active','done');
+    lbl.classList.remove('active','done');
+    if(i < step){icon.classList.add('done');lbl.classList.add('done');icon.textContent='✓';}
+    else if(i===step){icon.classList.add('active');lbl.classList.add('active');}
+  }
+}
+
+async function startGeneration() {
+  goTo(6);
+  const errBox = document.getElementById('error-box');
+  errBox.classList.remove('show');
+  document.getElementById('btn-retry').style.display = 'none';
+
+  try {
+    // Stage 1 — Research
+    setProgress(1, 'active');
+    let research;
+    if(state.product === 'thennow' || state.product === 'memorial') {
+      const [r1, r2] = await Promise.all([
+        fetch('/.netlify/functions/research-date', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({newspaper: state.newspaper, date: state.date1}),
+        }),
+        fetch('/.netlify/functions/research-date', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({newspaper: state.newspaper, date: state.date2}),
+        }),
+      ]);
+      const [d1, d2] = await Promise.all([r1.json(), r2.json()]);
+      if(d1.error) throw new Error('Research failed: ' + d1.error);
+      if(d2.error) throw new Error('Research failed: ' + d2.error);
+      research = {date1: d1.research, date2: d2.research};
+    } else {
+      const res = await fetch('/.netlify/functions/research-date', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({newspaper: state.newspaper, date: state.date1}),
       });
-
-      select.style.display = 'block';
-      select.onchange = () => {
-        const selected = papers.find(p => p.value === select.value);
-        if (selected) {
-          const endNote = selected.end ? ` — ceased publication ${selected.end}` : '';
-          info.textContent = `Established ${selected.est}${endNote} · Available dates: ${selected.est} to ${selected.end || 'present'}`;
-          info.style.display = 'block';
-        } else {
-          info.style.display = 'none';
-        }
-        checkReady();
-      };
-      checkReady();
+      const data = await res.json();
+      if(data.error) throw new Error('Research failed: ' + data.error);
+      research = data.research;
     }
+    state.researchData = research;
 
-    function checkReady() {
-      const newspaper = document.getElementById('newspaper').value.trim();
-      const date1 = document.getElementById('date1').value.trim();
-      const date2 = document.getElementById('date2').value.trim();
-      const needTwo = tierConfig[currentTier].showDate2;
-      const ready = newspaper && date1 && (!needTwo || date2);
-      const btn = document.getElementById('btn-generate');
-      btn.classList.toggle('ready', ready);
-    }
+    // Stage 2 — Building prompt
+    setProgress(2, 'active');
+    await new Promise(r => setTimeout(r, 600));
 
-    function buildPrompt() {
-      const newspaper = document.getElementById('newspaper').value.trim();
-      const date1 = document.getElementById('date1').value.trim();
-      const date2 = document.getElementById('date2').value.trim();
-      const surface = document.getElementById('surface').value;
-      const lighting = document.getElementById('lighting').value;
+    // Stage 3 — Generate image
+    setProgress(3, 'active');
+    const imgRes = await fetch('/.netlify/functions/generate-image', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        research,
+        tier: state.product,
+        surface: state.surface,
+        lighting: state.lighting,
+      }),
+    });
+    const imgData = await imgRes.json();
+    if(imgData.error) throw new Error(imgData.error);
+    const imageUrl = imgData.imageUrl;
+    if(!imageUrl) throw new Error('No image returned');
 
-      if (currentTier === 'thennow') {
-        return `Ultra-photorealistic museum-quality photograph of two authentic physical copies of ${newspaper} arranged as a premium "Then & Now" keepsake display. Both newspapers folded to show their front pages — a powerful visual timeline of two historic moments.
+    document.getElementById('result-img').src = imageUrl;
+    document.getElementById('result-link').href = imageUrl;
+    goTo(7);
 
-ARRANGEMENT: The THEN newspaper (${date1}) lies at the top, slightly angled, upper half fully readable — masthead, banner headline, dominant photograph. The NOW newspaper (${date2}) lies beneath and slightly forward, equally prominent. Both rest on a ${surface}. ${lighting} falls across both papers creating natural depth and shadow between layers. A brass carriage clock sits softly out of focus at the upper edge, anchoring the theme of time passing.
+  } catch(e) {
+    errBox.textContent = '⚠ ' + (e.message || 'Something went wrong. Please try again.');
+    errBox.classList.add('show');
+    document.getElementById('btn-retry').style.display = 'block';
+  }
+}
 
-THEN NEWSPAPER — ${date1}: ${newspaper} front page. Masthead clearly showing "${newspaper}" and date "${date1}". Enormous bold serif banner headline reflecting the most significant news story of ${date1}. Dominant editorial press photograph from that day.
+function startOver() {
+  // Reset state
+  state = {product:null,date1:'',date2:'',language:null,langName:'',country:'',newspaper:'',newspaperEst:'',surface:'',lighting:'',researchData:null,lastPrompt:''};
+  document.getElementById('date1').value = '';
+  document.getElementById('date2').value = '';
+  document.querySelectorAll('.product-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('btn-s1').disabled = true;
+  goTo(1);
+}
 
-NOW NEWSPAPER — ${date2}: ${newspaper} front page. Masthead clearly showing "${newspaper}" and date "${date2}". Enormous bold serif banner headline reflecting the most significant news story of ${date2}. Dominant editorial press photograph from that day.
-
-PHYSICAL DETAILS: Both papers show authentic newsprint texture for their respective eras. Fold creases on both. Natural shadow between layers. Individual newsprint fibres at macro level.
-
-STYLE: Medium-format camera. Both mastheads and headlines tack sharp. Gentle bokeh toward edges. No digital elements. 8K. Museum quality.`;
-      }
-
-      if (currentTier === 'memorial') {
-        return `Ultra-photorealistic museum-quality photograph of two authentic physical copies of ${newspaper} as a tender memorial keepsake — bookending a life between two dates, captured forever in print.
-
-ARRANGEMENT: BIRTH newspaper (${date1}) at top, slightly angled, upper half readable. PASSING newspaper (${date2}) beneath and forward. Both on a ${surface}. ${lighting}. A single white lily at the composition edge, gently out of focus. Mood: contemplative, deeply respectful, quietly beautiful.
-
-BIRTH DATE — ${date1}: ${newspaper} front page. Masthead clearly showing "${newspaper}" and date "${date1}". Bold serif banner headline reflecting the significant news of ${date1}. Dominant editorial press photograph from that day.
-
-PASSING DATE — ${date2}: ${newspaper} front page. Masthead clearly showing "${newspaper}" and date "${date2}". Bold serif banner headline reflecting the news of ${date2}. Dominant editorial press photograph from that day.
-
-EMOTIONAL TONE: A keepsake a family frames for generations. Tender. Dignified. Profound.
-
-STYLE: Medium-format. Both dates and mastheads tack sharp. Warm soft focus at edges. Intimate golden afternoon light. No digital elements. 8K. Museum quality.`;
-      }
-
-      // Premium single
-      return `Ultra-photorealistic museum-quality photograph of an authentic physical copy of ${newspaper} dated ${date1}. The broadsheet lies flat on a ${surface}, photographed from a slight overhead angle with ${lighting}.
-
-The newsprint has the authentic texture and tone of a real printed broadsheet — fine fibre grain visible in raking light, ink saturation showing period-authentic offset print characteristics.
-
-MASTHEAD: ${newspaper} logotype at the very top in classic bold serif typeface, deep black ink, centered. Date "${date1}" printed clearly below the masthead. Thin decorative rule separating masthead from content.
-
-BANNER HEADLINE: An enormous historically accurate bold serif banner headline spanning the full page width — the most significant news story of ${date1} as it would have appeared on the front page of ${newspaper}.
-
-DECK HEADLINE: A secondary headline in approximately 38pt type below the banner providing context to the lead story.
-
-DOMINANT PHOTOGRAPH: A large high-contrast editorial press photograph — slightly grainy, authentic wire-service quality — showing the central subject of the day's lead story.
-
-SECONDARY STORIES: Two or three additional headline columns visible below the fold, reflecting other significant news of ${date1}.
-
-BODY TEXT: Dense justified 9pt serif body copy in multiple columns — authentic broadsheet layout.
-
-PHYSICAL DETAILS: Centre fold crease runs horizontally across the lower third. Adjacent copies visible beneath. Individual newsprint fibres at macro level.
-
-STYLE: Medium-format camera. Tack sharp on masthead and banner headline. Gentle focus fall-off toward paper edges. No digital borders, no mockups, no frames. 8K resolution. Museum quality. Cinematic realism.`;
-    }
-
-    function setStage(stage) {
-      const btn = document.getElementById('btn-generate');
-      const progress = document.getElementById('progress');
-      const bar1 = document.getElementById('bar1');
-      const bar2 = document.getElementById('bar2');
-      const bar3 = document.getElementById('bar3');
-      const lbl1 = document.getElementById('label1');
-      const lbl2 = document.getElementById('label2');
-      const lbl3 = document.getElementById('label3');
-
-      if (stage === 'idle') {
-        btn.textContent = 'Generate My Newspaper';
-        btn.classList.add('ready');
-        progress.classList.remove('show');
-        lbl1.textContent = 'Researching';
-        lbl2.textContent = 'Building Prompt';
-        lbl3.textContent = 'Generating Image';
-      } else if (stage === 'researching') {
-        btn.textContent = '◆  Researching Date ...';
-        btn.classList.remove('ready');
-        progress.classList.add('show');
-        bar1.className = 'progress-bar active';
-        bar2.className = 'progress-bar';
-        bar3.className = 'progress-bar';
-        lbl1.className = 'progress-label active';
-        lbl2.className = 'progress-label';
-        lbl3.className = 'progress-label';
-      } else if (stage === 'building') {
-        btn.textContent = '◆  Building Prompt ...';
-        bar1.className = 'progress-bar done';
-        bar2.className = 'progress-bar active';
-        bar3.className = 'progress-bar';
-        lbl1.className = 'progress-label done';
-        lbl1.textContent = '✓ Researching';
-        lbl2.className = 'progress-label active';
-        lbl3.className = 'progress-label';
-      } else if (stage === 'generating') {
-        btn.textContent = '◆  Generating Image ...';
-        bar2.className = 'progress-bar done';
-        bar3.className = 'progress-bar active';
-        lbl2.className = 'progress-label done';
-        lbl2.textContent = '✓ Building Prompt';
-        lbl3.className = 'progress-label active';
-      } else if (stage === 'done') {
-        btn.textContent = '↺  Create Another';
-        btn.classList.add('ready');
-        btn.onclick = resetEngine;
-        bar3.className = 'progress-bar done';
-        lbl3.className = 'progress-label done';
-        lbl3.textContent = '✓ Generating Image';
-        progress.classList.remove('show');
-      }
-    }
-
-    function showConfirm() {
-      const btn = document.getElementById('btn-generate');
-      if (!btn.classList.contains('ready')) return;
-
-      const newspaper = document.getElementById('newspaper').value.trim();
-      const date1 = document.getElementById('date1').value.trim();
-      const date2 = document.getElementById('date2').value.trim();
-      const tier = currentTier;
-      const tierNames = { premium: 'Single Front Page', thennow: 'Then & Now', memorial: 'Memorial' };
-
-      let details = `<div>◆ <strong style="color:#e8d5b0;">Tier:</strong> ${tierNames[tier]}</div>`;
-      details += `<div>◆ <strong style="color:#e8d5b0;">Newspaper:</strong> ${newspaper}</div>`;
-
-      if (tier === 'memorial') {
-        details += `<div>◆ <strong style="color:#e8d5b0;">Date of Birth:</strong> ${date1}</div>`;
-        details += `<div>◆ <strong style="color:#e8d5b0;">Date of Passing:</strong> ${date2}</div>`;
-      } else if (tier === 'thennow') {
-        details += `<div>◆ <strong style="color:#e8d5b0;">Then:</strong> ${date1}</div>`;
-        details += `<div>◆ <strong style="color:#e8d5b0;">Now:</strong> ${date2}</div>`;
-      } else {
-        details += `<div>◆ <strong style="color:#e8d5b0;">Date:</strong> ${date1}</div>`;
-      }
-
-      document.getElementById('confirm-details').innerHTML = details;
-      const modal = document.getElementById('confirm-modal');
-      modal.style.display = 'flex';
-    }
-
-    function closeConfirm() {
-      document.getElementById('confirm-modal').style.display = 'none';
-    }
-
-    function confirmAndGenerate() {
-      closeConfirm();
-      runEngine();
-    }
-
-    async function runEngine() {
-      const btn = document.getElementById('btn-generate');
-      if (!btn.classList.contains('ready')) return;
-
-      document.getElementById('error-box').classList.remove('show');
-      document.getElementById('result').classList.remove('show');
-
-      const newspaper = document.getElementById('newspaper').value.trim();
-      const date1 = document.getElementById('date1').value.trim();
-      const date2 = document.getElementById('date2').value.trim();
-      const surface = document.getElementById('surface').value;
-      const lighting = document.getElementById('lighting').value;
-
-      try {
-        // STAGE 1 — Research
-        setStage('researching');
-        let research;
-
-        if (currentTier === 'thennow' || currentTier === 'memorial') {
-          // Research both dates
-          const [res1, res2] = await Promise.all([
-            fetch('/.netlify/functions/research-date', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ newspaper, date: date1 }),
-            }),
-            fetch('/.netlify/functions/research-date', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ newspaper, date: date2 }),
-            }),
-          ]);
-          const [data1, data2] = await Promise.all([res1.json(), res2.json()]);
-          if (data1.error) throw new Error('Research failed for date 1: ' + data1.error);
-          if (data2.error) throw new Error('Research failed for date 2: ' + data2.error);
-          research = { date1: data1.research, date2: data2.research };
-        } else {
-          // Research single date
-          const res = await fetch('/.netlify/functions/research-date', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ newspaper, date: date1 }),
-          });
-          const data = await res.json();
-          if (data.error) throw new Error('Research failed: ' + data.error);
-          research = data.research;
-        }
-
-        // STAGE 2 — Build prompt (handled server side)
-        setStage('building');
-        await new Promise(r => setTimeout(r, 500));
-
-        // STAGE 3 — Generate image
-        setStage('generating');
-
-        // Build a unique URL so browser doesn't cache
-        const timestamp = Date.now();
-        const payload = JSON.stringify({ research, tier: currentTier, surface, lighting });
-
-        const imgRes = await fetch('/.netlify/functions/generate-image', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: payload,
-        });
-        const imgData = await imgRes.json();
-        if (imgData.error) throw new Error(imgData.error);
-        const imageUrl = imgData.imageUrl;
-        if (!imageUrl) throw new Error('No image returned');
-
-        document.getElementById('result-img').src = imageUrl;
-        document.getElementById('result-link').href = imageUrl;
-        document.getElementById('result').classList.add('show');
-        setStage('done');
-
-      } catch(e) {
-        const eb = document.getElementById('error-box');
-        eb.textContent = '⚠ ' + (e.message || 'Something went wrong. Please try again.');
-        eb.classList.add('show');
-        setStage('idle');
-      }
-    }
-
-    function resetEngine() {
-      document.getElementById('result').classList.remove('show');
-      document.getElementById('error-box').classList.remove('show');
-      document.getElementById('progress').classList.remove('show');
-      document.getElementById('label1').textContent = 'Building Prompt';
-      document.getElementById('label2').textContent = 'Generating Image';
-      const btn = document.getElementById('btn-generate');
-      btn.textContent = 'Generate My Newspaper';
-      btn.onclick = runEngine;
-      currentPrompt = '';
-    }
-
-    function copyPrompt() {
-      if (!currentPrompt) return;
-      navigator.clipboard.writeText(currentPrompt).then(() => {
-        const btn = document.getElementById('btn-copy');
-        btn.textContent = '✓ Prompt Copied';
-        btn.classList.add('copied');
-        setTimeout(() => {
-          btn.textContent = 'Copy Prompt';
-          btn.classList.remove('copied');
-        }, 2000);
-      });
-    }
-
-    // Init
-    checkReady();
-  </script>
-
+function copyPromptText() {
+  const r = state.researchData;
+  if(!r) return;
+  const text = `Newspaper: ${state.newspaper} | Date: ${state.date1} | Product: ${state.product}`;
+  navigator.clipboard.writeText(text).then(() => alert('Copied!'));
+}
+</script>
 </body>
 </html>
