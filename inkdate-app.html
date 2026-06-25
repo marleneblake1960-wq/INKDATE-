@@ -182,6 +182,10 @@ select option{background:#1e1208;color:#e8d5b0;}
         <div class="pcard-price">£24.99</div>
         <div class="pcard-desc">Birth and passing. A life bookended in print.</div>
       </div>
+      <div style="grid-column:1/-1;text-align:center;margin-top:8px;
+        font-size:0.72rem;letter-spacing:1px;color:#a08060;font-style:italic;">
+        Tap a product to pay securely via Stripe, then generate your newspaper
+      </div>
     </div>
   </div>
 </div>
@@ -332,6 +336,13 @@ select option{background:#1e1208;color:#e8d5b0;}
 </div>
 
 <script>
+// ── STRIPE LINKS ──
+const STRIPE = {
+  premium: 'https://buy.stripe.com/aFaeVc2zO9Q00952JNfAc01',
+  thennow: 'https://buy.stripe.com/3cIfZg7U8e6g7BxesvfAc0e',
+  memorial: 'https://buy.stripe.com/dRm4gy3DS8LWg83bgjfAc0f',
+};
+
 // ── STATE ──
 let S = {
   product: null,
@@ -490,7 +501,11 @@ function pickProduct(p, el) {
     document.getElementById('date1').placeholder = 'e.g. November 5, 2008';
     hint.textContent = 'Enter any date from 1850 to present';
   }
-  setTimeout(() => show('s2'), 150);
+
+  // Redirect to Stripe payment first
+  setTimeout(() => {
+    window.location.href = STRIPE[p];
+  }, 300);
 }
 
 // ── SCREEN 2 ──
@@ -666,8 +681,38 @@ function startOver() {
   document.getElementById('country-sel').innerHTML='<option value="">— Select Country / Region —</option>';
   document.getElementById('paper-sel').style.display='none';
   document.getElementById('btn-review').disabled=true;
+  // Clear URL params
+  window.history.replaceState({}, '', '/inkdate-app.html');
   show('s1');
 }
+
+// Check if customer returned from Stripe payment
+(function checkStripeReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const paid = params.get('paid');
+  if(paid && STRIPE[paid]) {
+    S.product = paid;
+    const labels = {
+      premium: 'Single Front Page — £14.99',
+      thennow: 'Then & Now — £24.99',
+      memorial: 'Memorial Edition — £24.99',
+    };
+    document.getElementById('s2-product-label').textContent = labels[paid];
+    const d2 = document.getElementById('date2-wrap');
+    if(paid === 'thennow') {
+      d2.style.display = 'block';
+      document.getElementById('date1').placeholder = 'Then — e.g. June 12, 1965';
+      document.getElementById('date2').placeholder = 'Now — e.g. June 12, 2025';
+      document.getElementById('date-hint').textContent = 'Enter both dates — Then and Now';
+    } else if(paid === 'memorial') {
+      d2.style.display = 'block';
+      document.getElementById('date1').placeholder = 'Date of Birth — e.g. March 12, 1942';
+      document.getElementById('date2').placeholder = 'Date of Passing — e.g. September 4, 2019';
+      document.getElementById('date-hint').textContent = 'Enter date of birth and date of passing';
+    }
+    show('s2');
+  }
+})();
 </script>
 </body>
 </html>
