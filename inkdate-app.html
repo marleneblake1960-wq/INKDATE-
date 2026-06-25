@@ -630,10 +630,15 @@ async function startGen() {
     setProg(2);
     await new Promise(r=>setTimeout(r,500));
 
-    // Stage 3 — Generate
+    // Stage 3 — Generate (auto-retry once on failure)
     setProg(3);
-    const ir = await fetch('/.netlify/functions/generate-image',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({research,tier:S.product,surface:S.surface,lighting:S.lighting})});
-    const id = await ir.json();
+    let id;
+    for(let attempt = 0; attempt < 2; attempt++) {
+      const ir = await fetch('/.netlify/functions/generate-image',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({research,tier:S.product,surface:S.surface,lighting:S.lighting})});
+      id = await ir.json();
+      if(!id.error && id.imageUrl) break;
+      if(attempt === 0) await new Promise(r=>setTimeout(r,2000)); // wait 2s then retry
+    }
     if(id.error) throw new Error(id.error);
     if(!id.imageUrl) throw new Error('No image returned');
 
