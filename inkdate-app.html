@@ -12,14 +12,53 @@ html,body{background:#1a0f0a;color:#e8d5b0;font-family:'Old Standard TT',serif;m
 /* APP SHELL */
 .app{max-width:640px;margin:0 auto;padding:0 20px 40px;min-height:100vh;display:flex;flex-direction:column;}
 
-/* HEADER */
-.app-header{text-align:center;padding:32px 0 24px;}
-.app-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:2rem;
+/* MAIN HEADER — impactful opening */
+.app-header{text-align:center;padding:40px 0 28px;}
+.app-logo-main{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(3.5rem,15vw,5.5rem);
+  background:linear-gradient(160deg,#fff 0%,#e8d5b0 35%,#f5f0e8 55%,#c8a855 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:2px;text-decoration:none;display:block;
+  line-height:0.9;margin-bottom:16px;}
+.app-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;}
+.orn-line{width:60px;height:1px;background:linear-gradient(to right,transparent,#c8a855);}
+.orn-line-r{width:60px;height:1px;background:linear-gradient(to left,transparent,#c8a855);}
+.orn-dm{width:6px;height:6px;background:#c8a855;transform:rotate(45deg);}
+.orn-dm2{width:3px;height:3px;background:rgba(200,168,85,0.4);transform:rotate(45deg);}
+.app-tagline-main{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.3rem;color:#e8d5b0;letter-spacing:1px;margin-bottom:16px;}
+.app-sub-main{
+  font-size:0.9rem;color:rgba(200,168,85,0.6);line-height:1.7;
+  max-width:420px;margin:0 auto 20px;text-align:center;}
+.app-trust{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;}
+.app-trust span{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(200,168,85,0.5);}
+
+/* MINI HEADER — for inner screens */
+.app-header-mini{text-align:center;padding:20px 0 12px;}
+.app-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1.6rem;
   background:linear-gradient(135deg,#f5f0e8,#c8a855);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   letter-spacing:3px;text-decoration:none;display:block;margin-bottom:4px;}
 .app-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:0.95rem;color:rgba(200,168,85,0.7);letter-spacing:1px;}
+  font-size:0.85rem;color:rgba(200,168,85,0.6);letter-spacing:1px;}
+
+/* CHOOSE TITLE */
+.choose-title{
+  font-family:'Playfair Display',serif;font-weight:700;
+  font-size:0.8rem;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(200,168,85,0.6);text-align:center;margin-bottom:16px;}
+
+/* PRODUCT BADGE */
+.product-badge{font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;
+  color:#8a7355;margin-bottom:6px;}
+.product-badge.gold{color:#c8a855;}
+.product-cta{font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;
+  color:#c8a855;margin-top:12px;}
+.product-card.featured{border-color:#5a3a18;background:#221810;}
+.product-card.selected .product-cta{color:#e8d5b0;}
 
 /* STEP INDICATOR */
 .steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px;}
@@ -155,14 +194,33 @@ html,body{background:#1a0f0a;color:#e8d5b0;font-family:'Old Standard TT',serif;m
 <body>
 <div class="app">
 
-  <!-- HEADER -->
-  <div class="app-header">
+  <!-- HEADER — shown only on screen 1 -->
+  <div class="app-header" id="main-header">
+    <a href="inkdate-landing.html" class="app-logo-main">INKDATE</a>
+    <div class="app-orn">
+      <div class="orn-line"></div>
+      <div class="orn-dm2"></div>
+      <div class="orn-dm"></div>
+      <div class="orn-dm2"></div>
+      <div class="orn-line-r"></div>
+    </div>
+    <div class="app-tagline-main">&ldquo;The day that made history&rdquo;</div>
+    <div class="app-sub-main">Receive the authentic newspaper front page from any date in history &mdash; your birthday, your wedding day, a day of loss, or the moment everything changed.</div>
+    <div class="app-trust">
+      <span>✦ 6 Languages</span>
+      <span>✦ 30+ Countries</span>
+      <span>✦ 1850 to Present</span>
+    </div>
+  </div>
+
+  <!-- MINI HEADER — shown on screens 2-7 -->
+  <div class="app-header-mini" id="mini-header" style="display:none;">
     <a href="inkdate-landing.html" class="app-logo">INKDATE</a>
     <div class="app-tagline">"The day that made history"</div>
   </div>
 
-  <!-- STEP INDICATOR -->
-  <div class="steps">
+  <!-- STEP INDICATOR — hidden on screen 1 -->
+  <div class="steps" id="step-indicator" style="display:none;">
     <div class="step-dot active" id="dot1">1</div>
     <div class="step-line"></div>
     <div class="step-dot" id="dot2">2</div>
@@ -176,26 +234,30 @@ html,body{background:#1a0f0a;color:#e8d5b0;font-family:'Old Standard TT',serif;m
 
   <!-- SCREEN 1: CHOOSE PRODUCT -->
   <div class="screen active" id="screen1">
-    <div class="screen-title">Choose Your Product</div>
-    <div class="screen-sub">What would you like to create today?</div>
+    <div class="choose-title">Choose Your Product</div>
     <div class="product-grid">
       <div class="product-card" id="card-premium" onclick="selectProduct('premium')">
-        <div class="product-name">◆ Single Front Page</div>
+        <div class="product-badge">Premium</div>
+        <div class="product-name">Single Front Page</div>
         <div class="product-desc">One date. One authentic newspaper front page. The perfect gift for birthdays, anniversaries and retirements.</div>
-        <div class="product-price">Premium — £14.99</div>
+        <div class="product-price">£14.99</div>
+        <div class="product-cta">Select →</div>
       </div>
-      <div class="product-card" id="card-thennow" onclick="selectProduct('thennow')">
-        <div class="product-name">◆ Then &amp; Now</div>
+      <div class="product-card featured" id="card-thennow" onclick="selectProduct('thennow')">
+        <div class="product-badge gold">Ultra-Premium</div>
+        <div class="product-name">Then &amp; Now</div>
         <div class="product-desc">Two dates. Two front pages. See how the world changed between two moments that mattered.</div>
-        <div class="product-price">Ultra-Premium — £24.99</div>
+        <div class="product-price">£24.99</div>
+        <div class="product-cta">Select →</div>
       </div>
       <div class="product-card" id="card-memorial" onclick="selectProduct('memorial')">
-        <div class="product-name">◆ Memorial</div>
+        <div class="product-badge gold">Ultra-Premium</div>
+        <div class="product-name">Memorial</div>
         <div class="product-desc">A life bookended in print. Birth date and date of passing — a tender, timeless keepsake.</div>
-        <div class="product-price">Ultra-Premium — £24.99</div>
+        <div class="product-price">£24.99</div>
+        <div class="product-cta">Select →</div>
       </div>
     </div>
-    <button class="btn-primary" id="btn-s1" onclick="goTo(2)" disabled>Continue →</button>
   </div>
 
   <!-- SCREEN 2: ENTER DATES -->
@@ -481,13 +543,30 @@ const PAPERS = {
 function goTo(step) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen' + step).classList.add('active');
-  // Update dots
+
+  // Show/hide headers based on screen
+  const mainHeader = document.getElementById('main-header');
+  const miniHeader = document.getElementById('mini-header');
+  const stepInd = document.getElementById('step-indicator');
+
+  if(step === 1) {
+    mainHeader.style.display = 'block';
+    miniHeader.style.display = 'none';
+    stepInd.style.display = 'none';
+  } else {
+    mainHeader.style.display = 'none';
+    miniHeader.style.display = 'block';
+    stepInd.style.display = 'flex';
+  }
+
+  // Update step dots (steps 2-6 map to dots 1-5)
   for(let i=1;i<=5;i++){
     const dot = document.getElementById('dot'+i);
     if(!dot) continue;
     dot.classList.remove('active','done');
-    if(i < step) dot.classList.add('done');
-    else if(i === step) dot.classList.add('active');
+    const dotStep = i + 1;
+    if(dotStep < step) dot.classList.add('done');
+    else if(dotStep === step) dot.classList.add('active');
   }
   window.scrollTo(0,0);
 }
@@ -497,7 +576,6 @@ function selectProduct(p) {
   state.product = p;
   document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('card-'+p).classList.add('selected');
-  document.getElementById('btn-s1').disabled = false;
 
   // Set up screen 2 based on product
   if(p === 'premium') {
