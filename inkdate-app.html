@@ -526,6 +526,112 @@
       checkReady();
     }
 
+    // Curated newspaper database — verified papers only
+    const NEWSPAPERS = {
+      uk: [
+        { value: "The Times", label: "The Times", est: 1785 },
+        { value: "The Guardian", label: "The Guardian", est: 1821 },
+        { value: "The Daily Telegraph", label: "The Daily Telegraph", est: 1855 },
+        { value: "Daily Mirror", label: "Daily Mirror", est: 1903 },
+        { value: "The Sun", label: "The Sun", est: 1964 },
+        { value: "Daily Mail", label: "Daily Mail", est: 1896 },
+        { value: "The Independent", label: "The Independent", est: 1986 },
+        { value: "Financial Times", label: "Financial Times", est: 1888 },
+        { value: "The Observer", label: "The Observer", est: 1791 },
+        { value: "Daily Express", label: "Daily Express", est: 1900 },
+      ],
+      usa: [
+        { value: "The New York Times", label: "The New York Times", est: 1851 },
+        { value: "The Washington Post", label: "The Washington Post", est: 1877 },
+        { value: "Chicago Tribune", label: "Chicago Tribune", est: 1847 },
+        { value: "Los Angeles Times", label: "Los Angeles Times", est: 1881 },
+        { value: "USA Today", label: "USA Today", est: 1982 },
+        { value: "New York Daily News", label: "New York Daily News", est: 1919 },
+        { value: "The Boston Globe", label: "The Boston Globe", est: 1872 },
+        { value: "The Wall Street Journal", label: "The Wall Street Journal", est: 1889 },
+      ],
+      caribbean: [
+        { value: "The Gleaner", label: "The Gleaner (Jamaica)", est: 1834 },
+        { value: "The Star", label: "The Star (Jamaica)", est: 1951 },
+        { value: "Trinidad Guardian", label: "Trinidad Guardian", est: 1917 },
+        { value: "The Barbados Advocate", label: "The Barbados Advocate", est: 1895, end: 2022 },
+        { value: "Barbados Nation", label: "Barbados Nation", est: 1973 },
+        { value: "Antigua Gazette", label: "Antigua Gazette", est: 1748 },
+      ],
+      caribbean_uk: [
+        { value: "The Voice", label: "The Voice", est: 1982 },
+        { value: "The Caribbean Times", label: "The Caribbean Times", est: 1981 },
+        { value: "Weekly Gleaner UK", label: "Weekly Gleaner UK", est: 1971 },
+      ],
+      africa: [
+        { value: "Daily Times of Nigeria", label: "Daily Times of Nigeria", est: 1926 },
+        { value: "The Natal Witness", label: "The Natal Witness / The Witness (South Africa)", est: 1846 },
+        { value: "Le Mauricien", label: "Le Mauricien (Mauritius)", est: 1908 },
+        { value: "The Mercury", label: "The Mercury (South Africa)", est: 1852 },
+        { value: "Cape Times", label: "Cape Times (South Africa)", est: 1876 },
+        { value: "The Daily Nation", label: "Daily Nation (Kenya)", est: 1960 },
+        { value: "Ghana Daily Graphic", label: "Daily Graphic (Ghana)", est: 1950 },
+      ],
+      europe: [
+        { value: "Le Monde", label: "Le Monde (France)", est: 1944 },
+        { value: "Le Figaro", label: "Le Figaro (France)", est: 1826 },
+        { value: "Frankfurter Allgemeine Zeitung", label: "Frankfurter Allgemeine (Germany)", est: 1949 },
+        { value: "Die Welt", label: "Die Welt (Germany)", est: 1946 },
+        { value: "El País", label: "El País (Spain)", est: 1976 },
+        { value: "ABC", label: "ABC (Spain)", est: 1903 },
+        { value: "Folha de S.Paulo", label: "Folha de S.Paulo (Brazil)", est: 1921 },
+        { value: "O Globo", label: "O Globo (Brazil)", est: 1925 },
+      ],
+      australia: [
+        { value: "The Sydney Morning Herald", label: "The Sydney Morning Herald", est: 1831 },
+        { value: "The Age", label: "The Age (Melbourne)", est: 1854 },
+        { value: "The Australian", label: "The Australian", est: 1964 },
+      ],
+      japan: [
+        { value: "Yomiuri Shimbun", label: "Yomiuri Shimbun", est: 1874 },
+        { value: "Asahi Shimbun", label: "Asahi Shimbun", est: 1879 },
+        { value: "Mainichi Shimbun", label: "Mainichi Shimbun", est: 1872 },
+      ],
+    };
+
+    function updateCountries() {
+      const region = document.getElementById('region').value;
+      const select = document.getElementById('newspaper');
+      const info = document.getElementById('newspaper-info');
+
+      select.innerHTML = '<option value="">— Select Newspaper —</option>';
+
+      if (!region) {
+        select.style.display = 'none';
+        info.style.display = 'none';
+        checkReady();
+        return;
+      }
+
+      const papers = NEWSPAPERS[region] || [];
+      papers.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.value;
+        const endNote = p.end ? ` (ceased ${p.end})` : '';
+        opt.textContent = `${p.label} (est. ${p.est}${endNote})`;
+        select.appendChild(opt);
+      });
+
+      select.style.display = 'block';
+      select.onchange = () => {
+        const selected = papers.find(p => p.value === select.value);
+        if (selected) {
+          const endNote = selected.end ? ` — ceased publication ${selected.end}` : '';
+          info.textContent = `Established ${selected.est}${endNote} · Available dates: ${selected.est} to ${selected.end || 'present'}`;
+          info.style.display = 'block';
+        } else {
+          info.style.display = 'none';
+        }
+        checkReady();
+      };
+      checkReady();
+    }
+
     function checkReady() {
       const newspaper = document.getElementById('newspaper').value.trim();
       const date1 = document.getElementById('date1').value.trim();
