@@ -128,7 +128,6 @@ select option{background:#1e1208;color:#e8d5b0;}
   text-decoration:none;margin-bottom:8px;}
 .btn-red{background:linear-gradient(135deg,#8b2020,#b02828);color:#f5ede0;}
 .btn-red:hover{opacity:0.9;}
-.btn-red:disabled{opacity:0.35;cursor:not-allowed;}
 .btn-ghost{background:transparent;border:1px solid #c8a060;color:#e8d0a0;}
 .btn-ghost:hover{border-color:#f0c840;color:#ffffff;}
 
@@ -277,7 +276,7 @@ select option{background:#1e1208;color:#e8d5b0;}
     </div>
   </div>
 
-  <button class="btn btn-red" id="btn-review" onclick="show('s3')" disabled>Review My Order →</button>
+  <button class="btn btn-red" id="btn-review" onclick="if(!this.disabled)show('s3')" style="opacity:0.35;cursor:not-allowed;">Review My Order →</button>
   <button class="btn btn-ghost" onclick="show('s1')">← Back</button>
 </div>
 
@@ -805,8 +804,16 @@ function checkForm() {
   const hasProduct = S.product === 'free' || S.product === 'premium' || S.product === 'thennow' || S.product === 'memorial';
   const ok = hasProduct && d1 && (!needTwo || d2) && S.lang && S.newspaper;
   const btn = document.getElementById('btn-review');
-  btn.disabled = !ok;
-  btn.style.opacity = ok ? '1' : '0.4';
+  if(ok) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.background = 'linear-gradient(135deg,#8b2020,#b02828)';
+    btn.style.cursor = 'pointer';
+  } else {
+    btn.disabled = true;
+    btn.style.opacity = '0.35';
+    btn.style.cursor = 'not-allowed';
+  }
 }
 
 // ── SCREEN 3 CONFIRM ──
