@@ -36,7 +36,7 @@ body{display:flex;justify-content:center;}
 /* PRODUCT CARDS */
 .choose-label{font-size:clamp(0.7rem,1.5vw,0.8rem);letter-spacing:4px;text-transform:uppercase;
   color:#e8c860;text-align:center;margin-bottom:14px;}
-.product-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px;}
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
 .pcard{background:linear-gradient(160deg,#6a1010,#8b2020);border:1px solid #c84040;
   padding:clamp(14px,3vw,22px) clamp(10px,2vw,16px);
   cursor:pointer;transition:all 0.2s;text-align:center;position:relative;}
@@ -167,6 +167,12 @@ select option{background:#1e1208;color:#e8d5b0;}
     </div>
     <div class="choose-label">Choose Your Product</div>
     <div class="product-grid">
+      <div class="pcard" id="pc-free" onclick="pickProduct('free',this)" style="border:1px solid #c8a855;background:linear-gradient(160deg,#1a1208,#221808);">
+        <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:6px;">Try First</div>
+        <div class="pcard-name" style="color:#c8a855;">Try Free</div>
+        <div class="pcard-price" style="color:#e8d5b0;">£0.00</div>
+        <div class="pcard-desc" style="color:#d4b87a;">One free generation. Watermarked sample. See your date come to life.</div>
+      </div>
       <div class="pcard" id="pc-premium" onclick="pickProduct('premium',this)">
         <div class="pcard-name">Single Front Page</div>
         <div class="pcard-price">£14.99</div>
@@ -329,6 +335,20 @@ select option{background:#1e1208;color:#e8d5b0;}
       <button class="btn btn-ghost" onclick="startOver()">↺ Create Another</button>
     </div>
     <div class="result-note">Tap Open Full Size then long-press the image to save to your photos.</div>
+
+    <!-- Upgrade prompt for free tier -->
+    <div id="upgrade-wrap" style="display:none;background:#1e1208;border:1px solid #c8a855;padding:20px;margin-top:16px;text-align:center;">
+      <div style="font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:#c8a855;margin-bottom:8px;">Love your newspaper?</div>
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:8px;">Get the full version — no watermark</div>
+      <div style="font-size:0.85rem;color:#d4b87a;margin-bottom:16px;">High resolution · No watermark · Download instantly</div>
+      <a href="https://buy.stripe.com/aFaeVc2zO9Q00952JNfAc01" style="
+        display:block;background:linear-gradient(135deg,#8b2020,#b02828);
+        color:#fff;padding:14px;text-decoration:none;
+        font-family:'Old Standard TT',serif;font-size:0.88rem;
+        letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">
+        Buy Full Version — £14.99
+      </a>
+    </div>
   </div>
 </div>
 
@@ -428,8 +448,8 @@ select option{background:#1e1208;color:#e8d5b0;}
         font-family:'Old Standard TT',serif;
         font-size:0.88rem;letter-spacing:3px;text-transform:uppercase;
         text-decoration:none;margin-bottom:10px;
-      ">Pay &amp; Enter Your Details →</a>
-      <div style="text-align:center;font-size:0.75rem;color:#a08060;font-style:italic;margin-top:-6px;margin-bottom:14px;">You'll enter your date and newspaper details after payment</div>
+" id="preview-buy-btn-text">Pay &amp; Enter Your Details →</a>
+      <div id="preview-payment-note" style="text-align:center;font-size:0.75rem;color:#a08060;font-style:italic;margin-top:-6px;margin-bottom:14px;">You'll enter your date and newspaper details after payment</div>
       <button onclick="closePreview()" style="
         width:100%;background:transparent;
         border:1px solid #c8a855;color:#c8a855;
@@ -449,7 +469,16 @@ const STRIPE = {
   premium: 'https://buy.stripe.com/aFaeVc2zO9Q00952JNfAc01',
   thennow: 'https://buy.stripe.com/3cIfZg7U8e6g7BxesvfAc0e',
   memorial: 'https://buy.stripe.com/dRm4gy3DS8LWg83bgjfAc0f',
+  free: null,
 };
+
+// Check if free trial already used
+function hasUsedFreeTrial() {
+  return localStorage.getItem('inkdate_free_used') === '1';
+}
+function markFreeTrialUsed() {
+  localStorage.setItem('inkdate_free_used', '1');
+}
 
 // ── STATE ──
 let S = {
@@ -610,12 +639,28 @@ function pickProduct(p, el) {
     hint.textContent = 'Enter any date from 1850 to present';
   }
 
+  // Check free trial availability
+  if(p === 'free' && hasUsedFreeTrial()) {
+    alert('You have already used your free trial. Purchase the full version for just £14.99.');
+    S.product = 'premium';
+    setTimeout(() => showPreview('premium'), 150);
+    return;
+  }
+
   // Show preview popup
   setTimeout(() => showPreview(p), 150);
 }
 
 // Preview popup data
 const PREVIEWS = {
+  free: {
+    eyebrow: 'Try Free — Watermarked Sample',
+    title: 'See your date come to life.',
+    desc: 'Generate one free watermarked newspaper front page. If you love it, purchase the clean full-resolution version for £14.99.',
+    price: 'Free — Watermarked Sample',
+    img: '/IMG_9440.jpeg',
+    stripe: null,
+  },
   premium: {
     eyebrow: 'Single Front Page',
     title: 'Your date. Your newspaper. Your history.',
@@ -649,7 +694,23 @@ function showPreview(p) {
   document.getElementById('preview-title').textContent = data.title;
   document.getElementById('preview-desc').textContent = data.desc;
   document.getElementById('preview-price').textContent = data.price;
-  document.getElementById('preview-buy-btn').href = data.stripe;
+  const buyBtn = document.getElementById('preview-buy-btn');
+  const note = document.getElementById('preview-payment-note');
+  if(data.stripe) {
+    buyBtn.href = data.stripe;
+    buyBtn.onclick = null;
+    buyBtn.textContent = 'Pay & Enter Your Details →';
+    if(note) note.style.display = 'block';
+  } else {
+    buyBtn.href = '#';
+    buyBtn.textContent = 'Try Free — Enter Your Details →';
+    if(note) note.style.display = 'none';
+    buyBtn.onclick = function(e) {
+      e.preventDefault();
+      closePreview();
+      show('s2');
+    };
+  }
   const modal = document.getElementById('preview-modal');
   modal.style.display = 'block';
 }
@@ -814,7 +875,13 @@ async function startGen() {
     document.getElementById('result-link').href = id.imageUrl;
     document.getElementById('progress-wrap').style.display = 'none';
     document.getElementById('result-wrap').style.display = 'block';
-    document.getElementById('s4-sub').textContent = 'Your Newspaper is Ready';
+    document.getElementById('s4-sub').textContent = S.product === 'free' ? 'Your Free Sample is Ready' : 'Your Newspaper is Ready';
+
+    // Show upgrade prompt for free tier
+    const upgradeWrap = document.getElementById('upgrade-wrap');
+    if(upgradeWrap) {
+      upgradeWrap.style.display = S.product === 'free' ? 'block' : 'none';
+    }
 
   } catch(e) {
     const eb = document.getElementById('err-box');
@@ -822,6 +889,48 @@ async function startGen() {
     eb.classList.add('show');
     document.getElementById('btn-retry').style.display = 'block';
   }
+}
+
+// Watermark function
+async function addWatermark(imageUrl) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+
+      // Draw original image
+      ctx.drawImage(img, 0, 0);
+
+      // Diagonal SAMPLE watermark
+      ctx.save();
+      ctx.globalAlpha = 0.25;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${img.width * 0.08}px serif`;
+      ctx.textAlign = 'center';
+      ctx.translate(canvas.width/2, canvas.height/2);
+      ctx.rotate(-Math.PI/4);
+      for(let i = -2; i <= 2; i++) {
+        ctx.fillText('INKDATE SAMPLE', 0, i * img.height * 0.25);
+      }
+      ctx.restore();
+
+      // Bottom watermark bar
+      ctx.fillStyle = 'rgba(0,0,0,0.6)';
+      ctx.fillRect(0, canvas.height - 60, canvas.width, 60);
+      ctx.fillStyle = '#c8a855';
+      ctx.font = `${img.width * 0.03}px serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('inkdateapp.com — Remove watermark from £14.99', canvas.width/2, canvas.height - 22);
+
+      resolve(canvas.toDataURL('image/jpeg', 0.92));
+    };
+    img.onerror = () => resolve(imageUrl);
+    img.src = imageUrl;
+  });
 }
 
 function startOver() {
