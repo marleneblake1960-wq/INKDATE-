@@ -149,50 +149,156 @@ select option{background:#1e1208;color:#e8d5b0;}
 <div class="app">
 
 <!-- ══════════════════════════════
-     SCREEN 1 — OPENING / PRODUCT
+     SCREEN 1 — OPENING
 ══════════════════════════════ -->
 <div id="s1" class="screen active">
+
+  <!-- HERO -->
   <div class="hero">
     <a href="inkdate-landing.html" class="hero-wordmark">INKDATE</a>
     <div class="hero-orn">
       <div class="rl"></div><div class="dm2"></div><div class="dm"></div><div class="dm2"></div><div class="rlr"></div>
     </div>
-    <div class="hero-tagline">&ldquo;The day that made history.&rdquo;</div>
-    <div class="hero-sub">Receive the authentic newspaper front page from any date in history &mdash; your birthday, your wedding day, a day of loss, or the moment everything changed.</div>
+    <div class="hero-tagline">&ldquo;Some gifts last a week.<br>This one lasts generations.&rdquo;</div>
+    <div class="hero-sub">Give the authentic newspaper front page from the most important date in someone&rsquo;s life &mdash; beautifully generated, ready to frame, ready to treasure forever.</div>
     <div class="hero-trust">
       <span>6 Languages</span>
       <span>30+ Countries</span>
       <span>1850 to Present</span>
     </div>
-    <div class="choose-label">Choose Your Product</div>
-    <div class="product-grid">
-      <div class="pcard" id="pc-free" onclick="pickProduct('free',this)" style="border:1px solid #c8a855;background:linear-gradient(160deg,#1a1208,#221808);">
-        <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:6px;">Try First</div>
-        <div class="pcard-name" style="color:#c8a855;">Try Free</div>
-        <div class="pcard-price" style="color:#e8d5b0;">£0.00</div>
-        <div class="pcard-desc" style="color:#d4b87a;">One free generation. Watermarked sample. See your date come to life.</div>
-      </div>
-      <div class="pcard" id="pc-premium" onclick="pickProduct('premium',this)">
-        <div class="pcard-name">Single Front Page</div>
-        <div class="pcard-price">£14.99</div>
-        <div class="pcard-desc">One date. One front page. Birthdays, retirements, anniversaries.</div>
-      </div>
-      <div class="pcard" id="pc-thennow" onclick="pickProduct('thennow',this)">
-        <div class="pcard-name">Then &amp; Now</div>
-        <div class="pcard-price">£24.99</div>
-        <div class="pcard-desc">Two dates. Two front pages. How the world changed.</div>
-      </div>
-      <div class="pcard" id="pc-memorial" onclick="pickProduct('memorial',this)">
-        <div class="pcard-name">Memorial</div>
-        <div class="pcard-price">£24.99</div>
-        <div class="pcard-desc">Birth and passing. A life bookended in print.</div>
-      </div>
-      <div style="grid-column:1/-1;text-align:center;margin-top:8px;
-        font-size:0.72rem;letter-spacing:1px;color:#a08060;font-style:italic;">
-        Tap a product to pay securely via Stripe, then generate your newspaper
+
+    <!-- TRY FREE — Main CTA -->
+    <div style="margin-bottom:16px;">
+      <button onclick="pickProduct('free',this)" style="
+        width:100%;max-width:400px;
+        background:linear-gradient(135deg,#c8a855,#e8c860);
+        color:#1a0f0a;padding:18px 32px;
+        font-family:'Playfair Display',serif;font-weight:900;
+        font-size:1.1rem;letter-spacing:3px;text-transform:uppercase;
+        border:none;cursor:pointer;transition:all 0.3s;
+        box-shadow:0 4px 24px rgba(200,168,85,0.3);
+        display:block;margin:0 auto;
+      ">✦ Try Free — See Your Date Come to Life</button>
+      <div style="text-align:center;font-size:0.75rem;color:#a08060;font-style:italic;margin-top:8px;">
+        One free watermarked sample — no payment needed
       </div>
     </div>
+
+    <!-- Arrow to scroll -->
+    <div style="text-align:center;margin-bottom:8px;">
+      <div style="font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:#6a5030;margin-bottom:6px;">or choose a product</div>
+      <div style="color:#6a5030;font-size:1.2rem;">↓</div>
+    </div>
   </div>
+
+  <!-- DIGITAL DOWNLOAD SECTION -->
+  <div style="margin-bottom:32px;">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-size:0.7rem;letter-spacing:4px;text-transform:uppercase;color:#c8a855;margin-bottom:6px;">Digital Download</div>
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem;color:#fff;margin-bottom:4px;">Instant. Beautiful. Forever.</div>
+      <div style="font-size:0.82rem;color:#a08060;line-height:1.5;">Generated in minutes. Download instantly. Print at home or share digitally.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr;gap:10px;">
+
+      <!-- Single Digital -->
+      <div class="pcard" id="pc-premium" onclick="pickProduct('premium',this)">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/IMG_9440.jpeg" alt="Single Front Page" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">Most Popular</div>
+            <div class="pcard-name" style="text-align:left;">Single Front Page</div>
+            <div class="pcard-price" style="text-align:left;">£14.99</div>
+            <div class="pcard-desc" style="text-align:left;">One date. One authentic front page. A keepsake they will treasure for generations. Birthdays, anniversaries, retirements.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Then & Now Digital -->
+      <div class="pcard" id="pc-thennow" onclick="pickProduct('thennow',this)">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/IMG_3144.jpeg" alt="Then & Now" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">Two Dates</div>
+            <div class="pcard-name" style="text-align:left;">Then &amp; Now</div>
+            <div class="pcard-price" style="text-align:left;">£24.99</div>
+            <div class="pcard-desc" style="text-align:left;">Two dates. Two front pages. The world then — and now. Perfect for anniversaries and milestones.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memorial Digital -->
+      <div class="pcard" id="pc-memorial" onclick="pickProduct('memorial',this)">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/BORN ON THIS.png" alt="Memorial" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">In Memoriam</div>
+            <div class="pcard-name" style="text-align:left;">Memorial Edition</div>
+            <div class="pcard-price" style="text-align:left;">£24.99</div>
+            <div class="pcard-desc" style="text-align:left;">Birth date and passing. A life bookended in print. A tender, timeless keepsake for families.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DIVIDER -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+    <div style="flex:1;height:1px;background:rgba(200,168,85,0.2);"></div>
+    <div style="font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:#c8a855;">Print &amp; Post</div>
+    <div style="flex:1;height:1px;background:rgba(200,168,85,0.2);"></div>
+  </div>
+
+  <!-- PRINT & POST SECTION -->
+  <div style="margin-bottom:32px;">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem;color:#fff;margin-bottom:4px;">Printed. Posted. Perfect.</div>
+      <div style="font-size:0.82rem;color:#a08060;line-height:1.5;">Museum-quality printing on premium paper. Posted directly to any address worldwide. Ready to frame.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr;gap:10px;">
+
+      <!-- Single Print -->
+      <div class="pcard" id="pc-print" onclick="pickProduct('print',this)" style="border-color:#5a3a18;">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/IMG_9440.jpeg" alt="Print & Post" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">Coming Soon</div>
+            <div class="pcard-name" style="text-align:left;">Single — Print &amp; Post</div>
+            <div class="pcard-price" style="text-align:left;">£34.99</div>
+            <div class="pcard-desc" style="text-align:left;">Your front page printed on premium paper and posted to any address. Flowers last a week — this lasts generations.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Then & Now Print -->
+      <div class="pcard" id="pc-thennow-print" onclick="pickProduct('thennow-print',this)" style="border-color:#5a3a18;">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/IMG_3144.jpeg" alt="Then & Now Print" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">Coming Soon</div>
+            <div class="pcard-name" style="text-align:left;">Then &amp; Now — Print &amp; Post</div>
+            <div class="pcard-price" style="text-align:left;">£44.99</div>
+            <div class="pcard-desc" style="text-align:left;">Both front pages printed and posted. A stunning dual keepsake ready to frame. The ultimate anniversary gift.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memorial Print -->
+      <div class="pcard" id="pc-memorial-print" onclick="pickProduct('memorial-print',this)" style="border-color:#5a3a18;">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/BORN ON THIS.png" alt="Memorial Print" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">Coming Soon</div>
+            <div class="pcard-name" style="text-align:left;">Memorial — Print &amp; Post</div>
+            <div class="pcard-price" style="text-align:left;">£54.99</div>
+            <div class="pcard-desc" style="text-align:left;">Both memorial pages printed and posted. Suitable for funeral programmes and memorial services.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 <!-- ══════════════════════════════
@@ -468,6 +574,9 @@ const STRIPE = {
   premium: 'https://buy.stripe.com/aFaeVc2zO9Q00952JNfAc01',
   thennow: 'https://buy.stripe.com/3cIfZg7U8e6g7BxesvfAc0e',
   memorial: 'https://buy.stripe.com/dRm4gy3DS8LWg83bgjfAc0f',
+  print: null,
+  'thennow-print': null,
+  'memorial-print': null,
   free: null,
 };
 
@@ -630,8 +739,11 @@ function pickProduct(p, el) {
   const labels = {
     free: 'Try Free — Watermarked Sample',
     premium: 'Single Front Page — £14.99',
+    print: 'Print & Post — £34.99',
     thennow: 'Then & Now — £24.99',
-    memorial: 'Memorial Edition — £24.99',
+    'thennow-print': 'Then & Now — Print & Post — £44.99',
+    memorial: 'Memorial — £24.99',
+    'memorial-print': 'Memorial — Print & Post — £54.99',
   };
   document.getElementById('s2-product-label').textContent = labels[p] || '';
 
@@ -668,6 +780,30 @@ function pickProduct(p, el) {
 
 // Preview popup data
 const PREVIEWS = {
+  print: {
+    eyebrow: 'Print & Post — £34.99',
+    title: 'Flowers last a week. This lasts generations.',
+    desc: 'Your newspaper front page printed on premium museum-quality paper and posted directly to any address worldwide. Ready to frame. Ready to gift. Ready to treasure forever.',
+    price: '£34.99 — Printed & Posted Worldwide',
+    img: '/IMG_9440.jpeg',
+    stripe: null,
+  },
+  'thennow-print': {
+    eyebrow: 'Then & Now Print & Post — £44.99',
+    title: 'Two moments in history. Printed and posted.',
+    desc: 'Both your Then & Now newspaper front pages printed on premium paper and posted to any address. A stunning dual keepsake ready to frame. The perfect anniversary or retirement gift.',
+    price: '£44.99 — Printed & Posted Worldwide',
+    img: '/IMG_3144.jpeg',
+    stripe: null,
+  },
+  'memorial-print': {
+    eyebrow: 'Memorial Print & Post — £54.99',
+    title: 'A life honoured in print. Delivered to your door.',
+    desc: 'Both memorial newspaper front pages printed on premium paper and posted to any address. Suitable for funeral programmes, memorial services and family keepsakes. A tender, timeless tribute.',
+    price: '£54.99 — Printed & Posted Worldwide',
+    img: '/BORN ON THIS.png',
+    stripe: null,
+  },
   free: {
     eyebrow: 'Try Free — Watermarked Sample',
     title: 'See your date come to life.',
@@ -716,6 +852,14 @@ function showPreview(p) {
     buyBtn.onclick = null;
     buyBtn.textContent = 'Pay & Enter Your Details →';
     if(note) note.style.display = 'block';
+  } else if(['print','thennow-print','memorial-print'].includes(p)) {
+    buyBtn.href = '#';
+    buyBtn.textContent = 'Coming Soon — Join Waitlist';
+    if(note) note.style.display = 'none';
+    buyBtn.onclick = function(e) {
+      e.preventDefault();
+      alert('Print & Post is coming very soon! In the meantime, download your digital version and print locally.');
+    };
   } else {
     buyBtn.href = '#';
     buyBtn.textContent = 'Try Free — Enter Your Details →';
@@ -800,8 +944,8 @@ function pickPaper() {
 function checkForm() {
   const d1 = document.getElementById('date1').value.trim();
   const d2 = document.getElementById('date2').value.trim();
-  const needTwo = S.product === 'thennow' || S.product === 'memorial';
-  const hasProduct = S.product === 'free' || S.product === 'premium' || S.product === 'thennow' || S.product === 'memorial';
+  const needTwo = ['thennow','thennow-print','memorial','memorial-print'].includes(S.product);
+  const hasProduct = ['free','premium','print','thennow','thennow-print','memorial','memorial-print'].includes(S.product);
   const ok = hasProduct && d1 && (!needTwo || d2) && S.lang && S.newspaper;
   console.log('checkForm:', {product:S.product, d1, lang:S.lang, newspaper:S.newspaper, ok});
   const btn = document.getElementById('btn-review');
@@ -824,7 +968,7 @@ function buildConfirm() {
   S.surface = document.getElementById('surface').value;
   S.lighting = document.getElementById('lighting').value;
 
-  const pNames = {premium:'Single Front Page — £14.99', thennow:'Then & Now — £24.99', memorial:'Memorial — £24.99'};
+  const pNames = {free:'Try Free — Watermarked',premium:'Single Front Page — £14.99',print:'Print & Post — £34.99',thennow:'Then & Now — £24.99','thennow-print':'Then & Now Print & Post — £44.99',memorial:'Memorial — £24.99','memorial-print':'Memorial Print & Post — £54.99'};
   let html = '';
   html += cr('Product', pNames[S.product]);
   html += cr('Language', S.langName);
@@ -841,6 +985,8 @@ function buildConfirm() {
     html += cr('Date', S.date1);
   }
   document.getElementById('confirm-box').innerHTML = html;
+  const printNote = document.getElementById('print-note');
+  if(printNote) printNote.style.display = ['print','thennow-print','memorial-print'].includes(S.product) ? 'block' : 'none';
 }
 
 function cr(label, value) {
