@@ -629,11 +629,12 @@ function pickProduct(p, el) {
   el.classList.add('selected');
 
   const labels = {
+    free: 'Try Free — Watermarked Sample',
     premium: 'Single Front Page — £14.99',
     thennow: 'Then & Now — £24.99',
     memorial: 'Memorial Edition — £24.99',
   };
-  document.getElementById('s2-product-label').textContent = labels[p];
+  document.getElementById('s2-product-label').textContent = labels[p] || '';
 
   const d2 = document.getElementById('date2-wrap');
   const hint = document.getElementById('date-hint');
@@ -722,8 +723,14 @@ function showPreview(p) {
     if(note) note.style.display = 'none';
     buyBtn.onclick = function(e) {
       e.preventDefault();
+      S.product = 'free';
+      document.getElementById('s2-product-label').textContent = 'Try Free — Watermarked Sample';
+      document.getElementById('date2-wrap').style.display = 'none';
+      document.getElementById('date1').placeholder = 'e.g. November 5, 2008';
+      document.getElementById('date-hint').textContent = 'Enter any date from 1850 to present';
       closePreview();
       show('s2');
+      checkForm();
     };
   }
   const modal = document.getElementById('preview-modal');
