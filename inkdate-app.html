@@ -504,6 +504,21 @@ const PAPERS = {
       {v:'The Observer',l:'The Observer',est:1791},
       {v:'Daily Express',l:'Daily Express',est:1900},
     ],
+    'Ireland': [
+      {v:'The Irish Times',l:'The Irish Times',est:1859},
+      {v:'Irish Independent',l:'Irish Independent',est:1905},
+      {v:'Irish Examiner',l:'Irish Examiner',est:1841},
+    ],
+    'Canada': [
+      {v:'The Globe and Mail',l:'The Globe and Mail',est:1844},
+      {v:'Toronto Star',l:'Toronto Star',est:1892},
+      {v:'National Post',l:'National Post',est:1998},
+    ],
+    'India': [
+      {v:'The Times of India',l:'The Times of India',est:1838},
+      {v:'The Hindu',l:'The Hindu',est:1878},
+      {v:'Hindustan Times',l:'Hindustan Times',est:1924},
+    ],
     'USA': [
       {v:'The New York Times',l:'The New York Times',est:1851},
       {v:'The Washington Post',l:'The Washington Post',est:1877},
@@ -780,8 +795,11 @@ function checkForm() {
   const d1 = document.getElementById('date1').value.trim();
   const d2 = document.getElementById('date2').value.trim();
   const needTwo = S.product === 'thennow' || S.product === 'memorial';
-  const ok = S.product && d1 && (!needTwo || d2) && S.lang && S.newspaper;
-  document.getElementById('btn-review').disabled = !ok;
+  const hasProduct = S.product === 'free' || S.product === 'premium' || S.product === 'thennow' || S.product === 'memorial';
+  const ok = hasProduct && d1 && (!needTwo || d2) && S.lang && S.newspaper;
+  const btn = document.getElementById('btn-review');
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? '1' : '0.4';
 }
 
 // ── SCREEN 3 CONFIRM ──
