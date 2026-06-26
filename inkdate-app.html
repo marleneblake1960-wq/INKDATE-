@@ -803,6 +803,7 @@ function checkForm() {
   const needTwo = S.product === 'thennow' || S.product === 'memorial';
   const hasProduct = S.product === 'free' || S.product === 'premium' || S.product === 'thennow' || S.product === 'memorial';
   const ok = hasProduct && d1 && (!needTwo || d2) && S.lang && S.newspaper;
+  console.log('checkForm:', {product:S.product, d1, lang:S.lang, newspaper:S.newspaper, ok});
   const btn = document.getElementById('btn-review');
   if(ok) {
     btn.disabled = false;
