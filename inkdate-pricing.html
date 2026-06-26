@@ -281,65 +281,47 @@ footer{border-top:1px solid rgba(200,168,85,0.1);padding:28px 0;display:flex;jus
   </div>
 </div>
 
-<!-- THE PRESS SUBSCRIPTION -->
+<!-- THE PRESS WAITLIST -->
 <div class="divider reveal">
   <div class="line"></div>
-  <span>The Press — Monthly</span>
+  <span>The Press — Coming Soon</span>
   <div class="line"></div>
 </div>
 
-<div class="section-header reveal" style="padding-top:0;">
-  <h2>The Press</h2>
-  <p>For history enthusiasts, researchers and collectors. Generate multiple newspapers every month.</p>
-</div>
-
-<div class="sub-grid reveal">
-  <!-- Basic -->
-  <div class="sub-card">
-    <div class="sub-name">Basic</div>
-    <div class="sub-price">£4.99</div>
-    <div class="sub-period">per month</div>
-    <div class="sub-gen">3 generations/month</div>
-    <ul class="sub-features">
-      <li>All newspapers</li>
-      <li>6 languages</li>
-      <li>30+ countries</li>
-      <li>High resolution</li>
-    </ul>
-    <a href="inkdate-app.html" class="btn-ghost" style="margin-top:14px;font-size:0.72rem;">Coming Soon</a>
+<div class="reveal" style="background:#1e1208;border:1px solid #3a2415;padding:32px 28px;text-align:center;margin-bottom:12px;">
+  <div class="tier-badge badge-gold" style="margin-bottom:12px;">Coming Soon</div>
+  <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;color:#fff;margin-bottom:8px;">The Press — Monthly Subscription</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:#a08060;margin-bottom:20px;line-height:1.6;">
+    For history enthusiasts, researchers and collectors.<br>
+    Generate multiple photorealistic newspapers every month at a special subscriber rate.
   </div>
-  <!-- Premium -->
-  <div class="sub-card featured">
-    <div class="tier-badge badge-red" style="font-size:0.6rem;margin-bottom:8px;">Best Value</div>
-    <div class="sub-name">Premium</div>
-    <div class="sub-price">£9.99</div>
-    <div class="sub-period">per month</div>
-    <div class="sub-gen">10 generations/month</div>
-    <ul class="sub-features">
-      <li>All newspapers</li>
-      <li>6 languages</li>
-      <li>30+ countries</li>
-      <li>High resolution</li>
-      <li>Priority generation</li>
-    </ul>
-    <a href="inkdate-app.html" class="btn-ghost" style="margin-top:14px;font-size:0.72rem;">Coming Soon</a>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px;">
+    <div style="border:1px solid #3a2415;padding:14px 10px;text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem;color:#fff;margin-bottom:4px;">Basic</div>
+      <div style="font-size:1.3rem;font-weight:900;color:#c8a855;font-family:'Playfair Display',serif;">£9.99</div>
+      <div style="font-size:0.68rem;color:#6a5030;letter-spacing:1px;">per month</div>
+      <div style="font-size:0.75rem;color:#a08060;margin-top:6px;">3 per month</div>
+    </div>
+    <div style="border:1px solid #8b2020;padding:14px 10px;text-align:center;background:linear-gradient(160deg,#221208,#1e1008);">
+      <div style="font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:#8b2020;margin-bottom:4px;">Best Value</div>
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem;color:#fff;margin-bottom:4px;">Premium</div>
+      <div style="font-size:1.3rem;font-weight:900;color:#c8a855;font-family:'Playfair Display',serif;">£19.99</div>
+      <div style="font-size:0.68rem;color:#6a5030;letter-spacing:1px;">per month</div>
+      <div style="font-size:0.75rem;color:#a08060;margin-top:6px;">10 per month</div>
+    </div>
+    <div style="border:1px solid #3a2415;padding:14px 10px;text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem;color:#fff;margin-bottom:4px;">Unlimited</div>
+      <div style="font-size:1.3rem;font-weight:900;color:#c8a855;font-family:'Playfair Display',serif;">£34.99</div>
+      <div style="font-size:0.68rem;color:#6a5030;letter-spacing:1px;">per month</div>
+      <div style="font-size:0.75rem;color:#a08060;margin-top:6px;">Unlimited</div>
+    </div>
   </div>
-  <!-- Unlimited -->
-  <div class="sub-card">
-    <div class="sub-name">Unlimited</div>
-    <div class="sub-price">£19.99</div>
-    <div class="sub-period">per month</div>
-    <div class="sub-gen">Unlimited generations</div>
-    <ul class="sub-features">
-      <li>All newspapers</li>
-      <li>6 languages</li>
-      <li>30+ countries</li>
-      <li>High resolution</li>
-      <li>Priority generation</li>
-      <li>API access</li>
-    </ul>
-    <a href="inkdate-app.html" class="btn-ghost" style="margin-top:14px;font-size:0.72rem;">Coming Soon</a>
+  <div style="font-size:0.82rem;color:#a08060;margin-bottom:20px;">Join the waitlist to be first to know when The Press launches.</div>
+  <div style="display:flex;max-width:400px;margin:0 auto;border:1px solid #c8a855;background:#1a0f0a;">
+    <input type="email" id="press-email" placeholder="Your email address" style="flex:1;background:transparent;border:none;color:#e8d5b0;padding:13px 16px;font-family:'Old Standard TT',serif;font-size:0.9rem;outline:none;">
+    <button onclick="joinWaitlist()" style="background:linear-gradient(135deg,#8b2020,#b02828);border:none;color:#fff;padding:13px 20px;font-family:'Old Standard TT',serif;font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap;">Join</button>
   </div>
+  <div id="waitlist-success" style="display:none;margin-top:12px;font-size:0.82rem;color:#c8a855;font-style:italic;">✦ You're on the list. We'll be in touch when The Press launches.</div>
 </div>
 
 <!-- FAQ -->
@@ -391,6 +373,18 @@ const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);} });
 },{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+
+function joinWaitlist() {
+  const email = document.getElementById('press-email').value.trim();
+  if(!email || !email.includes('@')) {
+    document.getElementById('press-email').style.borderBottom = '2px solid #8b2020';
+    return;
+  }
+  document.getElementById('waitlist-success').style.display = 'block';
+  document.getElementById('press-email').style.display = 'none';
+  document.querySelector('button[onclick="joinWaitlist()"]').style.display = 'none';
+  console.log('Waitlist signup:', email);
+}
 </script>
 </body>
 </html>
