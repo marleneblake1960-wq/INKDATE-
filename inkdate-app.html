@@ -739,7 +739,7 @@ function showPreview(p) {
 function closePreview() {
   document.getElementById('preview-modal').style.display = 'none';
   document.querySelectorAll('.pcard').forEach(c => c.classList.remove('selected'));
-  S.product = null;
+  // Don't clear S.product here — it's needed for the form
 }
 
 // ── SCREEN 2 ──
