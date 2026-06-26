@@ -439,6 +439,10 @@ select option{background:#1e1208;color:#e8d5b0;}
       <a id="result-link" href="#" target="_blank" class="btn btn-red">Open Full Size</a>
       <button class="btn btn-ghost" onclick="startOver()">↺ Create Another</button>
     </div>
+    <div id="free-view-note" style="display:none;background:#1e1208;border:1px solid #c8a855;padding:14px 16px;text-align:center;margin-bottom:12px;">
+      <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:6px;">Free Sample — View Only</div>
+      <div style="font-size:0.82rem;color:#d4b87a;line-height:1.5;">Download is not available on the free sample. Purchase the full version to download your newspaper in high resolution with no watermark.</div>
+    </div>
     <div class="result-note">Tap Open Full Size then long-press the image to save to your photos.</div>
 
     <!-- Upgrade prompt for free tier -->
@@ -1052,6 +1056,15 @@ async function startGen() {
     // Show result
     document.getElementById('result-img').src = id.imageUrl;
     document.getElementById('result-link').href = id.imageUrl;
+
+    // Free tier — hide download, show view only message
+    if(S.product === 'free') {
+      document.getElementById('result-link').style.display = 'none';
+      document.getElementById('free-view-note').style.display = 'block';
+    } else {
+      document.getElementById('result-link').style.display = 'block';
+      document.getElementById('free-view-note').style.display = 'none';
+    }
     document.getElementById('progress-wrap').style.display = 'none';
     document.getElementById('result-wrap').style.display = 'block';
     document.getElementById('s4-sub').textContent = S.product === 'free' ? 'Your Free Sample is Ready' : 'Your Newspaper is Ready';
