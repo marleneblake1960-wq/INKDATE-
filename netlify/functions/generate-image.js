@@ -140,7 +140,7 @@ The newspaper is shown as a PHYSICAL OBJECT — slightly angled showing the fold
         prompt: prompt,
         n: 1,
         size: "1024x1536",
-        quality: "medium",
+        quality: "high",
       }),
     });
 
