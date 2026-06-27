@@ -1066,25 +1066,42 @@ async function startGen() {
 
     // Stage 3 — Generate
     setProg(3);
+    // Keep screen active with animated message
+    let dots = 0;
+    const lbl3 = document.getElementById('pl3');
+    const keepAlive = setInterval(() => {
+      dots = (dots + 1) % 4;
+      lbl3.textContent = 'Generating your newspaper' + '.'.repeat(dots);
+    }, 800);
     let imageUrl;
     for(let attempt = 0; attempt < 2; attempt++) {
-      const ir = await fetch('/.netlify/functions/generate-image',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({research,tier:S.product,surface:S.surface,lighting:S.lighting})
-      });
-      const responseText = await ir.text();
-      let id;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 110000); // 110 second timeout
       try {
-        id = JSON.parse(responseText);
+        const ir = await fetch('/.netlify/functions/generate-image',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({research,tier:S.product,surface:S.surface,lighting:S.lighting}),
+          signal: controller.signal,
+          keepalive: true,
+        });
+        clearTimeout(timeoutId);
+        const responseText = await ir.text();
+        let id;
+        try { id = JSON.parse(responseText); }
+        catch(e) { throw new Error('Response error: ' + responseText.substring(0,100)); }
+        if(id.imageUrl) { imageUrl = id.imageUrl; break; }
+        if(id.error && attempt === 0) { await new Promise(r=>setTimeout(r,2000)); continue; }
+        if(id.error) throw new Error(id.error);
       } catch(e) {
-        throw new Error('Function returned: ' + responseText.substring(0, 150));
+        clearTimeout(timeoutId);
+        if(e.name === 'AbortError') throw new Error('Generation timed out — please try again');
+        if(attempt === 0) { await new Promise(r=>setTimeout(r,2000)); continue; }
+        throw e;
       }
-      if(id.imageUrl) { imageUrl = id.imageUrl; break; }
-      if(id.error && attempt === 0) { await new Promise(r=>setTimeout(r,2000)); continue; }
-      if(id.error) throw new Error(id.error);
     }
     if(!imageUrl) throw new Error('No image returned');
+    clearInterval(keepAlive);
 
     document.getElementById('result-img').src = imageUrl;
     document.getElementById('result-link').href = imageUrl;
@@ -1110,6 +1127,7 @@ async function startGen() {
     }
 
   } catch(e) {
+    clearInterval(keepAlive);
     const eb = document.getElementById('err-box');
     eb.textContent = '⚠ ' + (e.message || 'Something went wrong. Please try again.');
     eb.classList.add('show');
