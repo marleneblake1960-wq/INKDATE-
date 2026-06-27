@@ -159,22 +159,31 @@ The newspaper is shown as a PHYSICAL OBJECT — slightly angled showing the fold
     
     let imageUrl;
     if (imgData.b64_json) {
-      imageUrl = "data:image/png;base64," + imgData.b64_json;
+      // Return as binary image — much smaller than base64 JSON
+      const imageBuffer = Buffer.from(imgData.b64_json, 'base64');
+      return {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "image/png",
+          "Cache-Control": "no-store",
+        },
+        body: imgData.b64_json,
+        isBase64Encoded: true,
+      };
     } else if (imgData.url) {
       imageUrl = imgData.url;
+      return {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ imageUrl }),
+      };
     } else {
-      throw new Error("No b64_json or url in response: " + JSON.stringify(imgData).substring(0, 200));
+      throw new Error("No image in response");
     }
-
-    // Split into chunks if needed — return imageUrl directly
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "text/plain",
-      },
-      body: imageUrl,
-    };
 
   } catch(err) {
     return {
