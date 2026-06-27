@@ -129,6 +129,7 @@ Return ONLY this JSON with no other text:
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
         max_tokens: 1200,
+        tools: [{ type: "web_search_20250305", name: "web_search" }],
         messages: [{ role: "user", content: prompt }],
       }),
     });
@@ -140,7 +141,13 @@ Return ONLY this JSON with no other text:
 
     if (apiData.error) throw new Error(apiData.error.message);
 
-    const content = apiData.content && apiData.content[0] && apiData.content[0].text;
+    // Extract text from response — may contain tool_use blocks from web search
+    const content = apiData.content
+      ? apiData.content
+          .filter(block => block.type === "text")
+          .map(block => block.text)
+          .join("\n")
+      : null;
     if (!content) throw new Error("No content returned");
 
     let research;
