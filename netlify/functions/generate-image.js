@@ -136,7 +136,7 @@ The newspaper is shown as a PHYSICAL OBJECT — slightly angled showing the fold
         "Authorization": "Bearer " + OPENAI_API_KEY,
       },
       body: JSON.stringify({
-        model: "chatgpt-image-latest",
+        model: "gpt-image-1",
         prompt: prompt,
         n: 1,
         size: "1024x1536",
