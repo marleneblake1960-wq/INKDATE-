@@ -139,7 +139,7 @@ The newspaper is shown as a PHYSICAL OBJECT — slightly angled showing the fold
         model: "chatgpt-image-latest",
         prompt: prompt,
         n: 1,
-        size: "1024x1792",
+        size: "1024x1536",
         quality: "medium",
       }),
     });
