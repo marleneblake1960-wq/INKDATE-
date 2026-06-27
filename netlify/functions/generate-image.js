@@ -147,31 +147,26 @@ The newspaper is shown as a PHYSICAL OBJECT — slightly angled showing the fold
         prompt: prompt,
         n: 1,
         size: "1024x1536",
-        response_format: "url",
       }),
     });
 
     const data = await res.json();
     if (data.error) throw new Error('OpenAI Error: ' + data.error.message);
     
-    // Handle both URL and base64 responses
-    let imageUrl;
-    if (data.data && data.data[0]) {
-      if (data.data[0].url) {
-        imageUrl = data.data[0].url;
-      } else if (data.data[0].b64_json) {
-        imageUrl = "data:image/png;base64," + data.data[0].b64_json;
-      } else {
-        throw new Error("No image in response");
-      }
-    } else {
+    if (!data.data || !data.data[0] || !data.data[0].b64_json) {
       throw new Error("No image data returned");
     }
 
+    const imageUrl = "data:image/png;base64," + data.data[0].b64_json;
+
     return {
       statusCode: 200,
-      headers,
+      headers: {
+        ...headers,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ imageUrl }),
+      isBase64Encoded: false,
     };
 
   } catch(err) {
