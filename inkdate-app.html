@@ -1064,35 +1064,19 @@ async function startGen() {
     setProg(2);
     await new Promise(r=>setTimeout(r,500));
 
-    // Stage 3 — Generate (auto-retry once on failure)
+    // Stage 3 — Generate
     setProg(3);
     let imageUrl;
     for(let attempt = 0; attempt < 2; attempt++) {
-      try {
-        const ir = await fetch('/.netlify/functions/generate-image',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({research,tier:S.product,surface:S.surface,lighting:S.lighting})
-        });
-        if(!ir.ok) {
-          const errText = await ir.text();
-          throw new Error('HTTP ' + ir.status + ': ' + errText.substring(0,200));
-        }
-        const ct = ir.headers.get('content-type') || '';
-        if(ct.includes('image/')) {
-          const blob = await ir.blob();
-          imageUrl = URL.createObjectURL(blob);
-          break;
-        } else {
-          const text = await ir.text();
-          const id = JSON.parse(text);
-          if(id.error) throw new Error(id.error);
-          if(id.imageUrl) { imageUrl = id.imageUrl; break; }
-        }
-      } catch(e) {
-        if(attempt === 0) { await new Promise(r=>setTimeout(r,2000)); continue; }
-        throw e;
-      }
+      const ir = await fetch('/.netlify/functions/generate-image',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({research,tier:S.product,surface:S.surface,lighting:S.lighting})
+      });
+      const id = await ir.json();
+      if(id.imageUrl) { imageUrl = id.imageUrl; break; }
+      if(id.error && attempt === 0) { await new Promise(r=>setTimeout(r,2000)); continue; }
+      if(id.error) throw new Error(id.error);
     }
     if(!imageUrl) throw new Error('No image returned');
 
