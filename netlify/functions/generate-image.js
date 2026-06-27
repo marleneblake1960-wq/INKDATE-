@@ -108,7 +108,7 @@ ROW 7 — DECK HEADLINE: "${r.deck_headline}" in medium bold type
 ROW 8 — TWO COLUMNS of body text with sub-headlines: LEFT: "${r.secondary_stories ? r.secondary_stories[0] : ''}" with 3-4 paragraphs body text. RIGHT: "${r.secondary_stories ? r.secondary_stories[1] : ''}" with body text
 ROW 9 — BOTTOM BANNER: full-width black strip, white bold text teasing inside pages
 
-Authentic British tabloid style. Real aged newsprint texture. Period typography. Sharp focus on every letter. Must look like a genuine scanned historical newspaper.`;
+The newspaper is shown as a PHYSICAL OBJECT — you can see the folded pages and slight depth on the right side edge, like looking at a real newspaper held open. Authentic aged newsprint texture (#f5e6c8). Period typography. Sharp focus on every letter. Warm ambient lighting from above. Museum quality photorealistic render.`;
       } else {
         prompt = `Ultra-photorealistic museum-quality scan of an authentic vintage ${r.newspaper} newspaper front page from ${r.date}. Fills the ENTIRE frame edge to edge. Aged yellowed newsprint (#f0e4c0), genuine period printing quality, black and white photography.
 
@@ -124,7 +124,7 @@ ROW 8 — THREE COLUMN LAYOUT: dense justified serif body text in three columns
 ROW 9 — SECONDARY HEADLINES in columns: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}" with body text
 ROW 10 — HORIZONTAL FOLD CREASE across lower third
 
-Authentic broadsheet newspaper. Aged newsprint texture. Period-accurate typography. Sharp focus on all text. Must look like a genuine scanned historical newspaper.`;
+The newspaper is shown as a PHYSICAL OBJECT — slightly angled showing the folded pages and paper thickness on the right side edge, like a real broadsheet held open. Aged newsprint texture (#f0e4c0). Period-accurate typography. Sharp focus on all text. Warm ambient lighting. Museum quality photorealistic render.`;
       }
     }
 
@@ -139,7 +139,7 @@ Authentic broadsheet newspaper. Aged newsprint texture. Period-accurate typograp
         model: "chatgpt-image-latest",
         prompt: prompt,
         n: 1,
-        size: "1024x1536",
+        size: "1024x1792",
         quality: "medium",
       }),
     });
