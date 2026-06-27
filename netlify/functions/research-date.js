@@ -22,51 +22,94 @@ exports.handler = async function(event, context) {
     const { newspaper, date } = JSON.parse(event.body || "{}");
     if (!newspaper || !date) throw new Error("Newspaper and date are required");
 
-    // Detect newspaper format for style guidance
-    const isTabloid = ['The Sun', 'Daily Mirror', 'Daily Mail', 'Daily Express', 
-      'New York Daily News', 'The Star', 'The Star Jamaica'].some(t => newspaper.includes(t));
-    const isGerman = ['Frankfurter', 'Die Welt', 'Süddeutsche', 'Der Standard'].some(t => newspaper.includes(t));
-    const isFrench = ['Le Monde', 'Le Figaro', 'Libération', 'Le Mauricien'].some(t => newspaper.includes(t));
-    const isSpanish = ['El País', 'ABC', 'El Mundo', 'Excélsior', 'El Universal', 'La Nación', 'Clarín'].some(t => newspaper.includes(t));
-    const isPortuguese = ['Folha', 'O Globo', 'O Estado', 'Jornal'].some(t => newspaper.includes(t));
+    const isTabloid = ['The Sun','Daily Mirror','Daily Mail','Daily Express',
+      'New York Daily News','The Star','The Star Jamaica'].some(t => newspaper.includes(t));
+    const isGerman = ['Frankfurter','Die Welt','Süddeutsche','Der Standard'].some(t => newspaper.includes(t));
+    const isFrench = ['Le Monde','Le Figaro','Libération','Le Mauricien'].some(t => newspaper.includes(t));
+    const isSpanish = ['El País','ABC','El Mundo','Excélsior','El Universal','La Nación','Clarín'].some(t => newspaper.includes(t));
+    const isPortuguese = ['Folha','O Globo','O Estado','Jornal'].some(t => newspaper.includes(t));
     const isJapanese = ['Shimbun'].some(t => newspaper.includes(t));
 
-    const format = isTabloid ? 'TABLOID (compact format, very large bold headlines, sensational style)' : 'BROADSHEET (full size, formal style)';
+    const format = isTabloid ? 'TABLOID' : 'BROADSHEET';
     const lang = isGerman ? 'German' : isFrench ? 'French' : isSpanish ? 'Spanish' : isPortuguese ? 'Portuguese' : isJapanese ? 'Japanese' : 'English';
 
-    const prompt = `You are a newspaper historian and expert in historical front pages worldwide.
+    const prompt = `You are the world's foremost newspaper historian with encyclopaedic knowledge of every major historical front page.
 
 Research the front page of "${newspaper}" dated ${date}.
 Format: ${format}
 Language: ${lang}
 
+VERIFIED HISTORIC FRONT PAGES — use these EXACT headlines when the date matches:
+
+UK FOOTBALL:
+- Any UK paper, 30 July 1966: England beat West Germany 4-2 in World Cup Final at Wembley. Geoff Hurst hat-trick. Bobby Moore lifted trophy.
+  The Sun: "WORLD CUP GLORY! / Hurst hat-trick seals greatest day for England"
+  Daily Mirror: "WORLD CUP CHAMPIONS! / Hurst hat-trick hero as England make history"
+  The Times: "England win the World Cup / Hurst scores three as England beat West Germany 4-2 after extra time"
+  The Guardian: "England are champions of the world / Hurst hat-trick brings Jules Rimet trophy to Wembley"
+
+UK POLITICS:
+- Any UK paper, 3 May 1979: Margaret Thatcher wins general election, becomes first female Prime Minister
+- Any UK paper, 2 May 1997: Tony Blair wins landslide election for Labour
+- Any UK paper, 24 June 2016: Brexit — UK votes to leave EU
+- Any UK paper, 9 April 2013: Margaret Thatcher dies aged 87
+- Any UK paper, 8 September 2022: Queen Elizabeth II dies aged 96 at Balmoral
+- Any UK paper, 31 August 1997: Princess Diana dies in Paris car crash
+
+USA:
+- Any US paper, 5 November 2008: Barack Obama elected 44th President, first African American President
+- Any US paper, 20 January 2009: Obama inaugurated as President
+- Any US paper, 12 September 2001: 9/11 terrorist attacks on World Trade Center and Pentagon
+- Any US paper, 22 November 1963: President John F Kennedy assassinated in Dallas
+- Any US paper, 21 July 1969: Apollo 11 Moon landing, Neil Armstrong walks on Moon
+- Any US paper, 9 August 1974: President Nixon resigns
+- Any US paper, 9 November 1989: Berlin Wall falls
+
+JAMAICA:
+- Any Jamaican paper, 6 August 1962: Jamaica Independence Day — independence from Britain
+- Any Jamaican paper, 12 August 1980: Bob Marley performs One Love Peace Concert
+- Any Jamaican paper, 25 September 1988: Hurricane Gilbert devastates Jamaica
+- Any Jamaican paper, 25 August 2008: Usain Bolt wins 100m gold at Beijing Olympics
+
+CARIBBEAN:
+- Any Caribbean paper, 1 August 1834: Emancipation Day — slavery abolished in British Caribbean
+- Any Trinidad paper, 31 August 1962: Trinidad and Tobago independence
+
+SOUTH AFRICA:
+- Any SA paper, 11 February 1990: Nelson Mandela released from Victor Verster Prison after 27 years
+- Any SA paper, 27 April 1994: First free democratic elections in South Africa
+- Any SA paper, 10 May 1994: Nelson Mandela inaugurated as President
+- Any SA paper, 5 December 2013: Nelson Mandela dies aged 95
+
+NIGERIA:
+- Any Nigerian paper, 1 October 1960: Nigeria Independence Day
+
+WORLD:
+- Any paper, 8 May 1945: VE Day — Victory in Europe, World War II ends in Europe
+- Any paper, 15 August 1945: VJ Day — Japan surrenders, World War II ends
+- Any paper, 6 June 1944: D-Day landings in Normandy
+
 CRITICAL RULES:
-1. NEVER use "UNVERIFIED", "UNKNOWN", "NOT AVAILABLE" or any disclaimer text.
-2. Use REAL verified historical headlines for this exact date if you know them. 
-   IMPORTANT EXAMPLES:
-   - The Sun, 30 July 1966 = "WORLD CUP GLORY!" or "ENGLAND WIN!" — England beat West Germany 4-2 in the World Cup Final at Wembley
-   - The Sun, 31 July 1966 = reporting on England winning the World Cup final the day before
-   - Any UK paper, 31 July 1966 = England won the World Cup 4-2 vs West Germany
-   - Any UK paper, 5 November 2008 = Obama elected first Black US President
-3. If exact headline unknown, generate convincing period-accurate content based on real events of that date.
-4. For TABLOID papers (The Sun, Mirror, etc): use SHORT PUNCHY headlines in ALL CAPS, sensational style.
-5. For broadsheet papers: use formal longer headlines.
-6. Write in the correct language for this newspaper.
+1. NEVER use "UNVERIFIED", "UNKNOWN", "NOT AVAILABLE" or any disclaimer text anywhere
+2. For famous dates above — use the REAL verified headlines
+3. For all other dates — generate convincing, historically accurate, period-appropriate headlines based on real events happening in that country on or near that date
+4. Write in the correct language for this newspaper
+5. TABLOID style = short punchy ALL CAPS headlines. BROADSHEET = formal longer headlines.
+6. Every single field must be filled with real, plausible content
 
 Return ONLY this JSON with no other text:
-
 {
   "newspaper": "${newspaper}",
   "date": "${date}",
   "masthead": {
-    "logotype_style": "${isTabloid ? 'bold red banner masthead, white text, tabloid style' : 'classic serif masthead'}",
-    "masthead_color": "${isTabloid ? 'red background with white text' : 'deep black'}",
+    "logotype_style": "${isTabloid ? 'bold red banner masthead, white text' : 'classic serif masthead black ink'}",
+    "masthead_color": "${isTabloid ? 'red background white text' : 'deep black'}",
     "cover_price": "appropriate period price in local currency"
   },
   "format": "${isTabloid ? 'tabloid' : 'broadsheet'}",
-  "banner_headline": "The REAL headline from this date — SHORT AND PUNCHY for tabloids, formal for broadsheets",
-  "deck_headline": "Secondary headline with more detail",
-  "lead_story": "2-3 sentence accurate summary of the lead story",
+  "banner_headline": "The REAL or most accurate headline for this date and newspaper",
+  "deck_headline": "Accurate secondary headline with detail",
+  "lead_story": "2-3 sentence accurate summary of what happened",
   "dominant_photograph": "Description of the main front page photograph",
   "photo_caption": "Realistic photo caption",
   "secondary_stories": [
@@ -85,18 +128,15 @@ Return ONLY this JSON with no other text:
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
-        max_tokens: 1000,
+        max_tokens: 1200,
         messages: [{ role: "user", content: prompt }],
       }),
     });
 
     const responseText = await res.text();
     let apiData;
-    try {
-      apiData = JSON.parse(responseText);
-    } catch(e) {
-      throw new Error("Invalid response from Anthropic API");
-    }
+    try { apiData = JSON.parse(responseText); }
+    catch(e) { throw new Error("Invalid response from Anthropic API"); }
 
     if (apiData.error) throw new Error(apiData.error.message);
 
@@ -116,7 +156,6 @@ Return ONLY this JSON with no other text:
       }
     }
 
-    // Sanitize any disclaimer text
     const sanitize = (str) => {
       if (!str) return str;
       return str
