@@ -91,20 +91,36 @@ PASSING NEWSPAPER — bottom paper: masthead "${r.newspaper}" at very top. Immed
 
 Both dates MUST be large, bold and clearly legible — they are the most important information for the customer. Authentic aged newsprint. Warm amber light. Tender dignified mood. 8K museum quality.`;
     } else {
-      prompt = `Ultra-photorealistic photograph of the complete front page of ${r.newspaper} dated ${r.date}. The view is straight-on, as if the reader is holding the newspaper up and reading it. The newspaper fills the ENTIRE frame edge to edge — no surface visible, no background, just the complete newspaper front page.
+      const isTabloid = r.format === 'tabloid' || 
+        ['The Sun','Daily Mirror','Daily Mail','Daily Express','New York Daily News','The Star'].some(t => r.newspaper.includes(t));
+
+      if(isTabloid) {
+        prompt = `Ultra-photorealistic photograph of the complete front page of ${r.newspaper} tabloid newspaper dated ${r.date}. The view is straight-on filling the ENTIRE frame edge to edge — no background visible.
+
+MASTHEAD: "${r.newspaper}" in BOLD RED BANNER at the very top with white text — exactly like a British tabloid. The date "${r.date}" and price printed in small text below the masthead.
+ENORMOUS BANNER HEADLINE in massive bold black sans-serif type filling the top third: "${r.banner_headline}"
+LARGE DRAMATIC PHOTOGRAPH below the headline filling the middle of the page.
+DECK HEADLINE below the photograph: "${r.deck_headline}"
+TWO OR THREE COLUMN layout below with secondary stories: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}"
+BODY TEXT in columns below.
+
+Authentic aged newsprint texture. TABLOID format — compact, punchy, dramatic. Period-accurate British tabloid typography. Sharp focus. 8K photorealistic quality.`;
+      } else {
+        prompt = `Ultra-photorealistic photograph of the complete front page of ${r.newspaper} dated ${r.date}. The view is straight-on, filling the ENTIRE frame edge to edge — no surface, no background.
 
 MASTHEAD at very top: "${r.newspaper}" in authentic period serif typeface, deep black ink, centered.
-DATE LINE directly below masthead: "${r.date}" — clearly legible in small type.
-THIN RULE separating masthead from content.
-BANNER HEADLINE in enormous bold serif type spanning full page width: "${r.banner_headline}"
-DECK HEADLINE below in medium serif: "${r.deck_headline}"
-LARGE PRESS PHOTOGRAPH filling the middle third of the page.
-PHOTO CAPTION below the photograph in small italic type.
-THREE COLUMN LAYOUT below with secondary story headlines: "${r.secondary_stories ? r.secondary_stories[0] : 'National News'}" and "${r.secondary_stories ? r.secondary_stories[1] : 'World Report'}"
-DENSE BODY TEXT in justified serif columns filling the lower portion.
-FOLD CREASE across the lower third.
+DATE LINE directly below: "${r.date}" — clearly legible.
+THIN DECORATIVE RULE below masthead.
+BANNER HEADLINE in enormous bold serif type spanning full width: "${r.banner_headline}"
+DECK HEADLINE below: "${r.deck_headline}"
+LARGE PRESS PHOTOGRAPH in the middle.
+PHOTO CAPTION below photograph in small italic type.
+THREE COLUMN LAYOUT below: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}"
+DENSE BODY TEXT in justified serif columns.
+FOLD CREASE across lower third.
 
-The newspaper fills the complete frame. Authentic aged newsprint texture. Period-accurate typography. Crisp sharp focus on every element. 8K photorealistic quality.`;
+Authentic aged newsprint. Period-accurate broadsheet typography. Sharp focus on every element. 8K photorealistic quality.`;
+      }
     }
 
     // Generate with smaller size to keep response under 6MB
