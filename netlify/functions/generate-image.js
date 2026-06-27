@@ -21,7 +21,15 @@ exports.handler = async function(event, context) {
 
     const body = JSON.parse(event.body || "{}");
     const { research, tier, surface, lighting } = body;
-    if (!research) throw new Error("No research data");
+    
+    // Diagnostic — confirm body received
+    if (!research) {
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ error: "No research in body. Keys received: " + Object.keys(body).join(', ') + ". Body length: " + (event.body || '').length }),
+      };
+    }
 
     const r = (tier === "thennow" || tier === "memorial") ? research.date1 : research;
     const surfaceStr = surface || "pale grey marble surface";
