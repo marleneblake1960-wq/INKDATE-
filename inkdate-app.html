@@ -1074,13 +1074,18 @@ async function startGen() {
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify({research,tier:S.product,surface:S.surface,lighting:S.lighting})
         });
+        if(!ir.ok) {
+          const errText = await ir.text();
+          throw new Error('HTTP ' + ir.status + ': ' + errText.substring(0,200));
+        }
         const ct = ir.headers.get('content-type') || '';
         if(ct.includes('image/')) {
           const blob = await ir.blob();
           imageUrl = URL.createObjectURL(blob);
           break;
         } else {
-          const id = await ir.json();
+          const text = await ir.text();
+          const id = JSON.parse(text);
           if(id.error) throw new Error(id.error);
           if(id.imageUrl) { imageUrl = id.imageUrl; break; }
         }
