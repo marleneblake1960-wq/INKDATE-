@@ -1097,26 +1097,42 @@ async function addWatermark(imageUrl) {
       // Draw original image
       ctx.drawImage(img, 0, 0);
 
-      // Diagonal SAMPLE watermark
+      // Strong diagonal INKDATE SAMPLE watermarks
       ctx.save();
-      ctx.globalAlpha = 0.25;
+      ctx.globalAlpha = 0.55;
       ctx.fillStyle = '#ffffff';
-      ctx.font = `bold ${img.width * 0.08}px serif`;
+      ctx.font = `bold ${img.width * 0.09}px serif`;
       ctx.textAlign = 'center';
       ctx.translate(canvas.width/2, canvas.height/2);
       ctx.rotate(-Math.PI/4);
-      for(let i = -2; i <= 2; i++) {
-        ctx.fillText('INKDATE SAMPLE', 0, i * img.height * 0.25);
+      // Multiple rows of watermark text
+      for(let i = -3; i <= 3; i++) {
+        ctx.fillText('INKDATE SAMPLE', 0, i * img.height * 0.2);
+        ctx.fillText('inkdateapp.com', 0, i * img.height * 0.2 + img.width * 0.1);
       }
       ctx.restore();
 
-      // Bottom watermark bar
-      ctx.fillStyle = 'rgba(0,0,0,0.6)';
-      ctx.fillRect(0, canvas.height - 60, canvas.width, 60);
+      // Dark overlay bar at top
+      ctx.fillStyle = 'rgba(26,15,10,0.85)';
+      ctx.fillRect(0, 0, canvas.width, 70);
       ctx.fillStyle = '#c8a855';
-      ctx.font = `${img.width * 0.03}px serif`;
+      ctx.font = `bold ${img.width * 0.035}px serif`;
       ctx.textAlign = 'center';
-      ctx.fillText('inkdateapp.com — Remove watermark from £14.99', canvas.width/2, canvas.height - 22);
+      ctx.fillText('⚠ FREE SAMPLE — WATERMARKED', canvas.width/2, 30);
+      ctx.font = `${img.width * 0.025}px serif`;
+      ctx.fillStyle = '#e8d5b0';
+      ctx.fillText('Purchase at inkdateapp.com to get your full high-resolution newspaper', canvas.width/2, 55);
+
+      // Dark overlay bar at bottom
+      ctx.fillStyle = 'rgba(26,15,10,0.85)';
+      ctx.fillRect(0, canvas.height - 70, canvas.width, 70);
+      ctx.fillStyle = '#c8a855';
+      ctx.font = `bold ${img.width * 0.035}px serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('inkdateapp.com — From £14.99', canvas.width/2, canvas.height - 40);
+      ctx.fillStyle = '#e8d5b0';
+      ctx.font = `${img.width * 0.025}px serif`;
+      ctx.fillText('Remove watermark · High resolution · Download instantly', canvas.width/2, canvas.height - 15);
 
       resolve(canvas.toDataURL('image/jpeg', 0.92));
     };
