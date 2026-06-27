@@ -19,15 +19,9 @@ exports.handler = async function(event, context) {
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
     if (!OPENAI_API_KEY) throw new Error("OpenAI API key not configured");
 
-    let body;
-    try {
-      body = JSON.parse(event.body || "{}");
-    } catch(e) {
-      throw new Error("Request parse failed");
-    }
-
+    const body = JSON.parse(event.body || "{}");
     const { research, tier, surface, lighting } = body;
-    if (!research) throw new Error("No research data provided");
+    if (!research) throw new Error("No research data");
 
     const r = (tier === "thennow" || tier === "memorial") ? research.date1 : research;
     const surfaceStr = surface || "pale grey marble surface";
@@ -75,36 +69,9 @@ exports.handler = async function(event, context) {
         ['The Sun','Daily Mirror','Daily Mail','Daily Express','New York Daily News','The Star'].some(t => r.newspaper && r.newspaper.includes(t));
 
       if (isTabloid) {
-        prompt = `Ultra-photorealistic museum-quality scan of an authentic vintage ${r.newspaper} newspaper front page from ${r.date}. Fills the ENTIRE frame edge to edge. Aged yellowed newsprint texture, authentic period printing, black and white photography.
-
-EXACT LAYOUT TOP TO BOTTOM:
-ROW 1 — HEADER STRIP: Issue number, "${r.date}", price "4d" or "5d" in very small text spanning full width
-ROW 2 — MASTHEAD: LEFT SIDE: "${r.newspaper}" in iconic large bold white italic serif text inside a solid RED rectangle banner. RIGHT SIDE: small black-bordered box with "THE FINAL SCORE" or key news summary in bold type
-ROW 3 — thin black rule line full width
-ROW 4 — ENORMOUS HEADLINE: "${r.banner_headline}" in massive ultra-bold condensed black sans-serif capitals, filling the full width, stacked 2-3 lines, taking up one quarter of the total page height
-ROW 5 — LARGE PHOTOGRAPH: dramatic black and white press photo filling the central third of the page
-ROW 6 — PHOTO CAPTION in small italic text
-ROW 7 — DECK HEADLINE: "${r.deck_headline}" in medium bold type
-ROW 8 — TWO COLUMNS of body text: LEFT: "${r.secondary_stories ? r.secondary_stories[0] : ''}" RIGHT: "${r.secondary_stories ? r.secondary_stories[1] : ''}"
-ROW 9 — BOTTOM BANNER: full-width black strip, white bold text
-
-Authentic British tabloid. Aged newsprint. Period typography. Sharp focus on every letter. Real scanned historical newspaper appearance.`;
+        prompt = `Ultra-photorealistic museum-quality scan of an authentic vintage ${r.newspaper} newspaper front page from ${r.date}. Fills the entire frame. Aged yellowed newsprint. MASTHEAD: "${r.newspaper}" in bold white italic text inside solid RED rectangle banner. Header strip with date "${r.date}" and price. HEADLINE: "${r.banner_headline}" in massive bold black capitals. Large black and white press photograph. DECK: "${r.deck_headline}". Secondary stories: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}". Bottom black banner strip. Authentic period typography. Sharp focus.`;
       } else {
-        prompt = `Ultra-photorealistic museum-quality scan of an authentic vintage ${r.newspaper} newspaper front page from ${r.date}. Fills the ENTIRE frame edge to edge. Aged yellowed newsprint, genuine period printing quality, black and white photography.
-
-EXACT LAYOUT TOP TO BOTTOM:
-ROW 1 — MASTHEAD: "${r.newspaper}" in large elegant classic serif typeface, centered, deep black ink
-ROW 2 — DATE LINE: "${r.date}" — edition details, price, all in small centered type below masthead
-ROW 3 — THIN DECORATIVE RULE full width
-ROW 4 — BANNER HEADLINE: "${r.banner_headline}" in very large bold serif type spanning full width
-ROW 5 — DECK HEADLINE: "${r.deck_headline}" in medium serif italic below
-ROW 6 — LARGE PRESS PHOTOGRAPH filling the upper middle — black and white period photography
-ROW 7 — PHOTO CAPTION: small italic text below photograph
-ROW 8 — THREE COLUMN LAYOUT: dense justified serif body text
-ROW 9 — SECONDARY HEADLINES: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}"
-ROW 10 — HORIZONTAL FOLD CREASE across lower third
-
-Authentic broadsheet newspaper. Aged newsprint. Period typography. Sharp focus. Real scanned historical newspaper appearance.`;
+        prompt = `Ultra-photorealistic museum-quality scan of an authentic vintage ${r.newspaper} newspaper front page from ${r.date}. Fills the entire frame. Aged yellowed newsprint. MASTHEAD: "${r.newspaper}" in classic serif typeface, centered. DATE: "${r.date}" clearly visible below masthead. HEADLINE: "${r.banner_headline}" in large bold serif. DECK: "${r.deck_headline}". Large black and white press photograph with caption. Secondary stories: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}". Dense column body text. Fold crease across lower third. Period typography. Sharp focus.`;
       }
     }
 
@@ -124,9 +91,7 @@ Authentic broadsheet newspaper. Aged newsprint. Period typography. Sharp focus. 
 
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
-    if (!data.data || !data.data[0] || !data.data[0].b64_json) {
-      throw new Error("No image returned");
-    }
+    if (!data.data || !data.data[0] || !data.data[0].b64_json) throw new Error("No image returned");
 
     const imageUrl = "data:image/png;base64," + data.data[0].b64_json;
 
