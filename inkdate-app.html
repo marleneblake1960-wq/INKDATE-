@@ -1070,14 +1070,17 @@ async function startGen() {
     for(let attempt = 0; attempt < 2; attempt++) {
       const ir = await fetch('/.netlify/functions/generate-image',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({research,tier:S.product,surface:S.surface,lighting:S.lighting})});
       const ct = ir.headers.get('content-type') || '';
-      if(ct.includes('text/plain')) {
-        imageUrl = await ir.text();
+      if(ct.includes('image/')) {
+        // Binary image response — convert to blob URL
+        const blob = await ir.blob();
+        imageUrl = URL.createObjectURL(blob);
+        break;
       } else {
         const id = await ir.json();
         if(id.error) { if(attempt===0){await new Promise(r=>setTimeout(r,2000));continue;} throw new Error(id.error); }
         imageUrl = id.imageUrl;
+        if(imageUrl) break;
       }
-      if(imageUrl) break;
       if(attempt === 0) await new Promise(r=>setTimeout(r,2000));
     }
     if(!imageUrl) throw new Error('No image returned');
