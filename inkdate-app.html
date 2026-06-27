@@ -1081,9 +1081,13 @@ async function startGen() {
         const ir = await fetch('/.netlify/functions/generate-image',{
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({research,tier:S.product,surface:S.surface,lighting:S.lighting}),
+          body:JSON.stringify({
+            research,
+            tier:S.product,
+            surface:S.surface || 'pale grey marble surface',
+            lighting:S.lighting || 'warm golden hour light'
+          }),
           signal: controller.signal,
-          keepalive: true,
         });
         clearTimeout(timeoutId);
         const responseText = await ir.text();
