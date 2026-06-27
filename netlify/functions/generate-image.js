@@ -95,31 +95,36 @@ Both dates MUST be large, bold and clearly legible — they are the most importa
         ['The Sun','Daily Mirror','Daily Mail','Daily Express','New York Daily News','The Star'].some(t => r.newspaper.includes(t));
 
       if(isTabloid) {
-        prompt = `Ultra-photorealistic photograph of the complete front page of ${r.newspaper} tabloid newspaper dated ${r.date}. The view is straight-on filling the ENTIRE frame edge to edge — no background visible.
+        prompt = `Ultra-photorealistic museum-quality scan of an authentic vintage ${r.newspaper} newspaper front page from ${r.date}. Fills the ENTIRE frame edge to edge. Aged yellowed newsprint texture (#f5e6c8), authentic period printing, black and white photography.
 
-MASTHEAD: "${r.newspaper}" in BOLD RED BANNER at the very top with white text — exactly like a British tabloid. The date "${r.date}" and price printed in small text below the masthead.
-ENORMOUS BANNER HEADLINE in massive bold black sans-serif type filling the top third: "${r.banner_headline}"
-LARGE DRAMATIC PHOTOGRAPH below the headline filling the middle of the page.
-DECK HEADLINE below the photograph: "${r.deck_headline}"
-TWO OR THREE COLUMN layout below with secondary stories: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}"
-BODY TEXT in columns below.
+EXACT LAYOUT TOP TO BOTTOM:
+ROW 1 — HEADER STRIP: Issue number, "${r.date}", price "4d" or "5d" in very small text spanning full width
+ROW 2 — MASTHEAD: LEFT SIDE: "${r.newspaper}" in iconic large bold white italic serif text inside a solid RED rectangle banner. RIGHT SIDE: small black-bordered box with "THE FINAL SCORE" or key news summary in bold type
+ROW 3 — thin black rule line full width
+ROW 4 — ENORMOUS HEADLINE: "${r.banner_headline}" in massive ultra-bold condensed black sans-serif capitals, filling the full width, stacked 2-3 lines, taking up one quarter of the total page height
+ROW 5 — LARGE PHOTOGRAPH: dramatic black and white press photo filling the central third of the page
+ROW 6 — PHOTO CAPTION in small italic text
+ROW 7 — DECK HEADLINE: "${r.deck_headline}" in medium bold type
+ROW 8 — TWO COLUMNS of body text with sub-headlines: LEFT: "${r.secondary_stories ? r.secondary_stories[0] : ''}" with 3-4 paragraphs body text. RIGHT: "${r.secondary_stories ? r.secondary_stories[1] : ''}" with body text
+ROW 9 — BOTTOM BANNER: full-width black strip, white bold text teasing inside pages
 
-Authentic aged newsprint texture. TABLOID format — compact, punchy, dramatic. Period-accurate British tabloid typography. Sharp focus. 8K photorealistic quality.`;
+Authentic British tabloid style. Real aged newsprint texture. Period typography. Sharp focus on every letter. Must look like a genuine scanned historical newspaper.`;
       } else {
-        prompt = `Ultra-photorealistic photograph of the complete front page of ${r.newspaper} dated ${r.date}. The view is straight-on, filling the ENTIRE frame edge to edge — no surface, no background.
+        prompt = `Ultra-photorealistic museum-quality scan of an authentic vintage ${r.newspaper} newspaper front page from ${r.date}. Fills the ENTIRE frame edge to edge. Aged yellowed newsprint (#f0e4c0), genuine period printing quality, black and white photography.
 
-MASTHEAD at very top: "${r.newspaper}" in authentic period serif typeface, deep black ink, centered.
-DATE LINE directly below: "${r.date}" — clearly legible.
-THIN DECORATIVE RULE below masthead.
-BANNER HEADLINE in enormous bold serif type spanning full width: "${r.banner_headline}"
-DECK HEADLINE below: "${r.deck_headline}"
-LARGE PRESS PHOTOGRAPH in the middle.
-PHOTO CAPTION below photograph in small italic type.
-THREE COLUMN LAYOUT below: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}"
-DENSE BODY TEXT in justified serif columns.
-FOLD CREASE across lower third.
+EXACT LAYOUT TOP TO BOTTOM:
+ROW 1 — MASTHEAD: "${r.newspaper}" in large elegant classic serif typeface, centered, deep black ink. Small decorative elements either side.
+ROW 2 — DATE LINE: "${r.date}" — edition details, price, all in small centered type below masthead
+ROW 3 — THIN DECORATIVE RULE full width
+ROW 4 — BANNER HEADLINE: "${r.banner_headline}" in very large bold serif type spanning full width
+ROW 5 — DECK HEADLINE: "${r.deck_headline}" in medium serif italic below
+ROW 6 — LARGE PRESS PHOTOGRAPH filling the upper middle — black and white period photography
+ROW 7 — PHOTO CAPTION: small italic text below photograph: "${r.photo_caption || ''}"
+ROW 8 — THREE COLUMN LAYOUT: dense justified serif body text in three columns
+ROW 9 — SECONDARY HEADLINES in columns: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}" with body text
+ROW 10 — HORIZONTAL FOLD CREASE across lower third
 
-Authentic aged newsprint. Period-accurate broadsheet typography. Sharp focus on every element. 8K photorealistic quality.`;
+Authentic broadsheet newspaper. Aged newsprint texture. Period-accurate typography. Sharp focus on all text. Must look like a genuine scanned historical newspaper.`;
       }
     }
 
