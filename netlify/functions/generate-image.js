@@ -69,9 +69,9 @@ exports.handler = async function(event, context) {
         ['The Sun','Daily Mirror','Daily Mail','Daily Express','New York Daily News','The Star'].some(t => r.newspaper && r.newspaper.includes(t));
 
       if (isTabloid) {
-        prompt = `Ultra-photorealistic museum-quality scan of an authentic vintage ${r.newspaper} newspaper front page from ${r.date}. Fills the entire frame. Aged yellowed newsprint. MASTHEAD: "${r.newspaper}" in bold white italic text inside solid RED rectangle banner. Header strip with date "${r.date}" and price. HEADLINE: "${r.banner_headline}" in massive bold black capitals. Large black and white press photograph. DECK: "${r.deck_headline}". Secondary stories: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}". Bottom black banner strip. Authentic period typography. Sharp focus.`;
+        prompt = `Photorealistic scan of vintage ${r.newspaper} tabloid front page, ${r.date}. Red banner masthead "${r.newspaper}" in white italic text. Headline: "${r.banner_headline}". Large black and white photo. Deck: "${r.deck_headline}". Aged newsprint. Period typography.`;
       } else {
-        prompt = `Ultra-photorealistic museum-quality scan of an authentic vintage ${r.newspaper} newspaper front page from ${r.date}. Fills the entire frame. Aged yellowed newsprint. MASTHEAD: "${r.newspaper}" in classic serif typeface, centered. DATE: "${r.date}" clearly visible below masthead. HEADLINE: "${r.banner_headline}" in large bold serif. DECK: "${r.deck_headline}". Large black and white press photograph with caption. Secondary stories: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}". Dense column body text. Fold crease across lower third. Period typography. Sharp focus.`;
+        prompt = `Photorealistic scan of vintage ${r.newspaper} broadsheet front page, ${r.date}. Classic serif masthead. Headline: "${r.banner_headline}". Deck: "${r.deck_headline}". Large press photo. Aged yellowed newsprint. Period typography.`;
       }
     }
 
@@ -85,7 +85,7 @@ exports.handler = async function(event, context) {
         model: "chatgpt-image-latest",
         prompt: prompt,
         n: 1,
-        size: "1024x1024",
+        size: "1024x1536",
       }),
     });
 
@@ -109,4 +109,3 @@ exports.handler = async function(event, context) {
     };
   }
 };
-
