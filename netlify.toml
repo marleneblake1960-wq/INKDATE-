@@ -9,7 +9,7 @@
   timeout = 120
 
 [functions."research-date"]
-  timeout = 30
+  timeout = 60
 
 [[redirects]]
   from = "/"
