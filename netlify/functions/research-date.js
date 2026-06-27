@@ -22,40 +22,59 @@ exports.handler = async function(event, context) {
     const { newspaper, date } = JSON.parse(event.body || "{}");
     if (!newspaper || !date) throw new Error("Newspaper and date are required");
 
+    // Detect newspaper format for style guidance
+    const isTabloid = ['The Sun', 'Daily Mirror', 'Daily Mail', 'Daily Express', 
+      'New York Daily News', 'The Star', 'The Star Jamaica'].some(t => newspaper.includes(t));
+    const isGerman = ['Frankfurter', 'Die Welt', 'Süddeutsche', 'Der Standard'].some(t => newspaper.includes(t));
+    const isFrench = ['Le Monde', 'Le Figaro', 'Libération', 'Le Mauricien'].some(t => newspaper.includes(t));
+    const isSpanish = ['El País', 'ABC', 'El Mundo', 'Excélsior', 'El Universal', 'La Nación', 'Clarín'].some(t => newspaper.includes(t));
+    const isPortuguese = ['Folha', 'O Globo', 'O Estado', 'Jornal'].some(t => newspaper.includes(t));
+    const isJapanese = ['Shimbun'].some(t => newspaper.includes(t));
+
+    const format = isTabloid ? 'TABLOID (compact format, very large bold headlines, sensational style)' : 'BROADSHEET (full size, formal style)';
+    const lang = isGerman ? 'German' : isFrench ? 'French' : isSpanish ? 'Spanish' : isPortuguese ? 'Portuguese' : isJapanese ? 'Japanese' : 'English';
+
     const prompt = `You are a newspaper historian and expert in historical front pages worldwide.
 
 Research the front page of "${newspaper}" dated ${date}.
+Format: ${format}
+Language: ${lang}
 
-CRITICAL RULES — you MUST follow these without exception:
-1. NEVER use the words "UNVERIFIED", "UNKNOWN", "NOT AVAILABLE", "ARCHIVAL VERIFICATION REQUIRED", or any similar phrase anywhere in your response.
-2. If you cannot find the exact verified headline, you MUST generate a convincing, historically accurate and period-appropriate headline based on what you know about that date, that country, and that newspaper's style and era. This is essential.
-3. Every field must contain real, plausible, period-accurate content. No field should ever be left as a disclaimer or contain meta-commentary about archives.
-4. Write headlines in the style and language of that newspaper's era. For Nigerian papers use formal English. For South African papers use formal English. For Mauritian French papers use French.
-5. Base your headlines on real historical events happening in that country and region on or around that date.
+CRITICAL RULES:
+1. NEVER use "UNVERIFIED", "UNKNOWN", "NOT AVAILABLE" or any disclaimer text.
+2. Use REAL verified historical headlines for this exact date if you know them. 
+   IMPORTANT EXAMPLES:
+   - The Sun, 30 July 1966 = "WORLD CUP GLORY!" or "ENGLAND WIN!" — England beat West Germany 4-2 in the World Cup Final at Wembley
+   - The Sun, 31 July 1966 = reporting on England winning the World Cup final the day before
+   - Any UK paper, 31 July 1966 = England won the World Cup 4-2 vs West Germany
+   - Any UK paper, 5 November 2008 = Obama elected first Black US President
+3. If exact headline unknown, generate convincing period-accurate content based on real events of that date.
+4. For TABLOID papers (The Sun, Mirror, etc): use SHORT PUNCHY headlines in ALL CAPS, sensational style.
+5. For broadsheet papers: use formal longer headlines.
+6. Write in the correct language for this newspaper.
 
-Return ONLY this JSON object with no other text:
+Return ONLY this JSON with no other text:
 
 {
   "newspaper": "${newspaper}",
   "date": "${date}",
   "masthead": {
-    "logotype_style": "describe the font style appropriate to the era",
-    "masthead_color": "deep black",
-    "cover_price": "appropriate period price"
+    "logotype_style": "${isTabloid ? 'bold red banner masthead, white text, tabloid style' : 'classic serif masthead'}",
+    "masthead_color": "${isTabloid ? 'red background with white text' : 'deep black'}",
+    "cover_price": "appropriate period price in local currency"
   },
-  "banner_headline": "A real or historically plausible bold headline for this date",
-  "deck_headline": "A convincing secondary headline providing context",
-  "lead_story": "2-3 sentence summary of the lead story, historically plausible for this date and region",
-  "dominant_photograph": "Description of what a period-appropriate press photograph would show",
-  "photo_caption": "A realistic photo caption",
+  "format": "${isTabloid ? 'tabloid' : 'broadsheet'}",
+  "banner_headline": "The REAL headline from this date — SHORT AND PUNCHY for tabloids, formal for broadsheets",
+  "deck_headline": "Secondary headline with more detail",
+  "lead_story": "2-3 sentence accurate summary of the lead story",
+  "dominant_photograph": "Description of the main front page photograph",
+  "photo_caption": "Realistic photo caption",
   "secondary_stories": [
-    "Plausible secondary headline 1 for this era and region",
-    "Plausible secondary headline 2 for this era and region"
+    "Real or plausible secondary headline 1",
+    "Real or plausible secondary headline 2"
   ],
-  "historical_context": "Brief note on the printing era and paper style"
-}
-
-Remember: Every headline must be convincing and period-accurate. Never use placeholder or disclaimer text.`;
+  "historical_context": "Brief note on the printing era and newspaper style"
+}`;
 
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -84,7 +103,6 @@ Remember: Every headline must be convincing and period-accurate. Never use place
     const content = apiData.content && apiData.content[0] && apiData.content[0].text;
     if (!content) throw new Error("No content returned");
 
-    // Parse JSON from response
     let research;
     try {
       research = JSON.parse(content.replace(/```json|```/g, "").trim());
@@ -98,18 +116,14 @@ Remember: Every headline must be convincing and period-accurate. Never use place
       }
     }
 
-    // Final safety check — remove any UNVERIFIED text that slipped through
+    // Sanitize any disclaimer text
     const sanitize = (str) => {
       if (!str) return str;
       return str
-        .replace(/UNVERIFIED/gi, '')
-        .replace(/UNKNOWN/gi, '')
-        .replace(/NOT AVAILABLE/gi, '')
-        .replace(/ARCHIVAL VERIFICATION REQUIRED/gi, '')
-        .replace(/NOT VERIFIED/gi, '')
-        .replace(/specific deck/gi, '')
-        .replace(/specific secondary/gi, '')
-        .trim();
+        .replace(/UNVERIFIED/gi, '').replace(/UNKNOWN/gi, '')
+        .replace(/NOT AVAILABLE/gi, '').replace(/ARCHIVAL VERIFICATION REQUIRED/gi, '')
+        .replace(/NOT VERIFIED/gi, '').replace(/specific deck/gi, '')
+        .replace(/specific secondary/gi, '').trim();
     };
 
     research.banner_headline = sanitize(research.banner_headline);
