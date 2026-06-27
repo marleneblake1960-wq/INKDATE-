@@ -153,37 +153,22 @@ The newspaper is shown as a PHYSICAL OBJECT — slightly angled showing the fold
     const data = await res.json();
     if (data.error) throw new Error('OpenAI: ' + data.error.message);
 
-    // Try to get image from response
     const imgData = data.data && data.data[0];
-    if (!imgData) throw new Error("No image data in response: " + JSON.stringify(data).substring(0, 300));
-    
-    let imageUrl;
-    if (imgData.b64_json) {
-      // Return as binary image — much smaller than base64 JSON
-      const imageBuffer = Buffer.from(imgData.b64_json, 'base64');
-      return {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "image/png",
-          "Cache-Control": "no-store",
-        },
-        body: imgData.b64_json,
-        isBase64Encoded: true,
-      };
-    } else if (imgData.url) {
-      imageUrl = imgData.url;
-      return {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ imageUrl }),
-      };
-    } else {
+    if (!imgData || !imgData.b64_json) {
       throw new Error("No image in response");
     }
+
+    // Return raw binary — avoids 6MB JSON body limit
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "image/png",
+        "Cache-Control": "no-store",
+      },
+      body: imgData.b64_json,
+      isBase64Encoded: true,
+    };
 
   } catch(err) {
     return {
