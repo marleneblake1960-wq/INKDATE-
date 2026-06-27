@@ -434,7 +434,30 @@ select option{background:#1e1208;color:#e8d5b0;}
   <!-- Result -->
   <div id="result-wrap" style="display:none;">
     <div class="screen-sub" style="text-align:center;margin-bottom:12px;">◆ Your Newspaper</div>
+    <div style="position:relative;">
     <img id="result-img" class="result-img" src="" alt="Your newspaper">
+    <!-- CSS Watermark overlay for free tier -->
+    <div id="watermark-overlay" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:10;overflow:hidden;">
+      <!-- Top bar -->
+      <div style="position:absolute;top:0;left:0;right:0;background:rgba(26,15,10,0.92);padding:10px;text-align:center;z-index:11;">
+        <div style="font-size:0.8rem;letter-spacing:2px;color:#c8a855;font-weight:bold;">⚠ FREE SAMPLE — WATERMARKED</div>
+        <div style="font-size:0.7rem;color:#e8d5b0;">Purchase at inkdateapp.com to get full high-resolution version</div>
+      </div>
+      <!-- Diagonal watermarks -->
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-around;padding:60px 0;">
+        <div style="transform:rotate(-35deg);font-size:2.5rem;font-weight:900;color:rgba(255,255,255,0.35);white-space:nowrap;text-shadow:2px 2px 4px rgba(0,0,0,0.5);font-family:serif;">INKDATE SAMPLE</div>
+        <div style="transform:rotate(-35deg);font-size:1.2rem;font-weight:700;color:rgba(200,168,85,0.5);white-space:nowrap;font-family:serif;">inkdateapp.com</div>
+        <div style="transform:rotate(-35deg);font-size:2.5rem;font-weight:900;color:rgba(255,255,255,0.35);white-space:nowrap;text-shadow:2px 2px 4px rgba(0,0,0,0.5);font-family:serif;">INKDATE SAMPLE</div>
+        <div style="transform:rotate(-35deg);font-size:1.2rem;font-weight:700;color:rgba(200,168,85,0.5);white-space:nowrap;font-family:serif;">inkdateapp.com</div>
+        <div style="transform:rotate(-35deg);font-size:2.5rem;font-weight:900;color:rgba(255,255,255,0.35);white-space:nowrap;text-shadow:2px 2px 4px rgba(0,0,0,0.5);font-family:serif;">INKDATE SAMPLE</div>
+      </div>
+      <!-- Bottom bar -->
+      <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(26,15,10,0.92);padding:10px;text-align:center;z-index:11;">
+        <div style="font-size:0.8rem;letter-spacing:2px;color:#c8a855;font-weight:bold;">inkdateapp.com — From £14.99</div>
+        <div style="font-size:0.7rem;color:#e8d5b0;">Remove watermark · High resolution · Download instantly</div>
+      </div>
+    </div>
+    </div><!-- end position:relative -->
     <div class="result-btns">
       <a id="result-link" href="#" target="_blank" class="btn btn-red">Open Full Size</a>
       <button class="btn btn-ghost" onclick="startOver()">↺ Create Another</button>
@@ -1057,11 +1080,13 @@ async function startGen() {
     document.getElementById('result-img').src = id.imageUrl;
     document.getElementById('result-link').href = id.imageUrl;
 
-    // Free tier — hide download, show view only message
+    // Show/hide watermark overlay and download button
     if(S.product === 'free') {
+      document.getElementById('watermark-overlay').style.display = 'block';
       document.getElementById('result-link').style.display = 'none';
       document.getElementById('free-view-note').style.display = 'block';
     } else {
+      document.getElementById('watermark-overlay').style.display = 'none';
       document.getElementById('result-link').style.display = 'block';
       document.getElementById('free-view-note').style.display = 'none';
     }
