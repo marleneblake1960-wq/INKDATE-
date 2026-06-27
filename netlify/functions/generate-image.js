@@ -166,14 +166,14 @@ The newspaper is shown as a PHYSICAL OBJECT — slightly angled showing the fold
       throw new Error("No b64_json or url in response: " + JSON.stringify(imgData).substring(0, 200));
     }
 
+    // Split into chunks if needed — return imageUrl directly
     return {
       statusCode: 200,
       headers: {
-        ...headers,
-        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "text/plain",
       },
-      body: JSON.stringify({ imageUrl }),
-      isBase64Encoded: false,
+      body: imageUrl,
     };
 
   } catch(err) {
@@ -184,4 +184,3 @@ The newspaper is shown as a PHYSICAL OBJECT — slightly angled showing the fold
     };
   }
 };
-
