@@ -1066,19 +1066,25 @@ async function startGen() {
 
     // Stage 3 — Generate (auto-retry once on failure)
     setProg(3);
-    let id;
+    let imageUrl;
     for(let attempt = 0; attempt < 2; attempt++) {
       const ir = await fetch('/.netlify/functions/generate-image',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({research,tier:S.product,surface:S.surface,lighting:S.lighting})});
-      id = await ir.json();
-      if(!id.error && id.imageUrl) break;
-      if(attempt === 0) await new Promise(r=>setTimeout(r,2000)); // wait 2s then retry
+      const ct = ir.headers.get('content-type') || '';
+      if(ct.includes('text/plain')) {
+        imageUrl = await ir.text();
+      } else {
+        const id = await ir.json();
+        if(id.error) { if(attempt===0){await new Promise(r=>setTimeout(r,2000));continue;} throw new Error(id.error); }
+        imageUrl = id.imageUrl;
+      }
+      if(imageUrl) break;
+      if(attempt === 0) await new Promise(r=>setTimeout(r,2000));
     }
-    if(id.error) throw new Error(id.error);
-    if(!id.imageUrl) throw new Error('No image returned');
+    if(!imageUrl) throw new Error('No image returned');
 
     // Show result
-    document.getElementById('result-img').src = id.imageUrl;
-    document.getElementById('result-link').href = id.imageUrl;
+    document.getElementById('result-img').src = imageUrl;
+    document.getElementById('result-link').href = imageUrl;
 
     // Show/hide watermark overlay and download button
     if(S.product === 'free') {
