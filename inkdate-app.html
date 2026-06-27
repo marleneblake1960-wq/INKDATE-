@@ -1073,7 +1073,13 @@ async function startGen() {
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({research,tier:S.product,surface:S.surface,lighting:S.lighting})
       });
-      const id = await ir.json();
+      const responseText = await ir.text();
+      let id;
+      try {
+        id = JSON.parse(responseText);
+      } catch(e) {
+        throw new Error('Function returned: ' + responseText.substring(0, 150));
+      }
       if(id.imageUrl) { imageUrl = id.imageUrl; break; }
       if(id.error && attempt === 0) { await new Promise(r=>setTimeout(r,2000)); continue; }
       if(id.error) throw new Error(id.error);
