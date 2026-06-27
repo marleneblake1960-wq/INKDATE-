@@ -128,6 +128,13 @@ The newspaper is shown as a PHYSICAL OBJECT — slightly angled showing the fold
       }
     }
 
+    // Sanitize prompt — remove any characters that could cause API rejection
+    prompt = prompt
+      .replace(/[^\x00-\x7F]/g, ' ')  // Remove non-ASCII
+      .replace(/\s+/g, ' ')            // Collapse whitespace
+      .trim()
+      .substring(0, 3000);             // Limit length
+
     // Generate with smaller size to keep response under 6MB
     const res = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
@@ -144,9 +151,9 @@ The newspaper is shown as a PHYSICAL OBJECT — slightly angled showing the fold
     });
 
     const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
+    if (data.error) throw new Error('OpenAI Error: ' + data.error.message + ' | Code: ' + (data.error.code || 'none') + ' | Type: ' + (data.error.type || 'none'));
     if (!data.data || !data.data[0] || !data.data[0].b64_json) {
-      throw new Error("No image data returned");
+      throw new Error("No image data returned. Response: " + JSON.stringify(data).substring(0, 200));
     }
 
     // Return as data URL — small enough at low quality + compressed
