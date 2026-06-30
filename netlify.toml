@@ -5,9 +5,6 @@
 [functions]
   node_bundler = "esbuild"
 
-[functions."generate-image"]
-  timeout = 60
-
 [functions."research-date"]
   timeout = 30
 
