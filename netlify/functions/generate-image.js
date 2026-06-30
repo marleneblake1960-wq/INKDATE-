@@ -83,23 +83,44 @@ exports.handler = async function(event, context) {
       }
     }
 
-    const res = await fetch("https://api.openai.com/v1/images/generations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + OPENAI_API_KEY,
-      },
-      body: JSON.stringify({
-        model: "chatgpt-image-latest",
-        prompt: prompt,
-        n: 1,
-        size: "1024x1024",
-      }),
-    });
+    const openaiController = new AbortController();
+    const openaiTimeout = setTimeout(() => openaiController.abort(), 50000);
+
+    let res;
+    try {
+      res = await fetch("https://api.openai.com/v1/images/generations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + OPENAI_API_KEY,
+        },
+        body: JSON.stringify({
+          model: "chatgpt-image-latest",
+          prompt: prompt,
+          n: 1,
+          size: "1024x1024",
+        }),
+        signal: openaiController.signal,
+      });
+      clearTimeout(openaiTimeout);
+    } catch(fetchErr) {
+      clearTimeout(openaiTimeout);
+      if (fetchErr.name === 'AbortError') {
+        throw new Error('OpenAI request timed out after 50 seconds');
+      }
+      throw new Error('OpenAI fetch failed: ' + fetchErr.message);
+    }
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`OpenAI HTTP ${res.status}: ${errText.substring(0, 300)}`);
+    }
 
     const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    if (!data.data || !data.data[0] || !data.data[0].b64_json) throw new Error("No image returned");
+    if (data.error) throw new Error('OpenAI error: ' + data.error.message);
+    if (!data.data || !data.data[0] || !data.data[0].b64_json) {
+      throw new Error("No image in response. Keys: " + JSON.stringify(Object.keys(data)));
+    }
 
     const imageUrl = "data:image/png;base64," + data.data[0].b64_json;
 
