@@ -1,0 +1,107 @@
+// Background function — runs up to 15 minutes, no special activation needed
+// Must end in -background.js for Netlify to treat it as a background function
+
+exports.handler = async function(event, context) {
+  try {
+    const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+    if (!OPENAI_API_KEY) return;
+
+    const body = JSON.parse(event.body || "{}");
+    const { research, tier, surface, lighting, jobId } = body;
+    if (!research || !jobId) return;
+
+    const r = (tier === "thennow" || tier === "memorial") ? research.date1 : research;
+    const surfaceStr = surface || "pale grey marble surface";
+    const lightingStr = lighting || "warm golden hour light from the upper left";
+
+    function san(t) {
+      if (!t) return t;
+      return t
+        .replace(/assassinat\w*/gi, 'passed away')
+        .replace(/murdered?/gi, 'died')
+        .replace(/kill\w*/gi, 'end of')
+        .replace(/bombing?s?/gi, 'incident')
+        .replace(/attacks?/gi, 'event')
+        .replace(/\bwar\b/gi, 'conflict')
+        .replace(/massacre/gi, 'tragedy')
+        .replace(/shoot\w*/gi, 'incident')
+        .replace(/\bshot\b/gi, 'incident')
+        .replace(/deadly/gi, 'historic')
+        .replace(/deaths?/gi, 'passing')
+        .replace(/terror\w*/gi, 'major event')
+        .replace(/explosion/gi, 'incident')
+        .replace(/suicide/gi, 'tragedy')
+        .replace(/hostage/gi, 'crisis');
+    }
+
+    if (research && !research.date1) {
+      research.banner_headline = san(research.banner_headline);
+      research.deck_headline = san(research.deck_headline);
+      research.dominant_photograph = san(research.dominant_photograph);
+      if (research.secondary_stories) research.secondary_stories = research.secondary_stories.map(san);
+    } else if (research && research.date1) {
+      if (research.date1) { research.date1.banner_headline = san(research.date1.banner_headline); research.date1.deck_headline = san(research.date1.deck_headline); }
+      if (research.date2) { research.date2.banner_headline = san(research.date2.banner_headline); research.date2.deck_headline = san(research.date2.deck_headline); }
+    }
+
+    let prompt;
+    if (tier === "thennow") {
+      const r2 = research.date2 || {};
+      prompt = `Ultra-photorealistic museum-quality photograph of two ${r.newspaper} newspaper front pages displayed as a framed Then and Now keepsake. Shot from directly overhead. ${lightingStr}. On a ${surfaceStr}. Two newspapers stacked vertically filling the frame. THEN paper (${r.date}): masthead "${r.newspaper}", date "${r.date}", headline "${r.banner_headline}". NOW paper (${r2.date}): masthead "${r2.newspaper || r.newspaper}", date "${r2.date}", headline "${r2.banner_headline}". Authentic aged newsprint. 8K quality.`;
+    } else if (tier === "memorial") {
+      const r2 = research.date2 || {};
+      prompt = `Ultra-photorealistic museum-quality photograph of two ${r.newspaper} newspaper front pages as a memorial keepsake on a ${surfaceStr}. A white lily rests beside. BIRTH paper: masthead "${r.newspaper}", date "${r.date}" in large bold type, headline "${r.banner_headline}". PASSING paper: masthead "${r.newspaper}", date "${r2.date}" in large bold type, headline "${r2.banner_headline}". Authentic aged newsprint. Warm amber light. 8K quality.`;
+    } else {
+      const isTabloid = r.format === 'tabloid' ||
+        ['The Sun','Daily Mirror','Daily Mail','Daily Express','New York Daily News','The Star'].some(t => r.newspaper && r.newspaper.includes(t));
+
+      if (isTabloid) {
+        prompt = `Photorealistic scan of vintage ${r.newspaper} tabloid front page, ${r.date}. Red banner masthead "${r.newspaper}" in white italic text. Headline: "${r.banner_headline}". Large black and white photo. Deck: "${r.deck_headline}". Aged newsprint. Period typography.`;
+      } else {
+        prompt = `Photorealistic scan of vintage ${r.newspaper} broadsheet front page, ${r.date}. Classic serif masthead. Headline: "${r.banner_headline}". Deck: "${r.deck_headline}". Large press photo. Aged yellowed newsprint. Period typography.`;
+      }
+    }
+
+    const res = await fetch("https://api.openai.com/v1/images/generations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + OPENAI_API_KEY,
+      },
+      body: JSON.stringify({
+        model: "chatgpt-image-latest",
+        prompt: prompt,
+        n: 1,
+        size: "1024x1024",
+      }),
+    });
+
+    const data = await res.json();
+
+    // Store result using Netlify Blobs
+    const { getStore } = require("@netlify/blobs");
+    const store = getStore("inkdate-jobs");
+
+    if (data.error) {
+      await store.setJSON(jobId, { status: "error", error: data.error.message });
+      return;
+    }
+    if (!data.data || !data.data[0] || !data.data[0].b64_json) {
+      await store.setJSON(jobId, { status: "error", error: "No image returned from OpenAI" });
+      return;
+    }
+
+    const imageUrl = "data:image/png;base64," + data.data[0].b64_json;
+    await store.setJSON(jobId, { status: "done", imageUrl });
+
+  } catch (err) {
+    try {
+      const { getStore } = require("@netlify/blobs");
+      const store = getStore("inkdate-jobs");
+      const body = JSON.parse(event.body || "{}");
+      if (body.jobId) {
+        await store.setJSON(body.jobId, { status: "error", error: err.message });
+      }
+    } catch(e) {}
+  }
+};
