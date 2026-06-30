@@ -1,81 +1,1229 @@
-exports.handler = async function(event, context) {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Inkdate — The Day That Made History</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:#1a0f0a;color:#e8d5b0;font-family:'Old Standard TT',serif;min-height:100vh;overflow-x:hidden;}
+body{display:flex;justify-content:center;}
+.app{width:100%;max-width:580px;padding:0 24px 60px;min-height:100vh;}
 
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Content-Type": "application/json",
+/* ── SCREEN 1 HERO ── */
+.hero{text-align:center;padding:40px 0 28px;}
+.hero-wordmark{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(3.5rem,12vw,5.5rem);line-height:0.9;letter-spacing:-2px;
+  background:linear-gradient(160deg,#fff 0%,#e8d5b0 30%,#f5f0e8 55%,#c8a855 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:18px;display:block;text-decoration:none;}
+.hero-orn{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;}
+.hero-orn .rl{width:60px;height:1px;background:linear-gradient(to right,transparent,#c8a855);}
+.hero-orn .rlr{width:60px;height:1px;background:linear-gradient(to left,transparent,#c8a855);}
+.hero-orn .dm{width:6px;height:6px;background:#c8a855;transform:rotate(45deg);}
+.hero-orn .dm2{width:3px;height:3px;background:rgba(200,168,85,0.4);transform:rotate(45deg);}
+.hero-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.1rem,3vw,1.4rem);color:#ffffff;margin-bottom:12px;}
+.hero-sub{font-size:clamp(0.92rem,2vw,1.05rem);color:#e8d5b0;line-height:1.7;
+  max-width:480px;margin:0 auto 20px;}
+.hero-trust{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.hero-trust span{font-size:clamp(0.7rem,1.5vw,0.82rem);letter-spacing:2px;text-transform:uppercase;
+  color:#e8c860;display:flex;align-items:center;gap:5px;}
+.hero-trust span::before{content:'✦';font-size:0.5rem;}
+
+/* PRODUCT CARDS */
+.choose-label{font-size:clamp(0.7rem,1.5vw,0.8rem);letter-spacing:4px;text-transform:uppercase;
+  color:#e8c860;text-align:center;margin-bottom:14px;}
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
+.pcard{background:linear-gradient(160deg,#6a1010,#8b2020);border:1px solid #c84040;
+  padding:clamp(14px,3vw,22px) clamp(10px,2vw,16px);
+  cursor:pointer;transition:all 0.2s;text-align:center;position:relative;}
+.pcard:hover{background:linear-gradient(160deg,#7a1818,#9b2828);border-color:#e85050;transform:translateY(-2px);}
+.pcard.selected{border-color:#f0c860;background:linear-gradient(160deg,#5a0808,#7a1818);}
+.pcard.selected::after{content:'✦';position:absolute;top:8px;right:8px;color:#f0c860;font-size:0.7rem;}
+.pcard-name{font-family:'Playfair Display',serif;font-weight:700;
+  font-size:clamp(0.9rem,2vw,1.05rem);color:#ffffff;font-weight:900;margin-bottom:6px;line-height:1.2;}
+.pcard-price{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.2rem);color:#f0c860;margin-bottom:8px;font-weight:700;}
+.pcard-desc{font-size:clamp(0.76rem,1.5vw,0.88rem);color:#ffffff;line-height:1.5;}
+
+/* ── SCREEN 2 FORM ── */
+.screen{display:none;}
+.screen.active{display:block;}
+.screen-header{text-align:center;padding:28px 0 20px;}
+.screen-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1.8rem;
+  background:linear-gradient(135deg,#f5f0e8,#c8a855);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:3px;text-decoration:none;display:block;margin-bottom:4px;}
+.screen-sub{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(0.9rem,2vw,1.05rem);color:#f0d060;}
+
+/* SECTION DIVIDER */
+.section{margin-bottom:24px;}
+.section-label{font-size:clamp(0.72rem,1.5vw,0.82rem);letter-spacing:3px;text-transform:uppercase;
+  color:#f0d060;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.section-label::after{content:'';flex:1;height:1px;background:#3a2415;}
+
+/* FIELDS */
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+input,select{width:100%;background:#1e1208;border:1px solid #4a3020;
+  color:#ffffff;padding:14px 16px;font-family:'Old Standard TT',serif;
+  font-size:clamp(0.9rem,2vw,1rem);outline:none;transition:border-color 0.2s;
+  appearance:none;-webkit-appearance:none;margin-bottom:10px;}
+input:focus,select:focus{border-color:#c8a855;}
+input::placeholder{color:#c8a060;}
+select option{background:#1e1208;color:#e8d5b0;}
+.field-hint{font-size:clamp(0.78rem,1.8vw,0.88rem);color:#e0b860;font-style:italic;
+  margin-bottom:12px;margin-top:-6px;}
+
+/* LANGUAGE BUTTONS */
+.lang-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px;}
+.lang-btn{background:#1e1208;border:1px solid #4a3020;
+  padding:clamp(12px,3vw,18px) clamp(8px,2vw,12px);
+  cursor:pointer;text-align:center;transition:all 0.2s;}
+.lang-btn:hover,.lang-btn.selected{border-color:#c8a855;background:#2a1c0c;}
+.lang-flag{font-size:clamp(1.8rem,5vw,2.8rem);display:block;margin-bottom:6px;}
+.lang-name{font-size:clamp(0.78rem,2vw,0.92rem);color:#f0d060;letter-spacing:1px;}
+.lang-btn.selected .lang-name{color:#c8a855;}
+.lang-btn.selected{border-color:#c8a855;}
+
+/* PAPER INFO */
+.paper-hint{font-size:clamp(0.76rem,1.8vw,0.86rem);color:#e0b860;font-style:italic;
+  margin-top:-6px;margin-bottom:10px;}
+
+/* CONFIRM */
+.confirm-box{background:#1e1208;border:1px solid #3a2415;padding:18px;margin-bottom:16px;}
+.confirm-row{display:flex;justify-content:space-between;align-items:flex-start;
+  padding:7px 0;border-bottom:1px solid #2a1a0a;font-size:0.88rem;}
+.confirm-row:last-child{border-bottom:none;}
+.clabel{color:#e8c060;font-size:0.72rem;letter-spacing:1px;text-transform:uppercase;flex-shrink:0;margin-right:12px;}
+.cvalue{color:#ffffff;text-align:right;font-size:0.88rem;}
+.refund-warn{background:#2a1808;border-left:3px solid #e8c860;
+  padding:14px 16px;font-size:0.88rem;color:#ffffff;line-height:1.6;margin-bottom:20px;}
+
+/* PROGRESS */
+.prog-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #2a1a0a;}
+.prog-row:last-child{border-bottom:none;}
+.prog-icon{width:22px;height:22px;border-radius:50%;border:1px solid #3a2415;
+  display:flex;align-items:center;justify-content:center;font-size:0.55rem;
+  color:#5a4030;flex-shrink:0;transition:all 0.3s;}
+.prog-icon.active{border-color:#c8a855;color:#c8a855;animation:pu 1.5s infinite;}
+.prog-icon.done{border-color:#5a7a3a;background:#1a2a0a;color:#7aaa4a;}
+@keyframes pu{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.prog-lbl{font-size:0.88rem;color:#e0c860;letter-spacing:1px;}
+.prog-lbl.active{color:#c8a855;}
+.prog-lbl.done{color:#7aaa4a;}
+
+/* RESULT */
+.result-img{width:100%;display:block;border:1px solid #3a2415;}
+.result-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 8px;}
+.result-note{font-size:0.78rem;color:#c8a860;font-style:italic;text-align:center;margin-bottom:20px;}
+
+/* BUTTONS */
+.btn{width:100%;padding:15px;font-family:'Old Standard TT',serif;
+  font-size:0.88rem;letter-spacing:3px;text-transform:uppercase;
+  border:none;cursor:pointer;transition:all 0.25s;display:block;text-align:center;
+  text-decoration:none;margin-bottom:8px;}
+.btn-red{background:linear-gradient(135deg,#8b2020,#b02828);color:#f5ede0;}
+.btn-red:hover{opacity:0.9;}
+.btn-ghost{background:transparent;border:1px solid #c8a060;color:#e8d0a0;}
+.btn-ghost:hover{border-color:#f0c840;color:#ffffff;}
+
+/* ERROR */
+.err{background:#2a1010;border-left:3px solid #8b2020;padding:12px 14px;
+  color:#cc5555;font-size:0.82rem;line-height:1.5;margin-bottom:14px;display:none;}
+.err.show{display:block;}
+
+/* ORN */
+.orn-divider{display:flex;align-items:center;gap:10px;margin:16px 0;}
+.orn-divider .l{flex:1;height:1px;background:rgba(200,168,85,0.12);}
+.orn-divider .d{width:4px;height:4px;background:#c8a855;transform:rotate(45deg);opacity:0.4;}
+
+.footer{text-align:center;padding:20px 0;font-size:0.72rem;letter-spacing:2px;
+  color:#8a6840;text-transform:uppercase;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ══════════════════════════════
+     SCREEN 1 — OPENING
+══════════════════════════════ -->
+<div id="s1" class="screen active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <a href="inkdate-landing.html" class="hero-wordmark">INKDATE</a>
+    <div class="hero-orn">
+      <div class="rl"></div><div class="dm2"></div><div class="dm"></div><div class="dm2"></div><div class="rlr"></div>
+    </div>
+    <div class="hero-tagline">&ldquo;Some gifts last a week.<br>This one lasts generations.&rdquo;</div>
+    <div class="hero-sub">Give the authentic newspaper front page from the most important date in someone&rsquo;s life &mdash; beautifully generated, ready to frame, ready to treasure forever.</div>
+    <div class="hero-trust">
+      <span>6 Languages</span>
+      <span>30+ Countries</span>
+      <span>1850 to Present</span>
+    </div>
+
+    <!-- TRY FREE — Main CTA -->
+    <div style="margin-bottom:16px;">
+      <button onclick="pickProduct('free',this)" style="
+        width:100%;max-width:400px;
+        background:linear-gradient(135deg,#c8a855,#e8c860);
+        color:#1a0f0a;padding:18px 32px;
+        font-family:'Playfair Display',serif;font-weight:900;
+        font-size:1.1rem;letter-spacing:3px;text-transform:uppercase;
+        border:none;cursor:pointer;transition:all 0.3s;
+        box-shadow:0 4px 24px rgba(200,168,85,0.3);
+        display:block;margin:0 auto;
+      ">✦ Try Free — See Your Date Come to Life</button>
+      <div style="text-align:center;font-size:0.75rem;color:#a08060;font-style:italic;margin-top:8px;">
+        One free watermarked sample — no payment needed
+      </div>
+    </div>
+
+    <!-- Arrow to scroll -->
+    <div style="text-align:center;margin-bottom:8px;">
+      <div style="font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:#6a5030;margin-bottom:6px;">or choose a product</div>
+      <div style="color:#6a5030;font-size:1.2rem;">↓</div>
+    </div>
+  </div>
+
+  <!-- DIGITAL DOWNLOAD SECTION -->
+  <div style="margin-bottom:32px;">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-size:0.7rem;letter-spacing:4px;text-transform:uppercase;color:#c8a855;margin-bottom:6px;">Digital Download</div>
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem;color:#fff;margin-bottom:4px;">Instant. Beautiful. Forever.</div>
+      <div style="font-size:0.82rem;color:#a08060;line-height:1.5;">Generated in minutes. Download instantly. Print at home or share digitally.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr;gap:10px;">
+
+      <!-- Single Digital -->
+      <div class="pcard" id="pc-premium" onclick="pickProduct('premium',this)">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/IMG_9440.jpeg" alt="Single Front Page" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">Most Popular</div>
+            <div class="pcard-name" style="text-align:left;">Single Front Page</div>
+            <div class="pcard-price" style="text-align:left;">£14.99</div>
+            <div class="pcard-desc" style="text-align:left;">One date. One authentic front page. A keepsake they will treasure for generations. Birthdays, anniversaries, retirements.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Then & Now Digital -->
+      <div class="pcard" id="pc-thennow" onclick="pickProduct('thennow',this)">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/IMG_3144.jpeg" alt="Then & Now" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">Two Dates</div>
+            <div class="pcard-name" style="text-align:left;">Then &amp; Now</div>
+            <div class="pcard-price" style="text-align:left;">£24.99</div>
+            <div class="pcard-desc" style="text-align:left;">Two dates. Two front pages. The world then — and now. Perfect for anniversaries and milestones.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memorial Digital -->
+      <div class="pcard" id="pc-memorial" onclick="pickProduct('memorial',this)">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/BORN ON THIS.png" alt="Memorial" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">In Memoriam</div>
+            <div class="pcard-name" style="text-align:left;">Memorial Edition</div>
+            <div class="pcard-price" style="text-align:left;">£24.99</div>
+            <div class="pcard-desc" style="text-align:left;">Birth date and passing. A life bookended in print. A tender, timeless keepsake for families.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DIVIDER -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+    <div style="flex:1;height:1px;background:rgba(200,168,85,0.2);"></div>
+    <div style="font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:#c8a855;">Print &amp; Post</div>
+    <div style="flex:1;height:1px;background:rgba(200,168,85,0.2);"></div>
+  </div>
+
+  <!-- PRINT & POST SECTION -->
+  <div style="margin-bottom:32px;">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem;color:#fff;margin-bottom:4px;">Printed. Posted. Perfect.</div>
+      <div style="font-size:0.82rem;color:#a08060;line-height:1.5;">Museum-quality printing on premium paper. Posted directly to any address worldwide. Ready to frame.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr;gap:10px;">
+
+      <!-- Single Print -->
+      <div class="pcard" id="pc-print" onclick="pickProduct('print',this)" style="border-color:#5a3a18;">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/IMG_9440.jpeg" alt="Print & Post" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">Coming Soon</div>
+            <div class="pcard-name" style="text-align:left;">Single — Print &amp; Post</div>
+            <div class="pcard-price" style="text-align:left;">£34.99</div>
+            <div class="pcard-desc" style="text-align:left;">Your front page printed on premium paper and posted to any address. Flowers last a week — this lasts generations.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Then & Now Print -->
+      <div class="pcard" id="pc-thennow-print" onclick="pickProduct('thennow-print',this)" style="border-color:#5a3a18;">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/IMG_3144.jpeg" alt="Then & Now Print" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">Coming Soon</div>
+            <div class="pcard-name" style="text-align:left;">Then &amp; Now — Print &amp; Post</div>
+            <div class="pcard-price" style="text-align:left;">£44.99</div>
+            <div class="pcard-desc" style="text-align:left;">Both front pages printed and posted. A stunning dual keepsake ready to frame. The ultimate anniversary gift.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memorial Print -->
+      <div class="pcard" id="pc-memorial-print" onclick="pickProduct('memorial-print',this)" style="border-color:#5a3a18;">
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;text-align:left;">
+          <img src="/BORN ON THIS.png" alt="Memorial Print" style="width:100px;height:130px;object-fit:cover;border:1px solid #5a3a18;">
+          <div>
+            <div style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:4px;">Coming Soon</div>
+            <div class="pcard-name" style="text-align:left;">Memorial — Print &amp; Post</div>
+            <div class="pcard-price" style="text-align:left;">£54.99</div>
+            <div class="pcard-desc" style="text-align:left;">Both memorial pages printed and posted. Suitable for funeral programmes and memorial services.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════
+     SCREEN 2 — DETAILS FORM
+══════════════════════════════ -->
+<div id="s2" class="screen">
+  <div class="screen-header">
+    <a href="#" onclick="show('s1')" class="screen-logo">INKDATE</a>
+    <div class="screen-sub" id="s2-product-label">Single Front Page — £14.99</div>
+  </div>
+
+  <!-- DATES -->
+  <div class="section">
+    <div class="section-label">Date</div>
+    <input type="text" id="date1" placeholder="e.g. November 5, 2008" oninput="checkForm()">
+    <div id="date2-wrap" style="display:none;">
+      <input type="text" id="date2" placeholder="e.g. January 20, 2009" oninput="checkForm()">
+    </div>
+    <div class="field-hint" id="date-hint">Enter any date from 1850 to present</div>
+  </div>
+
+  <!-- LANGUAGE -->
+  <div class="section">
+    <div class="section-label">Language</div>
+    <div class="lang-row">
+      <div class="lang-btn" onclick="pickLang('english','English',this)">
+        <span class="lang-flag">🇬🇧</span><div class="lang-name">English</div>
+      </div>
+      <div class="lang-btn" onclick="pickLang('french','Français',this)">
+        <span class="lang-flag">🇫🇷</span><div class="lang-name">Français</div>
+      </div>
+      <div class="lang-btn" onclick="pickLang('spanish','Español',this)">
+        <span class="lang-flag">🇪🇸</span><div class="lang-name">Español</div>
+      </div>
+      <div class="lang-btn" onclick="pickLang('german','Deutsch',this)">
+        <span class="lang-flag">🇩🇪</span><div class="lang-name">Deutsch</div>
+      </div>
+      <div class="lang-btn" onclick="pickLang('portuguese','Português',this)">
+        <span class="lang-flag">🇧🇷</span><div class="lang-name">Português</div>
+      </div>
+      <div class="lang-btn" onclick="pickLang('japanese','日本語',this)">
+        <span class="lang-flag">🇯🇵</span><div class="lang-name">日本語</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWSPAPER -->
+  <div class="section">
+    <div class="section-label">Newspaper</div>
+    <select id="country-sel" onchange="updatePapers()" style="margin-bottom:8px;">
+      <option value="">— Select Country / Region —</option>
+    </select>
+    <select id="paper-sel" onchange="pickPaper()" style="display:none;">
+      <option value="">— Select Newspaper —</option>
+    </select>
+    <div class="paper-hint" id="paper-hint"></div>
+  </div>
+
+  <!-- SURFACE & LIGHTING -->
+  <div class="section">
+    <div class="section-label">Style</div>
+    <div class="field-row">
+      <div>
+        <select id="surface">
+          <option value="pale grey marble surface">Grey Marble</option>
+          <option value="warm aged oak reading table">Oak Table</option>
+          <option value="antique mahogany writing desk">Mahogany</option>
+          <option value="dark walnut surface">Walnut & Brass</option>
+          <option value="weathered stone surface">Stone</option>
+        </select>
+      </div>
+      <div>
+        <select id="lighting">
+          <option value="warm golden hour light from the upper left">Golden Hour</option>
+          <option value="cool bright midday light from above">Midday</option>
+          <option value="warm amber candlelight from the right">Candlelight</option>
+          <option value="dramatic chiaroscuro lighting">Dramatic</option>
+          <option value="soft diffused studio light">Studio</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-red" id="btn-review" onclick="if(!this.disabled)show('s3')" style="opacity:0.35;cursor:not-allowed;">Review My Order →</button>
+  <button class="btn btn-ghost" onclick="show('s1')">← Back</button>
+</div>
+
+<!-- ══════════════════════════════
+     SCREEN 3 — CONFIRMATION
+══════════════════════════════ -->
+<div id="s3" class="screen">
+  <div class="screen-header">
+    <a href="#" onclick="show('s1')" class="screen-logo">INKDATE</a>
+    <div class="screen-sub">Confirm Your Order</div>
+  </div>
+  <div class="confirm-box" id="confirm-box"></div>
+  <div class="refund-warn">
+    ⚠ THERE IS NO REFUND ONCE AN IMAGE IS GENERATED.<br>
+    Please ensure all details above are correct before proceeding.
+  </div>
+  <button class="btn btn-red" onclick="startGen()">Confirm &amp; Generate ◆</button>
+  <button class="btn btn-ghost" onclick="show('s2')">← Go Back &amp; Edit</button>
+</div>
+
+<!-- ══════════════════════════════
+     SCREEN 4 — GENERATE & RESULT
+══════════════════════════════ -->
+<div id="s4" class="screen">
+  <div class="screen-header">
+    <a href="#" onclick="show('s1')" class="screen-logo">INKDATE</a>
+    <div class="screen-sub" id="s4-sub">Creating your newspaper…</div>
+  </div>
+
+  <!-- Progress -->
+  <div id="progress-wrap">
+    <div class="prog-row">
+      <div class="prog-icon" id="pi1">1</div>
+      <div class="prog-lbl" id="pl1">Researching historical headlines</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-icon" id="pi2">2</div>
+      <div class="prog-lbl" id="pl2">Building image prompt</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-icon" id="pi3">3</div>
+      <div class="prog-lbl" id="pl3">Generating your newspaper</div>
+    </div>
+  </div>
+
+  <div class="err" id="err-box"></div>
+  <button class="btn btn-ghost" id="btn-retry" style="display:none;" onclick="show('s3')">← Try Again</button>
+
+  <!-- Result -->
+  <div id="result-wrap" style="display:none;">
+    <div class="screen-sub" style="text-align:center;margin-bottom:12px;">◆ Your Newspaper</div>
+    <div style="position:relative;">
+    <img id="result-img" class="result-img" src="" alt="Your newspaper">
+    <!-- CSS Watermark overlay for free tier -->
+    <div id="watermark-overlay" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:10;overflow:hidden;">
+      <!-- Top bar -->
+      <div style="position:absolute;top:0;left:0;right:0;background:rgba(26,15,10,0.92);padding:10px;text-align:center;z-index:11;">
+        <div style="font-size:0.8rem;letter-spacing:2px;color:#c8a855;font-weight:bold;">⚠ FREE SAMPLE — WATERMARKED</div>
+        <div style="font-size:0.7rem;color:#e8d5b0;">Purchase at inkdateapp.com to get full high-resolution version</div>
+      </div>
+      <!-- Diagonal watermarks -->
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-around;padding:60px 0;">
+        <div style="transform:rotate(-35deg);font-size:2.5rem;font-weight:900;color:rgba(180,20,20,0.55);white-space:nowrap;text-shadow:1px 1px 3px rgba(0,0,0,0.4);font-family:serif;">INKDATE SAMPLE</div>
+        <div style="transform:rotate(-35deg);font-size:1.2rem;font-weight:700;color:rgba(180,20,20,0.45);white-space:nowrap;font-family:serif;">inkdateapp.com</div>
+        <div style="transform:rotate(-35deg);font-size:2.5rem;font-weight:900;color:rgba(180,20,20,0.55);white-space:nowrap;text-shadow:1px 1px 3px rgba(0,0,0,0.4);font-family:serif;">INKDATE SAMPLE</div>
+        <div style="transform:rotate(-35deg);font-size:1.2rem;font-weight:700;color:rgba(180,20,20,0.45);white-space:nowrap;font-family:serif;">inkdateapp.com</div>
+        <div style="transform:rotate(-35deg);font-size:2.5rem;font-weight:900;color:rgba(180,20,20,0.55);white-space:nowrap;text-shadow:1px 1px 3px rgba(0,0,0,0.4);font-family:serif;">INKDATE SAMPLE</div>
+      </div>
+      <!-- Bottom bar -->
+      <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(26,15,10,0.92);padding:10px;text-align:center;z-index:11;">
+        <div style="font-size:0.8rem;letter-spacing:2px;color:#c8a855;font-weight:bold;">inkdateapp.com — From £14.99</div>
+        <div style="font-size:0.7rem;color:#e8d5b0;">Remove watermark · High resolution · Download instantly</div>
+      </div>
+    </div>
+    </div><!-- end position:relative -->
+    <div class="result-btns">
+      <a id="result-link" href="#" target="_blank" class="btn btn-red">Open Full Size</a>
+      <button class="btn btn-ghost" onclick="startOver()">↺ Create Another</button>
+    </div>
+    <div id="free-view-note" style="display:none;background:#1e1208;border:1px solid #c8a855;padding:14px 16px;text-align:center;margin-bottom:12px;">
+      <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:6px;">Free Sample — View Only</div>
+      <div style="font-size:0.82rem;color:#d4b87a;line-height:1.5;">Download is not available on the free sample. Purchase the full version to download your newspaper in high resolution with no watermark.</div>
+    </div>
+    <div class="result-note">Tap Open Full Size then long-press the image to save to your photos.</div>
+
+    <!-- Upgrade prompt for free tier -->
+    <div id="upgrade-wrap" style="display:none;background:#1e1208;border:1px solid #c8a855;padding:20px;margin-top:16px;text-align:center;">
+      <div style="font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:#c8a855;margin-bottom:8px;">Love your newspaper?</div>
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:8px;">Get the full version — no watermark</div>
+      <div style="font-size:0.85rem;color:#d4b87a;margin-bottom:16px;">High resolution · No watermark · Download instantly</div>
+      <a href="https://buy.stripe.com/aFaeVc2zO9Q00952JNfAc01" style="
+        display:block;background:linear-gradient(135deg,#8b2020,#b02828);
+        color:#fff;padding:14px;text-decoration:none;
+        font-family:'Old Standard TT',serif;font-size:0.88rem;
+        letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">
+        Buy Full Version — £14.99
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS BANNER -->
+<div style="background:#1e1208;border-top:1px solid #3a2415;border-bottom:1px solid #3a2415;
+  padding:20px;margin-bottom:0;">
+  <div style="font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;
+    color:#c8a855;text-align:center;margin-bottom:16px;">How It Works</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;max-width:560px;margin:0 auto;">
+    <div style="text-align:center;">
+      <div style="font-size:1.4rem;margin-bottom:4px;">1️⃣</div>
+      <div style="font-size:0.72rem;color:#d4b87a;line-height:1.4;">Choose your product</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:1.4rem;margin-bottom:4px;">💳</div>
+      <div style="font-size:0.72rem;color:#d4b87a;line-height:1.4;">Pay securely via Stripe</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:1.4rem;margin-bottom:4px;">📅</div>
+      <div style="font-size:0.72rem;color:#d4b87a;line-height:1.4;">Enter your date &amp; newspaper</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:1.4rem;margin-bottom:4px;">🗞️</div>
+      <div style="font-size:0.72rem;color:#d4b87a;line-height:1.4;">Your newspaper is generated</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  inkdateapp.com · 6 Languages · 30+ Countries · 1850 to Present
+  <div style="display:flex;justify-content:center;gap:24px;margin-top:16px;align-items:center;">
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/inkdateapp" target="_blank" title="Instagram" style="color:#c8a855;text-decoration:none;display:block;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <!-- TikTok -->
+    <a href="https://www.tiktok.com/@inkdateapp" target="_blank" title="TikTok" style="color:#c8a855;text-decoration:none;display:block;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+    </a>
+    <!-- YouTube -->
+    <a href="https://www.youtube.com/@Inkdateapp" target="_blank" title="YouTube" style="color:#c8a855;text-decoration:none;display:block;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+    </a>
+    <!-- X/Twitter -->
+    <a href="https://twitter.com/INKDATE1" target="_blank" title="X" style="color:#c8a855;text-decoration:none;display:block;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.259 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+  </div>
+  <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:14px;">
+    <a href="inkdate-landing.html" style="color:#8a6840;text-decoration:none;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">About</a>
+    <a href="inkdate-terms.html" style="color:#8a6840;text-decoration:none;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Terms</a>
+    <a href="inkdate-privacy.html" style="color:#8a6840;text-decoration:none;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Privacy</a>
+    <a href="mailto:hello@inkdateapp.com" style="color:#8a6840;text-decoration:none;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Contact Us</a>
+  </div>
+  <div style="margin-top:10px;font-size:0.65rem;color:#4a3020;">&copy; 2026 Inkdate &middot; All rights reserved</div>
+</div>
+
+<!-- PREVIEW POPUP -->
+<div id="preview-modal" style="
+  display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;
+  background:rgba(0,0,0,0.92);
+  overflow-y:auto;
+">
+<div style="display:flex;align-items:flex-start;justify-content:center;min-height:100%;padding:20px;">
+  <div style="
+    background:#1a0f0a;border:1px solid #c8a855;
+    max-width:480px;width:100%;
+    font-family:'Old Standard TT',serif;
+    position:relative;
+  ">
+    <!-- Close button -->
+    <button onclick="closePreview()" style="
+      position:absolute;top:12px;right:12px;
+      background:transparent;border:none;
+      color:#c8a855;font-size:1.5rem;cursor:pointer;z-index:10;
+    ">&times;</button>
+
+    <!-- Sample image -->
+    <img id="preview-img" src="" alt="Sample" style="width:100%;display:block;">
+
+    <!-- Content -->
+    <div style="padding:20px 24px 24px;">
+      <div style="font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;
+        color:#c8a855;margin-bottom:6px;" id="preview-eyebrow"></div>
+      <div style="font-family:'Playfair Display',serif;font-weight:900;
+        font-size:1.3rem;color:#fff;margin-bottom:8px;" id="preview-title"></div>
+      <div style="font-size:0.88rem;color:#d4b87a;line-height:1.6;margin-bottom:16px;"
+        id="preview-desc"></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;
+        font-size:1.1rem;color:#c8a855;margin-bottom:20px;" id="preview-price"></div>
+
+      <!-- Buttons -->
+      <a id="preview-buy-btn" href="#" style="
+        display:block;text-align:center;
+        background:linear-gradient(135deg,#8b2020,#b02828);
+        color:#fff;padding:15px;
+        font-family:'Old Standard TT',serif;
+        font-size:0.88rem;letter-spacing:3px;text-transform:uppercase;
+        text-decoration:none;margin-bottom:10px;
+" id="preview-buy-btn-text">Pay &amp; Enter Your Details →</a>
+      <div id="preview-payment-note" style="text-align:center;font-size:0.75rem;color:#a08060;font-style:italic;margin-top:-6px;margin-bottom:14px;">You'll enter your date and newspaper details after payment</div>
+      <button onclick="closePreview()" style="
+        width:100%;background:transparent;
+        border:1px solid #c8a855;color:#c8a855;
+        padding:13px;font-family:'Old Standard TT',serif;
+        font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;
+        cursor:pointer;
+      ">← Back</button>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<script>
+// ── STRIPE LINKS ──
+const STRIPE = {
+  premium: 'https://buy.stripe.com/aFaeVc2zO9Q00952JNfAc01',
+  thennow: 'https://buy.stripe.com/3cIfZg7U8e6g7BxesvfAc0e',
+  memorial: 'https://buy.stripe.com/dRm4gy3DS8LWg83bgjfAc0f',
+  print: null,
+  'thennow-print': null,
+  'memorial-print': null,
+  free: null,
+};
+
+// Check if free trial already used
+function hasUsedFreeTrial() {
+  return localStorage.getItem('inkdate_free_used') === '1';
+}
+function markFreeTrialUsed() {
+  localStorage.setItem('inkdate_free_used', '1');
+}
+
+// ── STATE ──
+let S = {
+  product: null,
+  date1: '', date2: '',
+  lang: null, langName: '',
+  country: '', newspaper: '', paperEst: 0, paperEnd: null,
+  surface: '', lighting: '',
+};
+
+// ── NEWSPAPER DATA ──
+const PAPERS = {
+  english: {
+    'UK': [
+      {v:'The Times',l:'The Times',est:1785},
+      {v:'The Guardian',l:'The Guardian',est:1821},
+      {v:'The Daily Telegraph',l:'The Daily Telegraph',est:1855},
+      {v:'Daily Mirror',l:'Daily Mirror',est:1903},
+      {v:'The Sun',l:'The Sun',est:1964},
+      {v:'Daily Mail',l:'Daily Mail',est:1896},
+      {v:'The Independent',l:'The Independent',est:1986},
+      {v:'Financial Times',l:'Financial Times',est:1888},
+      {v:'The Observer',l:'The Observer',est:1791},
+      {v:'Daily Express',l:'Daily Express',est:1900},
+    ],
+    'Ireland': [
+      {v:'The Irish Times',l:'The Irish Times',est:1859},
+      {v:'Irish Independent',l:'Irish Independent',est:1905},
+      {v:'Irish Examiner',l:'Irish Examiner',est:1841},
+    ],
+    'Canada': [
+      {v:'The Globe and Mail',l:'The Globe and Mail',est:1844},
+      {v:'Toronto Star',l:'Toronto Star',est:1892},
+      {v:'National Post',l:'National Post',est:1998},
+    ],
+    'India': [
+      {v:'The Times of India',l:'The Times of India',est:1838},
+      {v:'The Hindu',l:'The Hindu',est:1878},
+      {v:'Hindustan Times',l:'Hindustan Times',est:1924},
+    ],
+    'USA': [
+      {v:'The New York Times',l:'The New York Times',est:1851},
+      {v:'The Washington Post',l:'The Washington Post',est:1877},
+      {v:'Chicago Tribune',l:'Chicago Tribune',est:1847},
+      {v:'Los Angeles Times',l:'Los Angeles Times',est:1881},
+      {v:'USA Today',l:'USA Today',est:1982},
+      {v:'New York Daily News',l:'New York Daily News',est:1919},
+      {v:'The Boston Globe',l:'The Boston Globe',est:1872},
+      {v:'The Wall Street Journal',l:'The Wall Street Journal',est:1889},
+    ],
+    'Jamaica': [
+      {v:'The Gleaner',l:'The Gleaner',est:1834},
+      {v:'The Star Jamaica',l:'The Star',est:1951},
+    ],
+    'Trinidad & Tobago': [
+      {v:'Trinidad Guardian',l:'Trinidad Guardian',est:1917},
+    ],
+    'Barbados': [
+      {v:'The Barbados Advocate',l:'The Barbados Advocate',est:1895,end:2022},
+      {v:'Barbados Nation',l:'Barbados Nation',est:1973},
+    ],
+    'Antigua': [
+      {v:'Antigua Gazette',l:'Antigua Gazette',est:1748},
+    ],
+    'Caribbean UK': [
+      {v:'The Voice',l:'The Voice',est:1982},
+      {v:'The Caribbean Times',l:'The Caribbean Times',est:1981},
+      {v:'Weekly Gleaner UK',l:'Weekly Gleaner UK',est:1971},
+    ],
+    'Nigeria': [
+      {v:'Daily Times of Nigeria',l:'Daily Times of Nigeria',est:1926},
+    ],
+    'South Africa': [
+      {v:'The Natal Witness',l:'The Natal Witness / The Witness',est:1846},
+      {v:'The Mercury',l:'The Mercury',est:1852},
+      {v:'Cape Times',l:'Cape Times',est:1876},
+    ],
+    'Kenya': [{v:'Daily Nation',l:'Daily Nation',est:1960}],
+    'Ghana': [{v:'Daily Graphic',l:'Daily Graphic',est:1950}],
+    'Australia': [
+      {v:'The Sydney Morning Herald',l:'The Sydney Morning Herald',est:1831},
+      {v:'The Age',l:'The Age',est:1854},
+      {v:'The Australian',l:'The Australian',est:1964},
+    ],
+  },
+  french: {
+    'France': [
+      {v:'Le Monde',l:'Le Monde',est:1944},
+      {v:'Le Figaro',l:'Le Figaro',est:1826},
+      {v:'Libération',l:'Libération',est:1973},
+    ],
+    'Mauritius': [{v:'Le Mauricien',l:'Le Mauricien',est:1908}],
+  },
+  spanish: {
+    'Spain': [
+      {v:'El País',l:'El País',est:1976},
+      {v:'ABC',l:'ABC',est:1903},
+      {v:'El Mundo',l:'El Mundo',est:1989},
+    ],
+    'Mexico': [
+      {v:'Excélsior',l:'Excélsior',est:1917},
+      {v:'El Universal',l:'El Universal',est:1916},
+    ],
+    'Argentina': [
+      {v:'La Nación',l:'La Nación',est:1870},
+      {v:'Clarín',l:'Clarín',est:1945},
+    ],
+  },
+  german: {
+    'Germany': [
+      {v:'Frankfurter Allgemeine Zeitung',l:'Frankfurter Allgemeine',est:1949},
+      {v:'Die Welt',l:'Die Welt',est:1946},
+      {v:'Süddeutsche Zeitung',l:'Süddeutsche Zeitung',est:1945},
+    ],
+    'Austria': [{v:'Der Standard',l:'Der Standard',est:1988}],
+  },
+  portuguese: {
+    'Brazil': [
+      {v:'Folha de S.Paulo',l:'Folha de S.Paulo',est:1921},
+      {v:'O Globo',l:'O Globo',est:1925},
+      {v:'O Estado de S. Paulo',l:'O Estado de S. Paulo',est:1875},
+    ],
+    'Portugal': [
+      {v:'Jornal de Notícias',l:'Jornal de Notícias',est:1888},
+    ],
+  },
+  japanese: {
+    'Japan': [
+      {v:'Yomiuri Shimbun',l:'Yomiuri Shimbun',est:1874},
+      {v:'Asahi Shimbun',l:'Asahi Shimbun',est:1879},
+      {v:'Mainichi Shimbun',l:'Mainichi Shimbun',est:1872},
+    ],
+  },
+};
+
+// ── NAVIGATION ──
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id === 's3') buildConfirm();
+  window.scrollTo(0,0);
+}
+
+// ── SCREEN 1 ──
+function pickProduct(p, el) {
+  S.product = p;
+  document.querySelectorAll('.pcard').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  const labels = {
+    free: 'Try Free — Watermarked Sample',
+    premium: 'Single Front Page — £14.99',
+    print: 'Print & Post — £34.99',
+    thennow: 'Then & Now — £24.99',
+    'thennow-print': 'Then & Now — Print & Post — £44.99',
+    memorial: 'Memorial — £24.99',
+    'memorial-print': 'Memorial — Print & Post — £54.99',
   };
+  document.getElementById('s2-product-label').textContent = labels[p] || '';
 
-  if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 200, headers, body: "" };
+  const d2 = document.getElementById('date2-wrap');
+  const hint = document.getElementById('date-hint');
+  const d2input = document.getElementById('date2');
+  if(p === 'thennow') {
+    d2.style.display = 'block';
+    document.getElementById('date1').placeholder = 'Then — e.g. June 12, 1965';
+    d2input.placeholder = 'Now — e.g. June 12, 2025';
+    hint.textContent = 'Enter both dates — Then and Now';
+  } else if(p === 'memorial') {
+    d2.style.display = 'block';
+    document.getElementById('date1').placeholder = 'Date of Birth — e.g. March 12, 1942';
+    d2input.placeholder = 'Date of Passing — e.g. September 4, 2019';
+    hint.textContent = 'Enter date of birth and date of passing';
+  } else {
+    d2.style.display = 'none';
+    document.getElementById('date1').placeholder = 'e.g. November 5, 2008';
+    hint.textContent = 'Enter any date from 1850 to present';
   }
 
-  if (event.httpMethod === "GET") {
-    return { statusCode: 200, headers, body: JSON.stringify({ status: "ok" }) };
+  // Check free trial availability
+  if(p === 'free' && hasUsedFreeTrial()) {
+    alert('You have already used your free trial. Purchase the full version for just £14.99.');
+    S.product = 'premium';
+    setTimeout(() => showPreview('premium'), 150);
+    return;
   }
+
+  // Show preview popup
+  setTimeout(() => showPreview(p), 150);
+}
+
+// Preview popup data
+const PREVIEWS = {
+  print: {
+    eyebrow: 'Print & Post — £34.99',
+    title: 'Flowers last a week. This lasts generations.',
+    desc: 'Your newspaper front page printed on premium museum-quality paper and posted directly to any address worldwide. Ready to frame. Ready to gift. Ready to treasure forever.',
+    price: '£34.99 — Printed & Posted Worldwide',
+    img: '/IMG_9440.jpeg',
+    stripe: null,
+  },
+  'thennow-print': {
+    eyebrow: 'Then & Now Print & Post — £44.99',
+    title: 'Two moments in history. Printed and posted.',
+    desc: 'Both your Then & Now newspaper front pages printed on premium paper and posted to any address. A stunning dual keepsake ready to frame. The perfect anniversary or retirement gift.',
+    price: '£44.99 — Printed & Posted Worldwide',
+    img: '/IMG_3144.jpeg',
+    stripe: null,
+  },
+  'memorial-print': {
+    eyebrow: 'Memorial Print & Post — £54.99',
+    title: 'A life honoured in print. Delivered to your door.',
+    desc: 'Both memorial newspaper front pages printed on premium paper and posted to any address. Suitable for funeral programmes, memorial services and family keepsakes. A tender, timeless tribute.',
+    price: '£54.99 — Printed & Posted Worldwide',
+    img: '/BORN ON THIS.png',
+    stripe: null,
+  },
+  free: {
+    eyebrow: 'Try Free — Watermarked Sample',
+    title: 'See your date come to life.',
+    desc: 'Generate one free watermarked newspaper front page. If you love it, purchase the clean full-resolution version for £14.99.',
+    price: 'Free — Watermarked Sample',
+    img: '/IMG_9440.jpeg',
+    stripe: null,
+  },
+  premium: {
+    eyebrow: 'Single Front Page',
+    title: 'Your date. Your newspaper. Your history.',
+    desc: 'One date. One authentic photorealistic newspaper front page. The perfect gift for birthdays, anniversaries and retirements. Any date from 1850 to present. Six languages. 30+ countries.',
+    price: '£14.99 — Digital Download',
+    img: '/IMG_9440.jpeg',
+    stripe: 'https://buy.stripe.com/aFaeVc2zO9Q00952JNfAc01',
+  },
+  thennow: {
+    eyebrow: 'Then & Now',
+    title: 'Two dates. Two front pages. One story.',
+    desc: 'See how the world looked on two moments that matter to you — the day you met, the day you married, the day everything changed. Two authentic photorealistic newspaper front pages, beautifully framed.',
+    price: '£24.99 — Digital Download',
+    img: '/IMG_3144.jpeg',
+    stripe: 'https://buy.stripe.com/3cIfZg7U8e6g7BxesvfAc0e',
+  },
+  memorial: {
+    eyebrow: 'Memorial Edition',
+    title: 'A life bookended in print.',
+    desc: 'The day they were born, and the day they passed. Two authentic newspaper front pages from the most significant dates of a life — a quiet, extraordinary keepsake for families and memorial services.',
+    price: '£24.99 — Digital Download',
+    img: '/BORN ON THIS.png',
+    stripe: 'https://buy.stripe.com/dRm4gy3DS8LWg83bgjfAc0f',
+  },
+};
+
+function showPreview(p) {
+  const data = PREVIEWS[p];
+  document.getElementById('preview-img').src = data.img;
+  document.getElementById('preview-eyebrow').textContent = data.eyebrow;
+  document.getElementById('preview-title').textContent = data.title;
+  document.getElementById('preview-desc').textContent = data.desc;
+  document.getElementById('preview-price').textContent = data.price;
+  const buyBtn = document.getElementById('preview-buy-btn');
+  const note = document.getElementById('preview-payment-note');
+  if(data.stripe) {
+    buyBtn.href = data.stripe;
+    buyBtn.onclick = null;
+    buyBtn.textContent = 'Pay & Enter Your Details →';
+    if(note) note.style.display = 'block';
+  } else if(['print','thennow-print','memorial-print'].includes(p)) {
+    buyBtn.href = '#';
+    buyBtn.textContent = 'Coming Soon — Join Waitlist';
+    if(note) note.style.display = 'none';
+    buyBtn.onclick = function(e) {
+      e.preventDefault();
+      alert('Print & Post is coming very soon! In the meantime, download your digital version and print locally.');
+    };
+  } else {
+    buyBtn.href = '#';
+    buyBtn.textContent = 'Try Free — Enter Your Details →';
+    if(note) note.style.display = 'none';
+    buyBtn.onclick = function(e) {
+      e.preventDefault();
+      S.product = 'free';
+      document.getElementById('s2-product-label').textContent = 'Try Free — Watermarked Sample';
+      document.getElementById('date2-wrap').style.display = 'none';
+      document.getElementById('date1').placeholder = 'e.g. November 5, 2008';
+      document.getElementById('date-hint').textContent = 'Enter any date from 1850 to present';
+      closePreview();
+      show('s2');
+      checkForm();
+    };
+  }
+  const modal = document.getElementById('preview-modal');
+  modal.style.display = 'block';
+}
+
+function closePreview() {
+  document.getElementById('preview-modal').style.display = 'none';
+  document.querySelectorAll('.pcard').forEach(c => c.classList.remove('selected'));
+  // Don't clear S.product here — it's needed for the form
+}
+
+// ── SCREEN 2 ──
+function pickLang(lang, name, el) {
+  S.lang = lang;
+  S.langName = name;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Populate countries
+  const cSel = document.getElementById('country-sel');
+  cSel.innerHTML = '<option value="">— Select Country / Region —</option>';
+  Object.keys(PAPERS[lang] || {}).forEach(c => {
+    const o = document.createElement('option');
+    o.value = c; o.textContent = c;
+    cSel.appendChild(o);
+  });
+  document.getElementById('paper-sel').style.display = 'none';
+  document.getElementById('paper-sel').innerHTML = '<option value="">— Select Newspaper —</option>';
+  S.country = ''; S.newspaper = '';
+  checkForm();
+}
+
+function updatePapers() {
+  S.country = document.getElementById('country-sel').value;
+  const pSel = document.getElementById('paper-sel');
+  pSel.innerHTML = '<option value="">— Select Newspaper —</option>';
+  if(!S.country || !S.lang) { pSel.style.display='none'; checkForm(); return; }
+  const papers = (PAPERS[S.lang] || {})[S.country] || [];
+  papers.forEach(p => {
+    const o = document.createElement('option');
+    o.value = p.v;
+    o.textContent = p.l + ' (est. ' + p.est + (p.end ? ', ceased '+p.end : '') + ')';
+    pSel.appendChild(o);
+  });
+  pSel.style.display = 'block';
+  S.newspaper = ''; S.paperEst = 0;
+  checkForm();
+}
+
+function pickPaper() {
+  const val = document.getElementById('paper-sel').value;
+  S.newspaper = val;
+  if(S.lang && S.country && val) {
+    const papers = (PAPERS[S.lang] || {})[S.country] || [];
+    const p = papers.find(x => x.v === val);
+    if(p) {
+      S.paperEst = p.est;
+      S.paperEnd = p.end || null;
+      const endNote = p.end ? ` — ceased ${p.end}` : '';
+      document.getElementById('paper-hint').textContent =
+        `Established ${p.est}${endNote} · Dates: ${p.est} to ${p.end || 'present'}`;
+    }
+  }
+  checkForm();
+}
+
+function checkForm() {
+  const d1 = document.getElementById('date1').value.trim();
+  const d2 = document.getElementById('date2').value.trim();
+  const needTwo = ['thennow','thennow-print','memorial','memorial-print'].includes(S.product);
+  const hasProduct = ['free','premium','print','thennow','thennow-print','memorial','memorial-print'].includes(S.product);
+  const ok = hasProduct && d1 && (!needTwo || d2) && S.lang && S.newspaper;
+  console.log('checkForm:', {product:S.product, d1, lang:S.lang, newspaper:S.newspaper, ok});
+  const btn = document.getElementById('btn-review');
+  if(ok) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.background = 'linear-gradient(135deg,#8b2020,#b02828)';
+    btn.style.cursor = 'pointer';
+  } else {
+    btn.disabled = true;
+    btn.style.opacity = '0.35';
+    btn.style.cursor = 'not-allowed';
+  }
+}
+
+// ── SCREEN 3 CONFIRM ──
+function buildConfirm() {
+  S.date1 = document.getElementById('date1').value.trim();
+  S.date2 = document.getElementById('date2').value.trim();
+  S.surface = document.getElementById('surface').value;
+  S.lighting = document.getElementById('lighting').value;
+
+  const pNames = {free:'Try Free — Watermarked',premium:'Single Front Page — £14.99',print:'Print & Post — £34.99',thennow:'Then & Now — £24.99','thennow-print':'Then & Now Print & Post — £44.99',memorial:'Memorial — £24.99','memorial-print':'Memorial Print & Post — £54.99'};
+  let html = '';
+  html += cr('Product', pNames[S.product]);
+  html += cr('Language', S.langName);
+  html += cr('Country', S.country);
+  html += cr('Newspaper', S.newspaper);
+
+  if(S.product === 'memorial') {
+    html += cr('Date of Birth', S.date1);
+    html += cr('Date of Passing', S.date2);
+  } else if(S.product === 'thennow') {
+    html += cr('Then', S.date1);
+    html += cr('Now', S.date2);
+  } else {
+    html += cr('Date', S.date1);
+  }
+  document.getElementById('confirm-box').innerHTML = html;
+  const printNote = document.getElementById('print-note');
+  if(printNote) printNote.style.display = ['print','thennow-print','memorial-print'].includes(S.product) ? 'block' : 'none';
+}
+
+function cr(label, value) {
+  return `<div class="confirm-row"><span class="clabel">${label}</span><span class="cvalue">${value}</span></div>`;
+}
+
+// ── SCREEN 4 GENERATE ──
+function setProg(step) {
+  for(let i=1;i<=3;i++){
+    const ic = document.getElementById('pi'+i);
+    const lb = document.getElementById('pl'+i);
+    ic.classList.remove('active','done');
+    lb.classList.remove('active','done');
+    if(i < step){ic.classList.add('done');ic.textContent='✓';lb.classList.add('done');}
+    else if(i===step){ic.classList.add('active');lb.classList.add('active');}
+  }
+}
+
+async function startGen() {
+  show('s4');
+  document.getElementById('progress-wrap').style.display = 'block';
+  document.getElementById('result-wrap').style.display = 'none';
+  document.getElementById('err-box').classList.remove('show');
+  document.getElementById('btn-retry').style.display = 'none';
+  document.getElementById('s4-sub').textContent = 'Creating your newspaper…';
 
   try {
-    const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-    if (!OPENAI_API_KEY) throw new Error("OpenAI API key not configured");
-
-    const body = JSON.parse(event.body || "{}");
-    const { research, tier } = body;
-    if (!research) throw new Error("No research data");
-
-    const r = (tier === "thennow" || tier === "memorial") ? (research.date1 || research) : research;
-    const headline = (r.banner_headline || "").substring(0, 80);
-    const deck = (r.deck_headline || "").substring(0, 60);
-    const paper = (r.newspaper || "newspaper").substring(0, 30);
-    const date = (r.date || "").substring(0, 20);
-
-    const isTabloid = ['The Sun','Daily Mirror','Daily Mail','Daily Express','New York Daily News','The Star']
-      .some(t => paper.includes(t));
-
-    let prompt;
-    if (tier === "thennow") {
-      const r2 = research.date2 || {};
-      const h2 = (r2.banner_headline || "").substring(0, 80);
-      prompt = `Two vintage newspaper front pages framed as Then and Now. Top paper: ${paper}, ${date}, headline "${headline}". Bottom paper: ${r2.newspaper || paper}, ${r2.date || ""}, headline "${h2}". Aged newsprint, period typography, photorealistic.`;
-    } else if (tier === "memorial") {
-      const r2 = research.date2 || {};
-      const h2 = (r2.banner_headline || "").substring(0, 80);
-      prompt = `Two vintage ${paper} newspaper front pages as memorial keepsake with white lily. Birth paper: ${date}, headline "${headline}". Passing paper: ${r2.date || ""}, headline "${h2}". Aged newsprint, warm amber light, photorealistic.`;
-    } else if (isTabloid) {
-      prompt = `Vintage ${paper} tabloid newspaper front page, ${date}. Red masthead. Bold headline: "${headline}". Deck: "${deck}". Black and white press photo. Aged newsprint. Photorealistic.`;
+    // Stage 1 — Research
+    setProg(1);
+    let research;
+    if(S.product === 'thennow' || S.product === 'memorial') {
+      const [r1,r2] = await Promise.all([
+        fetch('/.netlify/functions/research-date',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({newspaper:S.newspaper,date:S.date1})}),
+        fetch('/.netlify/functions/research-date',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({newspaper:S.newspaper,date:S.date2})}),
+      ]);
+      const [d1,d2] = await Promise.all([r1.json(),r2.json()]);
+      if(d1.error) throw new Error(d1.error);
+      if(d2.error) throw new Error(d2.error);
+      research = {date1:d1.research, date2:d2.research};
     } else {
-      prompt = `Vintage ${paper} broadsheet newspaper front page, ${date}. Serif masthead. Headline: "${headline}". Deck: "${deck}". Press photo. Aged newsprint. Photorealistic.`;
+      const r = await fetch('/.netlify/functions/research-date',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({newspaper:S.newspaper,date:S.date1})});
+      const d = await r.json();
+      if(d.error) throw new Error(d.error);
+      research = d.research;
     }
 
-    const res = await fetch("https://api.openai.com/v1/images/generations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + OPENAI_API_KEY,
-      },
-      body: JSON.stringify({
-        model: "chatgpt-image-latest",
-        prompt,
-        n: 1,
-        size: "1024x1024",
-      }),
-    });
+    // Stage 2
+    setProg(2);
+    await new Promise(r=>setTimeout(r,500));
 
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    if (!data.data || !data.data[0] || !data.data[0].b64_json) throw new Error("No image returned");
+    // Stage 3 — Generate
+    setProg(3);
+    let dots = 0;
+    const lbl3 = document.getElementById('pl3');
+    const keepAlive = setInterval(() => {
+      dots = (dots + 1) % 4;
+      lbl3.textContent = 'Generating your newspaper' + '.'.repeat(dots);
+    }, 800);
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({ imageUrl: "data:image/png;base64," + data.data[0].b64_json }),
-    };
+    let imageUrl;
+    try {
+      const ir = await fetch('/.netlify/functions/generate-image', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({research, tier: S.product, surface: S.surface, lighting: S.lighting})
+      });
+      const responseText = await ir.text();
+      let id;
+      try { id = JSON.parse(responseText); }
+      catch(e) { throw new Error('Server error: ' + responseText.substring(0, 100)); }
+      if(id.error) throw new Error(id.error);
+      imageUrl = id.imageUrl;
+    } catch(e) {
+      clearInterval(keepAlive);
+      throw e;
+    }
+    if(!imageUrl) throw new Error('No image returned');
+    clearInterval(keepAlive);
 
-  } catch(err) {
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ error: err.message }),
-    };
+    document.getElementById('result-img').src = imageUrl;
+    document.getElementById('result-link').href = imageUrl;
+
+    // Show/hide watermark overlay and download button
+    if(S.product === 'free') {
+      document.getElementById('watermark-overlay').style.display = 'block';
+      document.getElementById('result-link').style.display = 'none';
+      document.getElementById('free-view-note').style.display = 'block';
+    } else {
+      document.getElementById('watermark-overlay').style.display = 'none';
+      document.getElementById('result-link').style.display = 'block';
+      document.getElementById('free-view-note').style.display = 'none';
+    }
+    document.getElementById('progress-wrap').style.display = 'none';
+    document.getElementById('result-wrap').style.display = 'block';
+    document.getElementById('s4-sub').textContent = S.product === 'free' ? 'Your Free Sample is Ready' : 'Your Newspaper is Ready';
+
+    // Show upgrade prompt for free tier
+    const upgradeWrap = document.getElementById('upgrade-wrap');
+    if(upgradeWrap) {
+      upgradeWrap.style.display = S.product === 'free' ? 'block' : 'none';
+    }
+
+  } catch(e) {
+    clearInterval(keepAlive);
+    const eb = document.getElementById('err-box');
+    eb.textContent = '⚠ ' + (e.message || 'Something went wrong. Please try again.');
+    eb.classList.add('show');
+    document.getElementById('btn-retry').style.display = 'block';
   }
-};
+}
+
+// Watermark function
+async function addWatermark(imageUrl) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+
+      // Draw original image
+      ctx.drawImage(img, 0, 0);
+
+      // Strong diagonal INKDATE SAMPLE watermarks
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${img.width * 0.09}px serif`;
+      ctx.textAlign = 'center';
+      ctx.translate(canvas.width/2, canvas.height/2);
+      ctx.rotate(-Math.PI/4);
+      // Multiple rows of watermark text
+      for(let i = -3; i <= 3; i++) {
+        ctx.fillText('INKDATE SAMPLE', 0, i * img.height * 0.2);
+        ctx.fillText('inkdateapp.com', 0, i * img.height * 0.2 + img.width * 0.1);
+      }
+      ctx.restore();
+
+      // Dark overlay bar at top
+      ctx.fillStyle = 'rgba(26,15,10,0.85)';
+      ctx.fillRect(0, 0, canvas.width, 70);
+      ctx.fillStyle = '#c8a855';
+      ctx.font = `bold ${img.width * 0.035}px serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('⚠ FREE SAMPLE — WATERMARKED', canvas.width/2, 30);
+      ctx.font = `${img.width * 0.025}px serif`;
+      ctx.fillStyle = '#e8d5b0';
+      ctx.fillText('Purchase at inkdateapp.com to get your full high-resolution newspaper', canvas.width/2, 55);
+
+      // Dark overlay bar at bottom
+      ctx.fillStyle = 'rgba(26,15,10,0.85)';
+      ctx.fillRect(0, canvas.height - 70, canvas.width, 70);
+      ctx.fillStyle = '#c8a855';
+      ctx.font = `bold ${img.width * 0.035}px serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('inkdateapp.com — From £14.99', canvas.width/2, canvas.height - 40);
+      ctx.fillStyle = '#e8d5b0';
+      ctx.font = `${img.width * 0.025}px serif`;
+      ctx.fillText('Remove watermark · High resolution · Download instantly', canvas.width/2, canvas.height - 15);
+
+      resolve(canvas.toDataURL('image/jpeg', 0.92));
+    };
+    img.onerror = () => resolve(imageUrl);
+    img.src = imageUrl;
+  });
+}
+
+function startOver() {
+  S = {product:null,date1:'',date2:'',lang:null,langName:'',country:'',newspaper:'',paperEst:0,paperEnd:null,surface:'',lighting:''};
+  document.getElementById('date1').value='';
+  document.getElementById('date2').value='';
+  document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('country-sel').innerHTML='<option value="">— Select Country / Region —</option>';
+  document.getElementById('paper-sel').style.display='none';
+  document.getElementById('btn-review').disabled=true;
+  // Clear URL params
+  window.history.replaceState({}, '', '/inkdate-app.html');
+  show('s1');
+}
+
+// Check if customer returned from Stripe payment
+(function checkStripeReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const paid = params.get('paid');
+  if(paid && STRIPE[paid]) {
+    S.product = paid;
+    const labels = {
+      premium: 'Single Front Page — £14.99',
+      thennow: 'Then & Now — £24.99',
+      memorial: 'Memorial Edition — £24.99',
+    };
+    document.getElementById('s2-product-label').textContent = labels[paid];
+    const d2 = document.getElementById('date2-wrap');
+    if(paid === 'thennow') {
+      d2.style.display = 'block';
+      document.getElementById('date1').placeholder = 'Then — e.g. June 12, 1965';
+      document.getElementById('date2').placeholder = 'Now — e.g. June 12, 2025';
+      document.getElementById('date-hint').textContent = 'Enter both dates — Then and Now';
+    } else if(paid === 'memorial') {
+      d2.style.display = 'block';
+      document.getElementById('date1').placeholder = 'Date of Birth — e.g. March 12, 1942';
+      document.getElementById('date2').placeholder = 'Date of Passing — e.g. September 4, 2019';
+      document.getElementById('date-hint').textContent = 'Enter date of birth and date of passing';
+    }
+    show('s2');
+  }
+})();
+</script>
+</body>
+</html>
