@@ -1067,10 +1067,22 @@ async function startGen() {
     // Stage 3 — Generate
     setProg(3);
     let dots = 0;
+    let seconds = 0;
+    const messages = [
+      'Researching your date in history',
+      'Setting the printing press',
+      'Composing your front page',
+      'Adding period typography',
+      'Developing the photograph',
+      'Printing your newspaper',
+      'Almost ready',
+    ];
     const lbl3 = document.getElementById('pl3');
     const keepAlive = setInterval(() => {
       dots = (dots + 1) % 4;
-      lbl3.textContent = 'Generating your newspaper' + '.'.repeat(dots);
+      seconds++;
+      const msg = messages[Math.min(Math.floor(seconds/8), messages.length-1)];
+      lbl3.textContent = msg + '.'.repeat(dots);
     }, 800);
 
     let imageUrl;
