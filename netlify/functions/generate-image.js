@@ -20,14 +20,14 @@ exports.handler = async function(event, context) {
     if (!OPENAI_API_KEY) throw new Error("OpenAI API key not configured");
 
     const body = JSON.parse(event.body || "{}");
-    const { research, tier } = body;
+    const { research, tier, surface, lighting } = body;
     if (!research) throw new Error("No research data");
 
     const r = (tier === "thennow" || tier === "memorial") ? (research.date1 || research) : research;
-    const headline = (r.banner_headline || "").substring(0, 80);
-    const deck = (r.deck_headline || "").substring(0, 60);
     const paper = (r.newspaper || "newspaper").substring(0, 30);
     const date = (r.date || "").substring(0, 20);
+    const headline = (r.banner_headline || "").substring(0, 80);
+    const deck = (r.deck_headline || "").substring(0, 60);
 
     const isTabloid = ['The Sun','Daily Mirror','Daily Mail','Daily Express','New York Daily News','The Star']
       .some(t => paper.includes(t));
@@ -35,14 +35,14 @@ exports.handler = async function(event, context) {
     let prompt;
     if (tier === "thennow") {
       const r2 = research.date2 || {};
-      prompt = `Two vintage newspaper front pages framed. Top: ${paper} ${date} "${headline}". Bottom: ${r2.newspaper || paper} ${r2.date || ""} "${(r2.banner_headline||"").substring(0,60)}". Photorealistic aged newsprint.`;
+      prompt = `Ultra-photorealistic vintage newspaper keepsake. Two ${paper} front pages stacked vertically in a wooden frame. TOP newspaper dated ${date} with headline "${headline}". BOTTOM newspaper dated ${r2.date||''} with headline "${(r2.banner_headline||'').substring(0,80)}". Both show full mastheads, headlines, photographs and columns. Aged yellowed newsprint texture. Period typography. Sharp focus.`;
     } else if (tier === "memorial") {
       const r2 = research.date2 || {};
-      prompt = `Two vintage ${paper} newspapers memorial keepsake white lily. Birth ${date} "${headline}". Passing ${r2.date||""} "${(r2.banner_headline||"").substring(0,60)}". Photorealistic.`;
+      prompt = `Ultra-photorealistic memorial newspaper keepsake with white lily. Two ${paper} front pages. TOP dated ${date} headline "${headline}". BOTTOM dated ${r2.date||''} headline "${(r2.banner_headline||'').substring(0,80)}". Full mastheads visible. Aged newsprint. Warm amber light. Sharp focus.`;
     } else if (isTabloid) {
-      prompt = `Vintage ${paper} tabloid ${date}. Red masthead. Headline "${headline}". Black white photo. Aged newsprint. Photorealistic.`;
+      prompt = `Ultra-photorealistic vintage ${paper} tabloid newspaper front page dated ${date}. Full page fills entire frame top to bottom. RED banner masthead with "${paper}" in large white italic text at top. Date "${date}" below masthead. HUGE bold black headline "${headline}" in massive capitals. Large black and white press photograph. Deck headline "${deck}". Body text columns. Aged yellowed newsprint. Sharp focus throughout.`;
     } else {
-      prompt = `Vintage ${paper} broadsheet ${date}. Serif masthead. Headline "${headline}". Press photo. Aged newsprint. Photorealistic.`;
+      prompt = `Ultra-photorealistic vintage ${paper} broadsheet newspaper front page dated ${date}. Full page fills entire frame top to bottom. Classic serif masthead "${paper}" at top. Date "${date}" clearly shown. Large bold headline "${headline}". Deck "${deck}". Black and white press photograph. Body text in columns. Aged yellowed newsprint texture. Sharp focus throughout.`;
     }
 
     const res = await fetch("https://api.openai.com/v1/images/generations", {
@@ -55,7 +55,7 @@ exports.handler = async function(event, context) {
         model: "chatgpt-image-latest",
         prompt,
         n: 1,
-        size: "1024x1024",
+        size: "1024x1536",
       }),
     });
 
@@ -77,3 +77,4 @@ exports.handler = async function(event, context) {
     };
   }
 };
+
