@@ -35,16 +35,14 @@ exports.handler = async function(event, context) {
     let prompt;
     if (tier === "thennow") {
       const r2 = research.date2 || {};
-      const h2 = (r2.banner_headline || "").substring(0, 80);
-      prompt = `Two vintage newspaper front pages framed as Then and Now. Top paper: ${paper}, ${date}, headline "${headline}". Bottom paper: ${r2.newspaper || paper}, ${r2.date || ""}, headline "${h2}". Aged newsprint, period typography, photorealistic.`;
+      prompt = `Two vintage newspaper front pages framed. Top: ${paper} ${date} "${headline}". Bottom: ${r2.newspaper || paper} ${r2.date || ""} "${(r2.banner_headline||"").substring(0,60)}". Photorealistic aged newsprint.`;
     } else if (tier === "memorial") {
       const r2 = research.date2 || {};
-      const h2 = (r2.banner_headline || "").substring(0, 80);
-      prompt = `Two vintage ${paper} newspaper front pages as memorial keepsake with white lily. Birth paper: ${date}, headline "${headline}". Passing paper: ${r2.date || ""}, headline "${h2}". Aged newsprint, warm amber light, photorealistic.`;
+      prompt = `Two vintage ${paper} newspapers memorial keepsake white lily. Birth ${date} "${headline}". Passing ${r2.date||""} "${(r2.banner_headline||"").substring(0,60)}". Photorealistic.`;
     } else if (isTabloid) {
-      prompt = `Vintage ${paper} tabloid newspaper front page, ${date}. Red masthead. Bold headline: "${headline}". Deck: "${deck}". Black and white press photo. Aged newsprint. Photorealistic.`;
+      prompt = `Vintage ${paper} tabloid ${date}. Red masthead. Headline "${headline}". Black white photo. Aged newsprint. Photorealistic.`;
     } else {
-      prompt = `Vintage ${paper} broadsheet newspaper front page, ${date}. Serif masthead. Headline: "${headline}". Deck: "${deck}". Press photo. Aged newsprint. Photorealistic.`;
+      prompt = `Vintage ${paper} broadsheet ${date}. Serif masthead. Headline "${headline}". Press photo. Aged newsprint. Photorealistic.`;
     }
 
     const res = await fetch("https://api.openai.com/v1/images/generations", {
