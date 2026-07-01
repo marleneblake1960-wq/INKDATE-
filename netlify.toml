@@ -1,6 +1,10 @@
+
 [build]
   publish = "."
   functions = "netlify/functions"
+
+[functions."generate-image"]
+  memory = "2gb"
 
 [functions."research-date"]
   timeout = 30
