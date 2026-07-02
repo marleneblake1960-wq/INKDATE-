@@ -1087,51 +1087,17 @@ async function startGen() {
 
     let imageUrl;
     try {
-      const keyRes = await fetch('/.netlify/functions/get-key');
-      const keyData = await keyRes.json();
-      if(!keyData.key) throw new Error('Configuration error');
-
-      const r = (S.product === 'thennow' || S.product === 'memorial')
-        ? (research.date1 || research) : research;
-      const paper = (r.newspaper || '').substring(0, 30);
-      const date = (r.date || '').substring(0, 20);
-      const headline = (r.banner_headline || '').substring(0, 80);
-      const deck = (r.deck_headline || '').substring(0, 60);
-      const isTabloid = ['The Sun','Daily Mirror','Daily Mail','Daily Express','New York Daily News','The Star']
-        .some(t => paper.includes(t));
-
-      let prompt;
-      if(S.product === 'thennow') {
-        const r2 = research.date2 || {};
-        prompt = `Ultra-photorealistic colour photograph of two vintage ${paper} newspaper front pages stacked as a Then and Now keepsake on a pale grey marble surface with warm golden light. TOP newspaper dated ${date} headline "${headline}". BOTTOM newspaper dated ${r2.date||''} headline "${(r2.banner_headline||'').substring(0,80)}". Warm yellowed newsprint colour. Period typography. Sharp focus.`;
-      } else if(S.product === 'memorial') {
-        const r2 = research.date2 || {};
-        prompt = `Ultra-photorealistic colour photograph of two vintage ${paper} newspaper front pages as memorial keepsake with white lily. Warm golden amber light. TOP dated ${date} headline "${headline}". BOTTOM dated ${r2.date||''} headline "${(r2.banner_headline||'').substring(0,80)}". Aged yellowed newsprint colour. Sharp focus.`;
-      } else if(isTabloid) {
-        prompt = `Ultra-photorealistic FULL COLOUR photograph of an authentic vintage ${paper} tabloid newspaper front page dated ${date}. Warm yellowed aged newsprint colour throughout. RED banner masthead "${paper}" in white italic text at top. Date "${date}" below masthead. HUGE bold black headline "${headline}". Black and white press photograph inside the newspaper. Deck "${deck}". Body text columns. Sharp focus throughout.`;
-      } else {
-        prompt = `Ultra-photorealistic FULL COLOUR photograph of an authentic vintage ${paper} broadsheet newspaper front page dated ${date}. The overall newspaper has warm aged yellowed newsprint colour (#f0e4c0). Classic serif masthead "${paper}" at top in black ink. Date "${date}" clearly shown below masthead. Large bold headline "${headline}". Deck "${deck}". Black and white press photograph. Body text in serif columns. Fold crease. Sharp focus.`;
-      }
-
-      const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
+      const ir = await fetch('/.netlify/functions/generate-image', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + keyData.key,
-        },
-        body: JSON.stringify({
-          model: 'chatgpt-image-latest',
-          prompt,
-          n: 1,
-          size: '1024x1536',
-        }),
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({research, tier: S.product, surface: S.surface, lighting: S.lighting})
       });
-
-      const imgData = await imgRes.json();
-      if(imgData.error) throw new Error(imgData.error.message);
-      if(!imgData.data || !imgData.data[0] || !imgData.data[0].b64_json) throw new Error('No image returned');
-      imageUrl = 'data:image/png;base64,' + imgData.data[0].b64_json;
-
+      const responseText = await ir.text();
+      let id;
+      try { id = JSON.parse(responseText); }
+      catch(e) { throw new Error('Server error: ' + responseText.substring(0,100)); }
+      if(id.error) throw new Error(id.error);
+      imageUrl = id.imageUrl;
     } catch(e) {
       clearInterval(keepAlive);
       throw e;
