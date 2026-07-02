@@ -1,4 +1,3 @@
-
 exports.handler = async function(event, context) {
 
   const headers = {
@@ -20,70 +19,29 @@ exports.handler = async function(event, context) {
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
     if (!OPENAI_API_KEY) throw new Error("OpenAI API key not configured");
 
-    const body = JSON.parse(event.body || "{}");
+    let body;
+    try {
+      body = JSON.parse(event.body || "{}");
+    } catch(e) {
+      throw new Error("Request parse failed: " + e.message);
+    }
+
     const { research, tier, surface, lighting } = body;
     if (!research) throw new Error("No research data provided");
 
-    const r = (tier === "thennow" || tier === "memorial") ? (research.date1 || research) : research;
+    const r = (tier === "thennow" || tier === "memorial") ? research.date1 : research;
     const surfaceStr = surface || "pale grey marble surface";
     const lightingStr = lighting || "warm golden hour light from the upper left";
 
-    const newspaper = r.newspaper || "newspaper";
-    const date = r.date || "";
-    const headline = r.banner_headline || "";
-    const deck = r.deck_headline || "";
-    const photo = r.dominant_photograph || "editorial press photograph";
-    const mastheadStyle = (r.masthead && r.masthead.logotype_style) || "classic bold serif";
-    const mastheadColor = (r.masthead && r.masthead.masthead_color) || "deep black";
-
     let prompt;
-
     if (tier === "thennow") {
       const r2 = research.date2 || {};
-      prompt = `Ultra-photorealistic museum-quality photograph of two authentic physical copies of ${newspaper} arranged as a "Then & Now" keepsake on a ${surfaceStr} with ${lightingStr}.
-
-THEN NEWSPAPER — ${r.date}:
-Masthead reads exactly "${newspaper}" in ${mastheadStyle}, ${mastheadColor}.
-Banner headline reads exactly: "${r.banner_headline}"
-Deck headline: "${r.deck_headline}"
-
-NOW NEWSPAPER — ${r2.date || ""}:
-Masthead reads exactly "${r2.newspaper || newspaper}".
-Banner headline reads exactly: "${r2.banner_headline || ""}"
-Deck headline: "${r2.deck_headline || ""}"
-
-STYLE: Medium-format camera. Both mastheads tack sharp. Warm soft focus at edges. Brass carriage clock in background. No digital elements. 8K. Museum quality.`;
-
+      prompt = `Ultra-photorealistic museum photograph of two ${r.newspaper} newspapers as Then and Now keepsake on ${surfaceStr} with ${lightingStr}. THEN (${r.date}): masthead "${r.newspaper}", headline "${r.banner_headline}". NOW (${r2.date}): masthead "${r2.newspaper || r.newspaper}", headline "${r2.banner_headline}". Brass clock background. Aged newsprint. 8K museum quality.`;
     } else if (tier === "memorial") {
       const r2 = research.date2 || {};
-      prompt = `Ultra-photorealistic museum-quality photograph of two authentic physical copies of ${newspaper} as a tender memorial keepsake on a ${surfaceStr} with ${lightingStr}. Single white lily at edge.
-
-BIRTH NEWSPAPER — ${r.date}:
-Masthead reads exactly "${newspaper}" in ${mastheadStyle}, ${mastheadColor}.
-Banner headline reads exactly: "${r.banner_headline}"
-
-PASSING NEWSPAPER — ${r2.date || ""}:
-Masthead reads exactly "${r2.newspaper || newspaper}".
-Banner headline reads exactly: "${r2.banner_headline || ""}"
-
-STYLE: Medium-format camera. Both mastheads tack sharp. Intimate golden light. No digital elements. 8K. Museum quality.`;
-
+      prompt = `Ultra-photorealistic museum photograph of two ${r.newspaper} newspapers as memorial keepsake on ${surfaceStr} with ${lightingStr}. White lily. BIRTH (${r.date}): masthead "${r.newspaper}", headline "${r.banner_headline}". PASSING (${r2.date}): masthead "${r2.newspaper || r.newspaper}", headline "${r2.banner_headline}". Dignified. Aged newsprint. 8K museum quality.`;
     } else {
-      prompt = `Ultra-photorealistic museum-quality photograph of an authentic physical copy of ${newspaper} dated ${date}. Flat on a ${surfaceStr}. ${lightingStr}.
-
-MASTHEAD: At the very top of the page the masthead reads exactly "${newspaper}" in large classic Gothic serif typeface, deep black ink, centered. On the line immediately below the masthead, clearly printed in small readable type: "${date}" — VOL. I — PRICE 25 CENTS. This date line is CRITICAL and must be fully legible. Two thin horizontal rules, one above and one below this date line, separate the masthead from the headlines below.
-
-BANNER HEADLINE: Enormous bold serif type spanning the full page width, all text within page edges, reads: "${headline}"
-
-DECK HEADLINE: Secondary headline below the banner reads: "${deck}"
-
-PHOTOGRAPH: ${photo}. Black and white, high contrast, authentic wire service press photography.
-
-SECONDARY STORIES: ${r.secondary_stories ? r.secondary_stories.join(" | ") : ""}
-
-BODY TEXT: Dense justified serif copy in multiple columns filling the lower portion of the page.
-
-PHYSICAL DETAILS: Authentic aged newsprint texture throughout. Centre fold crease across lower third. All headlines fully readable, no text cut off at edges. Sharp focus on masthead and headline. 8K resolution. Museum quality. Cinematic realism.`;
+      prompt = `Ultra-photorealistic museum-quality photograph of ${r.newspaper} newspaper dated ${r.date} lying flat on ${surfaceStr} with ${lightingStr}. Masthead reads "${r.newspaper}". Date "${r.date}" clearly printed below masthead. Banner headline "${r.banner_headline}". Deck "${r.deck_headline}". Main photograph: ${r.dominant_photograph}. Dense body columns. Aged newsprint texture. Fold crease. 8K museum quality.`;
     }
 
     const res = await fetch("https://api.openai.com/v1/images/generations", {
@@ -93,7 +51,7 @@ PHYSICAL DETAILS: Authentic aged newsprint texture throughout. Centre fold creas
         "Authorization": "Bearer " + OPENAI_API_KEY,
       },
       body: JSON.stringify({
-        model: "gpt-image-1",
+        model: "chatgpt-image-latest",
         prompt: prompt,
         n: 1,
         size: "1024x1536",
@@ -103,19 +61,16 @@ PHYSICAL DETAILS: Authentic aged newsprint texture throughout. Centre fold creas
 
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
-    if (!data.data || !data.data[0] || !data.data[0].b64_json) throw new Error("No image returned");
+    if (!data.data || !data.data[0] || !data.data[0].b64_json) {
+      throw new Error("No image data returned");
+    }
 
-    const b64 = data.data[0].b64_json;
+    const imageUrl = "data:image/png;base64," + data.data[0].b64_json;
 
     return {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "image/png",
-        "Cache-Control": "no-cache",
-      },
-      body: b64,
-      isBase64Encoded: true,
+      headers,
+      body: JSON.stringify({ imageUrl }),
     };
 
   } catch(err) {
