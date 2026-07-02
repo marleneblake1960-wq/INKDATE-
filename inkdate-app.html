@@ -1092,15 +1092,12 @@ async function startGen() {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({research, tier: S.product, surface: S.surface, lighting: S.lighting})
       });
-      const ct = ir.headers.get('content-type') || '';
-      if (ct.includes('image/')) {
-        const blob = await ir.blob();
-        imageUrl = URL.createObjectURL(blob);
-      } else {
-        const id = await ir.json();
-        if (id.error) throw new Error(id.error);
-        imageUrl = id.imageUrl;
-      }
+      const responseText = await ir.text();
+      let id;
+      try { id = JSON.parse(responseText); }
+      catch(e) { throw new Error('Server error: ' + responseText.substring(0,200)); }
+      if(id.error) throw new Error(id.error);
+      imageUrl = id.imageUrl;
     } catch(e) {
       clearInterval(keepAlive);
       throw e;
