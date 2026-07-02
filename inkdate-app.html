@@ -1104,14 +1104,41 @@ async function startGen() {
       let prompt;
       if(S.product === 'thennow') {
         const r2 = research.date2 || {};
-        prompt = `Ultra-photorealistic vintage newspaper keepsake. Two ${paper} front pages stacked vertically in a wooden frame. TOP newspaper dated ${date} with headline "${headline}". BOTTOM newspaper dated ${r2.date||''} with headline "${(r2.banner_headline||'').substring(0,80)}". Both show full mastheads, headlines, photographs and columns. Aged yellowed newsprint texture. Period typography. Sharp focus.`;
+        prompt = `Ultra-photorealistic museum-quality photograph of two ${paper} newspaper front pages displayed as a framed Then and Now keepsake. Shot from directly overhead. On a pale grey marble surface. Two newspapers stacked vertically filling the frame. THEN paper top: masthead "${paper}", date "${date}", headline "${headline}". NOW paper bottom: masthead "${r2.newspaper||paper}", date "${r2.date||''}", headline "${(r2.banner_headline||'').substring(0,80)}". Authentic aged newsprint. Period typography. 8K quality.`;
       } else if(S.product === 'memorial') {
         const r2 = research.date2 || {};
-        prompt = `Ultra-photorealistic memorial newspaper keepsake with white lily. Two ${paper} front pages. TOP dated ${date} headline "${headline}". BOTTOM dated ${r2.date||''} headline "${(r2.banner_headline||'').substring(0,80)}". Full mastheads visible. Aged newsprint. Warm amber light. Sharp focus.`;
+        prompt = `Ultra-photorealistic museum-quality photograph of two ${paper} newspaper front pages as a memorial keepsake on a mahogany surface. A white lily rests beside the papers. BIRTH paper top: masthead "${paper}", date "${date}" in large bold type, headline "${headline}". PASSING paper bottom: masthead "${paper}", date "${r2.date||''}" in large bold type, headline "${(r2.banner_headline||'').substring(0,80)}". Authentic aged newsprint. Warm amber light. 8K quality.`;
       } else if(isTabloid) {
-        prompt = `Ultra-photorealistic vintage ${paper} tabloid newspaper front page dated ${date}. Full page fills entire frame top to bottom. RED banner masthead with "${paper}" in large white italic text at top. Date "${date}" below masthead. HUGE bold black headline "${headline}" in massive capitals. Large black and white press photograph. Deck headline "${deck}". Body text columns. Aged yellowed newsprint. Sharp focus throughout.`;
+        prompt = `Ultra-photorealistic museum-quality scan of an authentic vintage ${paper} newspaper front page from ${date}. The newspaper fills the ENTIRE frame edge to edge. Aged yellowed newsprint texture.
+
+EXACT LAYOUT TOP TO BOTTOM:
+ROW 1 — HEADER STRIP: Issue number, "${date}", price "4d" in very small text spanning full width
+ROW 2 — MASTHEAD: "${paper}" in iconic large bold white italic serif text inside a solid RED rectangle banner. RIGHT SIDE: small black box "THE FINAL SCORE" or key news in bold type
+ROW 3 — thin black rule line full width
+ROW 4 — ENORMOUS HEADLINE: "${headline}" in massive ultra-bold condensed black sans-serif capitals filling the full width
+ROW 5 — LARGE PHOTOGRAPH: dramatic black and white press photo filling the central third
+ROW 6 — PHOTO CAPTION in small italic text
+ROW 7 — DECK HEADLINE: "${deck}" in medium bold type
+ROW 8 — TWO COLUMNS of body text with sub-headlines
+ROW 9 — BOTTOM BANNER: full-width black strip white bold text
+
+Authentic British tabloid. Aged newsprint. Period typography. Sharp focus on every letter.`;
       } else {
-        prompt = `Ultra-photorealistic vintage ${paper} broadsheet newspaper front page dated ${date}. Full page fills entire frame top to bottom. Classic serif masthead "${paper}" at top. Date "${date}" clearly shown. Large bold headline "${headline}". Deck "${deck}". Black and white press photograph. Body text in columns. Aged yellowed newsprint texture. Sharp focus throughout.`;
+        prompt = `Ultra-photorealistic museum-quality scan of an authentic vintage ${paper} newspaper front page from ${date}. The newspaper fills the ENTIRE frame edge to edge. Aged yellowed newsprint.
+
+EXACT LAYOUT TOP TO BOTTOM:
+ROW 1 — MASTHEAD: "${paper}" in large elegant classic serif typeface, centered, deep black ink
+ROW 2 — DATE LINE: "${date}" — edition details, price, all in small centered type below masthead
+ROW 3 — THIN DECORATIVE RULE full width
+ROW 4 — BANNER HEADLINE: "${headline}" in very large bold serif type spanning full width
+ROW 5 — DECK HEADLINE: "${deck}" in medium serif italic below
+ROW 6 — LARGE PRESS PHOTOGRAPH filling the upper middle — black and white period photography
+ROW 7 — PHOTO CAPTION: small italic text below photograph
+ROW 8 — THREE COLUMN LAYOUT: dense justified serif body text
+ROW 9 — SECONDARY HEADLINES and body text columns filling the lower half
+ROW 10 — HORIZONTAL FOLD CREASE across lower third
+
+Authentic broadsheet newspaper. Aged newsprint. Period typography. Sharp focus. Museum quality.`;
       }
 
       const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
