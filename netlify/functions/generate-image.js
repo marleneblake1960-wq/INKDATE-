@@ -1,3 +1,4 @@
+
 exports.handler = async function(event, context) {
 
   const headers = {
@@ -70,19 +71,19 @@ STYLE: Medium-format camera. Both mastheads tack sharp. Intimate golden light. N
     } else {
       prompt = `Ultra-photorealistic museum-quality photograph of an authentic physical copy of ${newspaper} dated ${date}. Flat on a ${surfaceStr}. ${lightingStr}.
 
-MASTHEAD: The masthead reads exactly "${newspaper}" in ${mastheadStyle} typeface, rendered in ${mastheadColor}. Date "${date}" printed clearly below the masthead. Thin decorative rule below.
+MASTHEAD: At the very top of the page the masthead reads exactly "${newspaper}" in large classic Gothic serif typeface, deep black ink, centered. On the line immediately below the masthead, clearly printed in small readable type: "${date}" — VOL. I — PRICE 25 CENTS. This date line is CRITICAL and must be fully legible. Two thin horizontal rules, one above and one below this date line, separate the masthead from the headlines below.
 
-BANNER HEADLINE: Enormous bold serif type spanning the full page width reading exactly: "${headline}"
+BANNER HEADLINE: Enormous bold serif type spanning the full page width, all text within page edges, reads: "${headline}"
 
-DECK HEADLINE: Secondary headline reading: "${deck}"
+DECK HEADLINE: Secondary headline below the banner reads: "${deck}"
 
-MAIN PHOTOGRAPH: ${photo}
+PHOTOGRAPH: ${photo}. Black and white, high contrast, authentic wire service press photography.
 
 SECONDARY STORIES: ${r.secondary_stories ? r.secondary_stories.join(" | ") : ""}
 
-PHYSICAL DETAILS: ${r.historical_context || ""}. Centre fold crease across lower third. Newsprint fibres visible at macro level. Aged yellowed newsprint texture.
+BODY TEXT: Dense justified serif copy in multiple columns filling the lower portion of the page.
 
-PHOTOGRAPHIC STYLE: Medium-format camera. Tack sharp on masthead and banner headline. Gentle focus fall-off at edges. No digital borders, no mockups. 8K. Museum quality. Cinematic realism. The masthead MUST read "${newspaper}" exactly.`;
+PHYSICAL DETAILS: Authentic aged newsprint texture throughout. Centre fold crease across lower third. All headlines fully readable, no text cut off at edges. Sharp focus on masthead and headline. 8K resolution. Museum quality. Cinematic realism.`;
     }
 
     const res = await fetch("https://api.openai.com/v1/images/generations", {
