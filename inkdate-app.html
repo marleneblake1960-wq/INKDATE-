@@ -1087,17 +1087,52 @@ async function startGen() {
 
     let imageUrl;
     try {
-      const ir = await fetch('/.netlify/functions/generate-image', {
+      // Get key securely then call OpenAI directly from browser
+      const keyRes = await fetch('/.netlify/functions/get-key');
+      const keyData = await keyRes.json();
+      if(!keyData.key) throw new Error('Configuration error');
+
+      const r = (S.product === 'thennow' || S.product === 'memorial')
+        ? (research.date1 || research) : research;
+      const paper = (r.newspaper || '').substring(0, 30);
+      const date = (r.date || '').substring(0, 20);
+      const headline = (r.banner_headline || '').substring(0, 80);
+      const deck = (r.deck_headline || '').substring(0, 60);
+      const isTabloid = ['The Sun','Daily Mirror','Daily Mail','Daily Express','New York Daily News','The Star']
+        .some(t => paper.includes(t));
+
+      let prompt;
+      if(S.product === 'thennow') {
+        const r2 = research.date2 || {};
+        prompt = `Ultra-photorealistic vintage newspaper keepsake. Two ${paper} front pages stacked vertically in a wooden frame. TOP newspaper dated ${date} with headline "${headline}". BOTTOM newspaper dated ${r2.date||''} with headline "${(r2.banner_headline||'').substring(0,80)}". Both show full mastheads, headlines, photographs and columns. Aged yellowed newsprint texture. Period typography. Sharp focus.`;
+      } else if(S.product === 'memorial') {
+        const r2 = research.date2 || {};
+        prompt = `Ultra-photorealistic memorial newspaper keepsake with white lily. Two ${paper} front pages. TOP dated ${date} headline "${headline}". BOTTOM dated ${r2.date||''} headline "${(r2.banner_headline||'').substring(0,80)}". Full mastheads visible. Aged newsprint. Warm amber light. Sharp focus.`;
+      } else if(isTabloid) {
+        prompt = `Ultra-photorealistic vintage ${paper} tabloid newspaper front page dated ${date}. Full page fills entire frame top to bottom. RED banner masthead with "${paper}" in large white italic text at top. Date "${date}" below masthead. HUGE bold black headline "${headline}" in massive capitals. Large black and white press photograph. Deck headline "${deck}". Body text columns. Aged yellowed newsprint. Sharp focus throughout.`;
+      } else {
+        prompt = `Ultra-photorealistic vintage ${paper} broadsheet newspaper front page dated ${date}. Full page fills entire frame top to bottom. Classic serif masthead "${paper}" at top. Date "${date}" clearly shown. Large bold headline "${headline}". Deck "${deck}". Black and white press photograph. Body text in columns. Aged yellowed newsprint texture. Sharp focus throughout.`;
+      }
+
+      const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({research, tier: S.product, surface: S.surface, lighting: S.lighting})
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + keyData.key,
+        },
+        body: JSON.stringify({
+          model: 'chatgpt-image-latest',
+          prompt,
+          n: 1,
+          size: '1024x1536',
+        }),
       });
-      const responseText = await ir.text();
-      let id;
-      try { id = JSON.parse(responseText); }
-      catch(e) { throw new Error('Server error: ' + responseText.substring(0,100)); }
-      if(id.error) throw new Error(id.error);
-      imageUrl = id.imageUrl;
+
+      const imgData = await imgRes.json();
+      if(imgData.error) throw new Error(imgData.error.message);
+      if(!imgData.data || !imgData.data[0] || !imgData.data[0].b64_json) throw new Error('No image returned');
+      imageUrl = 'data:image/png;base64,' + imgData.data[0].b64_json;
+
     } catch(e) {
       clearInterval(keepAlive);
       throw e;
