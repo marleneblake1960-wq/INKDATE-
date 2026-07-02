@@ -65,22 +65,12 @@ exports.handler = async function(event, context) {
     let prompt;
     if (tier === "thennow") {
       const r2 = research.date2 || {};
-      prompt = `Ultra-photorealistic museum photograph of two ${r.newspaper} newspapers as Then and Now keepsake on ${surfaceStr} with ${lightingStr}. THEN (${r.date}): masthead "${r.newspaper}", headline "${r.banner_headline}". NOW (${r2.date}): masthead "${r2.newspaper || r.newspaper}", headline "${r2.banner_headline}". Brass clock background. Aged newsprint. 8K museum quality.`;
+      prompt = `Photorealistic ${r.newspaper} newspaper front pages as a Then and Now keepsake. THEN: dated ${r.date}, headline "${r.banner_headline}". NOW: dated ${r2.date||''}, headline "${(r2.banner_headline||'').substring(0,80)}". Aged newsprint. Period typography.`;
     } else if (tier === "memorial") {
       const r2 = research.date2 || {};
-      prompt = `Ultra-photorealistic museum photograph of two ${r.newspaper} newspapers as memorial keepsake on ${surfaceStr} with ${lightingStr}. White lily. BIRTH (${r.date}): masthead "${r.newspaper}", headline "${r.banner_headline}". PASSING (${r2.date}): masthead "${r2.newspaper || r.newspaper}", headline "${r2.banner_headline}". Dignified. Aged newsprint. 8K museum quality.`;
+      prompt = `Photorealistic ${r.newspaper} newspaper front pages memorial keepsake with white lily. BIRTH: dated ${r.date}, headline "${r.banner_headline}". PASSING: dated ${r2.date||''}, headline "${(r2.banner_headline||'').substring(0,80)}". Warm light. Aged newsprint.`;
     } else {
-      prompt = `Ultra-photorealistic museum-quality photograph of a single flat unfolded ${r.newspaper} newspaper front page lying completely flat on a ${surfaceStr} with ${lightingStr}. The newspaper is NOT folded — it is fully open showing the complete front page from top to bottom.
-
-MASTHEAD at very top: "${r.newspaper}" in Gothic serif typeface, deep black ink.
-DATE LINE directly below masthead: "${r.date}" — clearly legible.
-BANNER HEADLINE in enormous bold serif spanning full width: "${r.banner_headline}"
-DECK HEADLINE below: "${r.deck_headline}"
-LARGE PHOTOGRAPH below headline: ${r.dominant_photograph || "celebration crowd scene"}, black and white press photography.
-SECONDARY STORIES in columns below photograph: "${r.secondary_stories ? r.secondary_stories[0] : ''}" and "${r.secondary_stories ? r.secondary_stories[1] : ''}"
-BODY TEXT in dense serif columns filling lower half of page.
-
-The newspaper lies completely FLAT — not folded, not stacked. Full front page visible. Authentic lightly aged newsprint with subtle warm tone — not too yellow. Sharp focus throughout. 8K museum quality.`;
+      prompt = `Photorealistic front page of ${r.newspaper} newspaper dated ${r.date}. Headline: "${r.banner_headline}". Subheadline: "${r.deck_headline}". Large press photograph, body text in columns, masthead at top. Aged newsprint. Flat unfolded page.`;
     }
 
     const res = await fetch("https://api.openai.com/v1/images/generations", {
