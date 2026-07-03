@@ -461,7 +461,7 @@ select option{background:#1e1208;color:#e8d5b0;}
     <div class="result-btns">
       <a id="result-link" href="#" target="_blank" class="btn btn-red">Open Full Size</a>
       <a id="btn-download" href="#" target="_blank" class="btn" style="display:none;margin-top:10px;background:#2a5a2a;border-color:#4a9a4a;color:#fff;">⬇ Open Full Resolution</a>
-      <p id="save-hint" style="display:none;font-size:0.75rem;color:#a08060;margin-top:8px;text-align:center;">Tap Open Full Resolution → long-press image → Save to Photos</p>
+      <p id="save-hint" style="display:none;font-size:0.75rem;color:#a08060;margin-top:8px;text-align:center;">On mobile: tap Open Full Resolution → long-press image → Save to Photos<br>On desktop: right-click image → Save Image As</p>
       <button class="btn btn-ghost" onclick="startOver()">↺ Create Another</button>
     </div>
     <div id="free-view-note" style="display:none;background:#1e1208;border:1px solid #c8a855;padding:14px 16px;text-align:center;margin-bottom:12px;">
@@ -1109,22 +1109,33 @@ async function startGen() {
     clearInterval(keepAlive);
 
     document.getElementById('result-img').src = imageUrl;
-    document.getElementById('result-link').href = imageUrl;
 
     // Show/hide watermark overlay and download button
     if(S.product === 'free') {
       document.getElementById('watermark-overlay').style.display = 'block';
-      document.getElementById('result-link').style.display = 'none';
       document.getElementById('btn-download').style.display = 'none';
       document.getElementById('save-hint').style.display = 'none';
       document.getElementById('free-view-note').style.display = 'block';
     } else {
       document.getElementById('watermark-overlay').style.display = 'none';
-      document.getElementById('result-link').style.display = 'block';
-      document.getElementById('btn-download').style.display = 'block';
-      document.getElementById('btn-download').href = imageUrl;
-      document.getElementById('save-hint').style.display = 'block';
       document.getElementById('free-view-note').style.display = 'none';
+      document.getElementById('save-hint').style.display = 'block';
+
+      // Create download button that works on all devices
+      const dlBtn = document.getElementById('btn-download');
+      dlBtn.style.display = 'block';
+      dlBtn.onclick = function(e) {
+        e.preventDefault();
+        // Try direct download first
+        const a = document.createElement('a');
+        a.href = imageUrl;
+        a.download = 'inkdate-newspaper.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        // Fallback — open in new tab
+        setTimeout(() => { window.open(imageUrl, '_blank'); }, 500);
+      };
     }
     document.getElementById('progress-wrap').style.display = 'none';
     document.getElementById('result-wrap').style.display = 'block';
