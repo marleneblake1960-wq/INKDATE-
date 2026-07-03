@@ -65,10 +65,10 @@ exports.handler = async function(event, context) {
     let prompt;
     if (tier === "thennow") {
       const r2 = research.date2 || {};
-      prompt = `Photorealistic image of two ${r.newspaper} newspaper front pages stacked vertically one on top of the other as a Then and Now keepsake. The THEN newspaper is on TOP dated ${r.date} with headline "${r.banner_headline}". The NOW newspaper is directly UNDERNEATH dated ${r2.date||''} with headline "${(r2.banner_headline||'').substring(0,80)}". Both papers are slightly overlapping like a folded keepsake display. Aged newsprint. Period typography. Warm light.`;
+      prompt = `Photorealistic keepsake display photograph. TWO newspaper front pages arranged vertically in a single tall portrait frame. TOP HALF of image: ${r.newspaper} front page dated ${r.date}, headline "${r.banner_headline}". BOTTOM HALF of image: ${r2.newspaper||r.newspaper} front page dated ${r2.date||''}, headline "${(r2.banner_headline||'').substring(0,80)}". The two newspapers are stacked vertically — top paper above, bottom paper below — NOT side by side. Aged newsprint. Warm golden light.`;
     } else if (tier === "memorial") {
       const r2 = research.date2 || {};
-      prompt = `Photorealistic image of two ${r.newspaper} newspaper front pages stacked vertically one on top of the other as a memorial keepsake. The BIRTH newspaper is on TOP dated ${r.date} with headline "${r.banner_headline}". The PASSING newspaper is directly UNDERNEATH dated ${r2.date||''} with headline "${(r2.banner_headline||'').substring(0,80)}". A single white lily rests beside the papers. Aged newsprint. Warm amber light. Dignified and tender.`;
+      prompt = `Photorealistic memorial keepsake photograph. TWO newspaper front pages arranged vertically in a single tall portrait frame. TOP HALF of image: ${r.newspaper} front page dated ${r.date}, headline "${r.banner_headline}". BOTTOM HALF of image: ${r2.newspaper||r.newspaper} front page dated ${r2.date||''}, headline "${(r2.banner_headline||'').substring(0,80)}". The two newspapers are stacked vertically — top paper above, bottom paper below — NOT side by side. A single white lily at the side. Aged newsprint. Warm amber light.`;
     } else {
       prompt = `Photorealistic front page of ${r.newspaper} newspaper dated ${r.date}. Headline: "${r.banner_headline}". Subheadline: "${r.deck_headline}". Large press photograph, body text in columns, masthead at top. Aged newsprint. Flat unfolded page.`;
     }
