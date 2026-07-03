@@ -460,6 +460,7 @@ select option{background:#1e1208;color:#e8d5b0;}
     </div><!-- end position:relative -->
     <div class="result-btns">
       <a id="result-link" href="#" target="_blank" class="btn btn-red">Open Full Size</a>
+      <a id="btn-download" href="#" download="inkdate-newspaper.png" class="btn" style="display:none;margin-top:10px;background:#2a5a2a;border-color:#4a9a4a;color:#fff;">⬇ Download Your Newspaper</a>
       <button class="btn btn-ghost" onclick="startOver()">↺ Create Another</button>
     </div>
     <div id="free-view-note" style="display:none;background:#1e1208;border:1px solid #c8a855;padding:14px 16px;text-align:center;margin-bottom:12px;">
@@ -1113,10 +1114,13 @@ async function startGen() {
     if(S.product === 'free') {
       document.getElementById('watermark-overlay').style.display = 'block';
       document.getElementById('result-link').style.display = 'none';
+      document.getElementById('btn-download').style.display = 'none';
       document.getElementById('free-view-note').style.display = 'block';
     } else {
       document.getElementById('watermark-overlay').style.display = 'none';
       document.getElementById('result-link').style.display = 'block';
+      document.getElementById('btn-download').style.display = 'block';
+      document.getElementById('btn-download').href = imageUrl;
       document.getElementById('free-view-note').style.display = 'none';
     }
     document.getElementById('progress-wrap').style.display = 'none';
