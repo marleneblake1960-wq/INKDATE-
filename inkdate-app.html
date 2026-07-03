@@ -1089,18 +1089,59 @@ async function startGen() {
 
     let imageUrl;
     try {
-      // Try Netlify function first for colour images
-      const ir = await fetch('/.netlify/functions/generate-image', {
+      // Get key then call OpenAI directly — no Netlify timeout for any tier
+      const keyRes = await fetch('/.netlify/functions/get-key');
+      const keyData = await keyRes.json();
+      if(!keyData.key) throw new Error('Configuration error');
+
+      const r = (S.product === 'thennow' || S.product === 'memorial')
+        ? (research.date1 || research) : research;
+
+      function san(t) {
+        if(!t) return t;
+        return t.replace(/assassinat\w*/gi,'passed away').replace(/murdered?/gi,'died')
+          .replace(/kill\w*/gi,'end of').replace(/bombing?s?/gi,'incident')
+          .replace(/attacks?/gi,'event').replace(/\bwar\b/gi,'conflict')
+          .replace(/massacre/gi,'tragedy').replace(/terror\w*/gi,'major event');
+      }
+
+      if(research && !research.date1) {
+        research.banner_headline = san(research.banner_headline);
+        research.deck_headline = san(research.deck_headline);
+        if(research.secondary_stories) research.secondary_stories = research.secondary_stories.map(san);
+      }
+
+      let prompt;
+      if(S.product === 'thennow') {
+        const r2 = research.date2 || {};
+        prompt = `Photorealistic keepsake display photograph. TWO newspaper front pages arranged vertically in a single tall portrait frame. TOP HALF of image: ${r.newspaper} front page dated ${r.date}, headline "${r.banner_headline}". BOTTOM HALF of image: ${r2.newspaper||r.newspaper} front page dated ${r2.date||''}, headline "${(r2.banner_headline||'').substring(0,80)}". The two newspapers are stacked vertically — top paper above, bottom paper below — NOT side by side. Aged newsprint. Warm golden light.`;
+      } else if(S.product === 'memorial') {
+        const r2 = research.date2 || {};
+        prompt = `Photorealistic memorial keepsake photograph. TWO newspaper front pages arranged vertically in a single tall portrait frame. TOP HALF of image: ${r.newspaper} front page dated ${r.date}, headline "${r.banner_headline}". BOTTOM HALF of image: ${r2.newspaper||r.newspaper} front page dated ${r2.date||''}, headline "${(r2.banner_headline||'').substring(0,80)}". The two newspapers are stacked vertically — top paper above, bottom paper below — NOT side by side. A single white lily at the side. Aged newsprint. Warm amber light.`;
+      } else {
+        prompt = `Photorealistic front page of ${r.newspaper} newspaper dated ${r.date}. Headline: "${r.banner_headline}". Subheadline: "${r.deck_headline}". Large press photograph, body text in columns, masthead at top. Aged newsprint. Flat unfolded page.`;
+      }
+
+      const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({research, tier: S.product, surface: S.surface, lighting: S.lighting})
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + keyData.key,
+        },
+        body: JSON.stringify({
+          model: 'chatgpt-image-latest',
+          prompt,
+          n: 1,
+          size: '1024x1536',
+          quality: 'medium',
+        }),
       });
-      const responseText = await ir.text();
-      let id;
-      try { id = JSON.parse(responseText); }
-      catch(e) { throw new Error('Server error: ' + responseText.substring(0,200)); }
-      if(id.error) throw new Error(id.error);
-      imageUrl = id.imageUrl;
+
+      const imgData = await imgRes.json();
+      if(imgData.error) throw new Error(imgData.error.message);
+      if(!imgData.data || !imgData.data[0] || !imgData.data[0].b64_json) throw new Error('No image returned');
+      imageUrl = 'data:image/png;base64,' + imgData.data[0].b64_json;
+
     } catch(e) {
       clearInterval(keepAlive);
       throw e;
