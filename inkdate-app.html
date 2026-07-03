@@ -117,7 +117,7 @@ select option{background:#1e1208;color:#e8d5b0;}
 .prog-lbl.done{color:#7aaa4a;}
 
 /* RESULT */
-.result-img{width:100%;display:block;border:1px solid #3a2415;object-fit:contain;background:#1a0f0a;}
+.result-img{width:100%;display:block;border:1px solid #3a2415;object-fit:contain;background:#1a0f0a;max-width:600px;margin:0 auto;}
 .result-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 8px;}
 .result-note{font-size:0.78rem;color:#c8a860;font-style:italic;text-align:center;margin-bottom:20px;}
 
@@ -434,14 +434,14 @@ select option{background:#1e1208;color:#e8d5b0;}
   <!-- Result -->
   <div id="result-wrap" style="display:none;">
     <div class="screen-sub" style="text-align:center;margin-bottom:12px;">◆ Your Newspaper</div>
-    <div style="position:relative;">
+    <div style="position:relative;max-width:600px;margin:0 auto;">
     <img id="result-img" class="result-img" src="" alt="Your newspaper">
     <!-- CSS Watermark overlay for free tier -->
     <div id="watermark-overlay" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:10;overflow:hidden;">
       <!-- Top bar -->
-      <div style="position:absolute;top:0;left:0;right:0;background:rgba(26,15,10,0.92);padding:10px;text-align:center;z-index:11;">
-        <div style="font-size:0.8rem;letter-spacing:2px;color:#c8a855;font-weight:bold;">⚠ FREE SAMPLE — WATERMARKED</div>
-        <div style="font-size:0.7rem;color:#e8d5b0;">Purchase at inkdateapp.com to get full high-resolution version</div>
+      <div style="position:absolute;top:0;left:0;right:0;background:rgba(26,15,10,0.92);padding:8px;text-align:center;z-index:11;">
+        <div style="font-size:0.75rem;letter-spacing:2px;color:#c8a855;font-weight:bold;">⚠ FREE SAMPLE — WATERMARKED</div>
+        <div style="font-size:0.65rem;color:#e8d5b0;">Purchase at inkdateapp.com to get full high-resolution version</div>
       </div>
       <!-- Diagonal watermarks -->
       <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-around;padding:60px 0;">
@@ -452,9 +452,9 @@ select option{background:#1e1208;color:#e8d5b0;}
         <div style="transform:rotate(-35deg);font-size:2.5rem;font-weight:900;color:rgba(180,20,20,0.55);white-space:nowrap;text-shadow:1px 1px 3px rgba(0,0,0,0.4);font-family:serif;">INKDATE SAMPLE</div>
       </div>
       <!-- Bottom bar -->
-      <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(26,15,10,0.92);padding:10px;text-align:center;z-index:11;">
-        <div style="font-size:0.8rem;letter-spacing:2px;color:#c8a855;font-weight:bold;">inkdateapp.com — From £14.99</div>
-        <div style="font-size:0.7rem;color:#e8d5b0;">Remove watermark · High resolution · Download instantly</div>
+      <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(26,15,10,0.92);padding:8px;text-align:center;z-index:11;">
+        <div style="font-size:0.75rem;letter-spacing:2px;color:#c8a855;font-weight:bold;">inkdateapp.com — From £14.99</div>
+        <div style="font-size:0.65rem;color:#e8d5b0;">Remove watermark · High resolution · Download instantly</div>
       </div>
     </div>
     </div><!-- end position:relative -->
