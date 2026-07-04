@@ -462,7 +462,8 @@ select option{background:#1e1208;color:#e8d5b0;}
       <a id="result-link" href="#" target="_blank" class="btn btn-red">Open Full Size</a>
       <a id="btn-download" href="#" target="_blank" class="btn" style="display:none;margin-top:10px;background:#2a5a2a;border-color:#4a9a4a;color:#fff;">⬇ Open Full Resolution</a>
       <p id="save-hint" style="display:none;font-size:0.75rem;color:#a08060;margin-top:8px;text-align:center;">On mobile: tap Open Full Resolution → long-press image → Save to Photos<br>On desktop: right-click image → Save Image As</p>
-      <button class="btn btn-ghost" onclick="startOver()">↺ Create Another</button>
+      <button class="btn btn-ghost" id="btn-create-another" onclick="startOver()">↺ Create Another</button>
+      <button class="btn btn-ghost" id="btn-view-sample" style="display:none;margin-top:8px;" onclick="showSavedSample()">← View My Sample</button>
     </div>
     <div id="free-view-note" style="display:none;background:#1e1208;border:1px solid #c8a855;padding:14px 16px;text-align:center;margin-bottom:12px;">
       <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:6px;">Free Sample — View Only</div>
@@ -628,12 +629,30 @@ function saveSample(imageUrl, research) {
     }));
   } catch(e) {}
 }
-function getSavedSample() {
-  try {
-    const img = localStorage.getItem('inkdate_sample_img');
-    const info = JSON.parse(localStorage.getItem('inkdate_sample_info') || 'null');
-    return img && info ? { imageUrl: img, info } : null;
-  } catch(e) { return null; }
+function showSavedSample() {
+  const saved = getSavedSample();
+  if(!saved) return;
+  document.getElementById('result-img').src = saved.imageUrl;
+  document.getElementById('watermark-overlay').style.display = 'block';
+  document.getElementById('btn-download').style.display = 'none';
+  document.getElementById('save-hint').style.display = 'none';
+  document.getElementById('free-view-note').style.display = 'block';
+  document.getElementById('btn-view-sample').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'none';
+  document.getElementById('result-wrap').style.display = 'block';
+  document.getElementById('s4-sub').textContent = 'Your Free Sample is Ready';
+  const upgradeWrap = document.getElementById('upgrade-wrap');
+  if(upgradeWrap) upgradeWrap.style.display = 'block';
+  show('s4');
+}
+
+function startOver() {
+  // If we have a saved sample show the View My Sample button after going back
+  const saved = getSavedSample();
+  if(saved) {
+    document.getElementById('btn-view-sample').style.display = 'block';
+  }
+  show('s1');
 }
 
 // ── STATE ──
