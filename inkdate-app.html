@@ -532,9 +532,11 @@ select option{background:#1e1208;color:#e8d5b0;}
     </a>
   </div>
   <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:14px;">
+    <a href="inkdate-landing.html" style="color:#8a6840;text-decoration:none;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Home</a>
     <a href="inkdate-landing.html" style="color:#8a6840;text-decoration:none;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">About</a>
     <a href="inkdate-terms.html" style="color:#8a6840;text-decoration:none;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Terms</a>
     <a href="inkdate-privacy.html" style="color:#8a6840;text-decoration:none;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Privacy</a>
+    <a href="inkdate-refund.html" style="color:#8a6840;text-decoration:none;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Refund</a>
     <a href="mailto:hello@inkdateapp.com" style="color:#8a6840;text-decoration:none;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Contact Us</a>
   </div>
   <div style="margin-top:10px;font-size:0.65rem;color:#4a3020;">&copy; 2026 Inkdate &middot; All rights reserved</div>
@@ -615,6 +617,23 @@ function hasUsedFreeTrial() {
 }
 function markFreeTrialUsed() {
   localStorage.setItem('inkdate_free_used', '1');
+}
+function saveSample(imageUrl, research) {
+  try {
+    localStorage.setItem('inkdate_sample_img', imageUrl);
+    localStorage.setItem('inkdate_sample_info', JSON.stringify({
+      newspaper: research.newspaper,
+      date: research.date,
+      headline: research.banner_headline,
+    }));
+  } catch(e) {}
+}
+function getSavedSample() {
+  try {
+    const img = localStorage.getItem('inkdate_sample_img');
+    const info = JSON.parse(localStorage.getItem('inkdate_sample_info') || 'null');
+    return img && info ? { imageUrl: img, info } : null;
+  } catch(e) { return null; }
 }
 
 // ── STATE ──
@@ -1157,6 +1176,9 @@ async function startGen() {
       document.getElementById('btn-download').style.display = 'none';
       document.getElementById('save-hint').style.display = 'none';
       document.getElementById('free-view-note').style.display = 'block';
+      // Save sample so customer can return to it
+      saveSample(imageUrl, research);
+      markFreeTrialUsed();
     } else {
       document.getElementById('watermark-overlay').style.display = 'none';
       document.getElementById('free-view-note').style.display = 'none';
@@ -1294,6 +1316,23 @@ function startOver() {
       document.getElementById('date-hint').textContent = 'Enter date of birth and date of passing';
     }
     show('s2');
+  } else {
+    // Check if customer has a saved sample to return to
+    const saved = getSavedSample();
+    if(saved && hasUsedFreeTrial()) {
+      // Show their saved sample so they can continue to payment
+      document.getElementById('result-img').src = saved.imageUrl;
+      document.getElementById('watermark-overlay').style.display = 'block';
+      document.getElementById('btn-download').style.display = 'none';
+      document.getElementById('save-hint').style.display = 'none';
+      document.getElementById('free-view-note').style.display = 'block';
+      document.getElementById('progress-wrap').style.display = 'none';
+      document.getElementById('result-wrap').style.display = 'block';
+      document.getElementById('s4-sub').textContent = 'Your Free Sample is Ready';
+      const upgradeWrap = document.getElementById('upgrade-wrap');
+      if(upgradeWrap) upgradeWrap.style.display = 'block';
+      show('s4');
+    }
   }
 })();
 </script>
