@@ -570,5 +570,37 @@ function joinWaitlist() {
   console.log('Waitlist signup:', email);
 }
 </script>
+<!-- SHARE/INSTALL BANNER -->
+<div id="a2hs-banner" style="
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;
+  background:#1a1008;border-top:1px solid #3a2415;
+  padding:5px 12px;font-family:'Old Standard TT',serif;
+">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+    <div style="font-size:0.65rem;color:#c4956a;letter-spacing:1px;">✦ Inkdate — Turn Any Date Into History</div>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <button onclick="shareInkdate()" style="background:#2a4a2a;border:none;color:#f5f0e8;padding:4px 10px;font-size:0.65rem;letter-spacing:1px;cursor:pointer;">↗ Share</button>
+      <a href="inkdate-app.html" style="background:#8b2020;color:#fff;padding:4px 10px;font-size:0.65rem;letter-spacing:1px;text-decoration:none;">Try Free</a>
+      <button onclick="document.getElementById('a2hs-banner').style.display='none'" style="background:transparent;border:none;color:rgba(245,240,232,0.4);font-size:0.9rem;cursor:pointer;padding:0 4px;">&times;</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function shareInkdate(){
+  if(navigator.share){
+    navigator.share({
+      title: 'Inkdate — Turn Any Date Into A Newspaper Front Page',
+      text: 'Some gifts last a week. This one lasts generations.',
+      url: 'https://inkdateapp.com'
+    }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText('https://inkdateapp.com').then(()=>{
+      alert('Link copied! Share inkdateapp.com with your friends.');
+    }).catch(()=>{ alert('Share inkdateapp.com with your friends!'); });
+  }
+}
+setTimeout(()=>{ document.getElementById('a2hs-banner').style.display='block'; }, 3000);
+</script>
 </body>
 </html>
