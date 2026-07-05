@@ -172,9 +172,9 @@ nav.scrolled{background:rgba(26,21,14,0.96);border-bottom-color:rgba(196,149,106
 .cta-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:rgba(245,240,232,0.88);max-width:500px;margin:0 auto 48px;}
 .cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
 .cta-note{font-size:0.95rem;color:rgba(245,240,232,0.5);letter-spacing:1px;font-family:'Cormorant Garamond',serif;font-style:italic;}
-footer{padding:32px 40px;border-top:1px solid rgba(196,149,106,0.15);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;background:#1a150e;}
+footer{padding:32px 40px 100px;border-top:1px solid rgba(196,149,106,0.15);display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:16px;background:#1a150e;text-align:center;flex-direction:column;}
 .footer-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1rem;letter-spacing:2px;background:linear-gradient(135deg,#f5f0e8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.footer-links{display:flex;gap:24px;flex-wrap:wrap;}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;}
 .footer-links a{font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,0.7);text-decoration:none;transition:color 0.2s;}
 .footer-links a:hover{color:var(--gold);}
 .footer-copy{font-size:0.85rem;color:rgba(245,240,232,0.6);letter-spacing:1px;}
@@ -429,7 +429,7 @@ footer{padding:32px 40px;border-top:1px solid rgba(196,149,106,0.15);display:fle
     <a href="mailto:hello@inkdateapp.com">Contact Us</a>
   </div>
   <div class="footer-copy">&copy; 2026 Inkdate &middot; inkdateapp.com</div>
-  <div style="display:flex;gap:20px;align-items:center;">
+  <div style="display:flex;gap:20px;align-items:center;justify-content:center;">
     <a href="https://www.instagram.com/inkdateapp" target="_blank" title="Instagram" style="color:rgba(196,149,106,0.7);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#c4956a'" onmouseout="this.style.color='rgba(196,149,106,0.7)'">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
     </a>
@@ -448,41 +448,16 @@ footer{padding:32px 40px;border-top:1px solid rgba(196,149,106,0.15);display:fle
 <!-- ADD TO HOME SCREEN BANNER -->
 <div id="a2hs-banner" style="
   display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;
-  background:#1a1008;border-top:2px solid #c4956a;
-  padding:12px 20px 16px;font-family:'Old Standard TT',serif;
-  box-shadow:0 -8px 32px rgba(0,0,0,0.6);
+  background:#1a1008;border-top:1px solid #3a2415;
+  padding:5px 12px;font-family:'Old Standard TT',serif;
 ">
-  <div style="max-width:560px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-    <div style="flex:1;min-width:160px;">
-      <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:0.95rem;
-        background:linear-gradient(135deg,#f5f0e8,#c4956a);
-        -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-        margin-bottom:2px;">Install Inkdate as an App</div>
-      <div style="font-size:0.75rem;color:rgba(245,240,232,0.6);line-height:1.3;">
-        Tap below to add to your Home Screen
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;flex-shrink:0;">
-      <button onclick="tryShare()" style="
-        background:linear-gradient(135deg,#5a3a18,#8a6030);
-        border:none;color:#f5f0e8;padding:10px 18px;
-        font-family:'Old Standard TT',serif;font-size:0.8rem;
-        letter-spacing:2px;text-transform:uppercase;cursor:pointer;
-        white-space:nowrap;">
-        ⬆ Add to Home Screen
-      </button>
-      <a href="inkdate-app.html" style="
-        background:linear-gradient(135deg,#8b2020,#b02828);
-        color:#fff;padding:10px 18px;
-        font-family:'Old Standard TT',serif;font-size:0.8rem;
-        letter-spacing:2px;text-transform:uppercase;
-        text-decoration:none;white-space:nowrap;">
-        Enter a Date
-      </a>
-      <button onclick="dismissA2HS()" style="background:transparent;border:none;
-        color:rgba(245,240,232,0.4);font-size:1.3rem;cursor:pointer;padding:4px;">
-        &times;
-      </button>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+    <div style="font-size:0.65rem;color:#c4956a;letter-spacing:1px;">✦ Install Inkdate — Add to Home Screen</div>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <button onclick="tryShare()" style="background:#5a3a18;border:none;color:#f5f0e8;padding:4px 10px;font-size:0.65rem;letter-spacing:1px;cursor:pointer;">⬆ Add</button>
+      <button onclick="shareInkdate()" style="background:#2a4a2a;border:none;color:#f5f0e8;padding:4px 10px;font-size:0.65rem;letter-spacing:1px;cursor:pointer;">↗ Share</button>
+      <a href="inkdate-app.html" style="background:#8b2020;color:#fff;padding:4px 10px;font-size:0.65rem;letter-spacing:1px;text-decoration:none;">Try Free</a>
+      <button onclick="dismissA2HS()" style="background:transparent;border:none;color:rgba(245,240,232,0.4);font-size:0.9rem;cursor:pointer;padding:0 4px;">&times;</button>
     </div>
   </div>
 </div>
@@ -503,6 +478,23 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 });
 
 // Add to Home Screen banner
+function shareInkdate(){
+  if(navigator.share){
+    navigator.share({
+      title: 'Inkdate — Turn Any Date Into A Newspaper Front Page',
+      text: 'Some gifts last a week. This one lasts generations. Generate a stunning historical newspaper front page for any date in history.',
+      url: 'https://inkdateapp.com'
+    }).catch(()=>{});
+  } else {
+    // Fallback — copy link to clipboard
+    navigator.clipboard.writeText('https://inkdateapp.com').then(()=>{
+      alert('Link copied! Share inkdateapp.com with your friends.');
+    }).catch(()=>{
+      alert('Share inkdateapp.com with your friends!');
+    });
+  }
+}
+
 function tryShare(){
   if(navigator.share){
     navigator.share({
