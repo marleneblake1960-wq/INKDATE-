@@ -464,6 +464,8 @@ select option{background:#1e1208;color:#e8d5b0;}
       <p id="save-hint" style="display:none;font-size:0.75rem;color:#a08060;margin-top:8px;text-align:center;">On mobile: tap Open Full Resolution → long-press image → Save to Photos<br>On desktop: right-click image → Save Image As</p>
       <button class="btn btn-ghost" id="btn-create-another" onclick="startOver()">↺ Create Another</button>
       <button class="btn btn-ghost" id="btn-view-sample" style="display:none;margin-top:8px;" onclick="showSavedSample()">← View My Sample</button>
+      <!-- Share button -->
+      <button onclick="shareInkdate()" style="margin-top:12px;width:100%;background:transparent;border:1px solid #3a2415;color:#c8a855;padding:10px;font-family:'Old Standard TT',serif;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">↗ Share Inkdate With a Friend</button>
     </div>
     <div id="free-view-note" style="display:none;background:#1e1208;border:1px solid #c8a855;padding:14px 16px;text-align:center;margin-bottom:12px;">
       <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:#c8a855;margin-bottom:6px;">Free Sample — View Only</div>
@@ -629,6 +631,26 @@ function saveSample(imageUrl, research) {
     }));
   } catch(e) {}
 }
+function getSavedSample() {
+  try {
+    const img = localStorage.getItem('inkdate_sample_img');
+    const info = JSON.parse(localStorage.getItem('inkdate_sample_info') || 'null');
+    return img && info ? { imageUrl: img, info } : null;
+  } catch(e) { return null; }
+}
+function shareInkdate(){
+  if(navigator.share){
+    navigator.share({
+      title: 'Inkdate — Turn Any Date Into A Newspaper Front Page',
+      text: 'Some gifts last a week. This one lasts generations. Generate a stunning historical newspaper front page for any date in history.',
+      url: 'https://inkdateapp.com'
+    }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText('https://inkdateapp.com').then(()=>{
+      alert('Link copied! Share inkdateapp.com with your friends.');
+    }).catch(()=>{ alert('Share inkdateapp.com with your friends!'); });
+  }
+}
 function showSavedSample() {
   const saved = getSavedSample();
   if(!saved) return;
@@ -647,7 +669,17 @@ function showSavedSample() {
 }
 
 function startOver() {
-  // If we have a saved sample show the View My Sample button after going back
+  // Reset state
+  S = {product:null,date1:'',date2:'',lang:null,langName:'',country:'',newspaper:'',paperEst:0,paperEnd:null,surface:'',lighting:''};
+  document.getElementById('date1').value='';
+  document.getElementById('date2').value='';
+  document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('country-sel').innerHTML='<option value="">— Select Country / Region —</option>';
+  document.getElementById('paper-sel').style.display='none';
+  document.getElementById('btn-review').disabled=true;
+  window.history.replaceState({}, '', '/inkdate-app.html');
+  // Show View My Sample button if sample exists
   const saved = getSavedSample();
   if(saved) {
     document.getElementById('btn-view-sample').style.display = 'block';
@@ -1294,20 +1326,6 @@ async function addWatermark(imageUrl) {
     img.onerror = () => resolve(imageUrl);
     img.src = imageUrl;
   });
-}
-
-function startOver() {
-  S = {product:null,date1:'',date2:'',lang:null,langName:'',country:'',newspaper:'',paperEst:0,paperEnd:null,surface:'',lighting:''};
-  document.getElementById('date1').value='';
-  document.getElementById('date2').value='';
-  document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('selected'));
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('selected'));
-  document.getElementById('country-sel').innerHTML='<option value="">— Select Country / Region —</option>';
-  document.getElementById('paper-sel').style.display='none';
-  document.getElementById('btn-review').disabled=true;
-  // Clear URL params
-  window.history.replaceState({}, '', '/inkdate-app.html');
-  show('s1');
 }
 
 // Check if customer returned from Stripe payment
