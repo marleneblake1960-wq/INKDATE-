@@ -443,7 +443,9 @@ footer{padding:32px 24px;border-top:1px solid var(--rule);text-align:center;}
     <h2 class="display">Join the Enterprise Waitlist.</h2>
     <p>We are currently onboarding a select group of pilot partners. Join the waitlist and our team will be in touch within 48 hours to discuss your use case and requirements.</p>
 
-    <form class="waitlist-form" onsubmit="submitWaitlist(event)">
+    <form class="waitlist-form" onsubmit="submitWaitlist(event)" name="enterprise-waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="enterprise-waitlist">
+      <input type="hidden" name="bot-field" style="display:none">
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">First Name</label>
