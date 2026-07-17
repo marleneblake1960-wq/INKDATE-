@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Life Through The Headlines — Inkdate Milestone Birthday Book</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#0f0d0a;
+  --gold:#c8a855;
+  --gold-light:#f0e4c0;
+  --amber:#c89050;
+  --rule:#3a2a18;
+  --text:#e8d5b0;
+  --muted:#c0a070;
+  --red:#8b2020;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--text);font-family:'Old Standard TT',Georgia,serif;line-height:1.7;}
+
+nav{padding:20px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--rule);background:rgba(15,13,10,0.97);position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;letter-spacing:5px;color:var(--gold);text-decoration:none;}
+.nav-links{display:flex;gap:20px;align-items:center;}
+.nav-links a{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--text);text-decoration:none;}
+.nav-cta{background:var(--red);color:#fff;padding:8px 20px;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;}
+
+/* HERO */
+.hero{padding:70px 24px 50px;text-align:center;border-bottom:1px solid var(--rule);}
+.eyebrow{font-size:0.85rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:20px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:var(--gold-light);line-height:1.15;margin-bottom:16px;}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.hero-sub{font-size:1rem;color:var(--text);max-width:580px;margin:0 auto 32px;line-height:1.8;}
+.hero-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:var(--gold);border-left:3px solid var(--gold);padding-left:20px;max-width:480px;margin:0 auto 40px;text-align:left;}
+
+/* WHAT'S INSIDE */
+.inside{padding:70px 24px;border-bottom:1px solid var(--rule);}
+.container{max-width:860px;margin:0 auto;}
+.section-title{text-align:center;margin-bottom:48px;}
+.section-title h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-light);margin-bottom:12px;}
+.section-title p{color:var(--text);max-width:540px;margin:0 auto;}
+.pages-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--rule);}
+.page-card{background:var(--ink);padding:28px 24px;}
+.page-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--rule);line-height:1;}
+.page-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--gold);margin:8px 0 6px;}
+.page-desc{font-size:0.82rem;color:var(--text);line-height:1.6;}
+
+/* MILESTONES */
+.milestones{padding:70px 24px;background:#0a0806;border-bottom:1px solid var(--rule);}
+.milestone-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--rule);max-width:860px;margin:0 auto;}
+.milestone-card{background:#0f0d0a;padding:24px 20px;text-align:center;}
+.milestone-card.featured{background:#1a1208;}
+.milestone-age{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;}
+.milestone-label{font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:4px 0 12px;}
+.milestone-price{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold-light);margin-bottom:4px;}
+.milestone-pages{font-size:0.75rem;color:var(--text);}
+
+/* HOW IT WORKS */
+.how{padding:70px 24px;border-bottom:1px solid var(--rule);}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;max-width:860px;margin:0 auto;}
+.step{text-align:center;}
+.step-num{width:48px;height:48px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gold);margin:0 auto 16px;}
+.step-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--gold-light);margin-bottom:8px;}
+.step-desc{font-size:0.82rem;color:var(--text);line-height:1.6;}
+
+/* ORDER FORM */
+.order{padding:70px 24px;}
+.form-wrap{max-width:640px;margin:0 auto;}
+.form-group{margin-bottom:20px;}
+.form-label{display:block;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.form-input{width:100%;background:#0a0806;border:1px solid var(--rule);color:var(--text);padding:12px 16px;font-family:'Old Standard TT',serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
+.form-input:focus{border-color:var(--gold);}
+.form-select{width:100%;background:#0a0806;border:1px solid var(--rule);color:var(--text);padding:12px 16px;font-family:'Old Standard TT',serif;font-size:0.9rem;outline:none;cursor:pointer;}
+.form-textarea{width:100%;background:#0a0806;border:1px solid var(--rule);color:var(--text);padding:12px 16px;font-family:'Old Standard TT',serif;font-size:0.9rem;outline:none;resize:vertical;min-height:100px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-hint{font-size:0.75rem;color:var(--muted);margin-top:5px;font-style:italic;}
+.form-section{border-top:1px solid var(--rule);padding-top:24px;margin-top:24px;}
+.form-section-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold-light);margin-bottom:20px;}
+.price-display{background:#1a1208;border:1px solid var(--gold);padding:20px;text-align:center;margin:24px 0;}
+.price-display-label{font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.price-display-amount{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold);}
+.price-display-note{font-size:0.8rem;color:var(--text);margin-top:6px;}
+.form-submit{width:100%;background:var(--red);color:#fff;padding:16px;font-family:'Old Standard TT',serif;font-size:0.9rem;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;margin-top:8px;}
+.form-submit:hover{background:#a02828;}
+#order-success{display:none;background:#0a1a0a;border:1px solid #2a5a2a;padding:32px;text-align:center;margin-top:24px;}
+#order-success h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:#c8e8c8;margin-bottom:12px;}
+#order-success p{color:#8aaa8a;line-height:1.8;}
+
+/* FOOTER */
+footer{padding:32px 24px;border-top:1px solid var(--rule);text-align:center;}
+.footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.footer-links a{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--amber);text-decoration:none;}
+.footer-copy{font-size:0.7rem;color:var(--amber);letter-spacing:1px;}
+
+@media(max-width:600px){
+  .form-row{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="inkdate-landing.html" class="nav-logo">INKDATE</a>
+  <div class="nav-links">
+    <a href="inkdate-landing.html">Home</a>
+    <a href="inkdate-pricing.html">Pricing</a>
+    <a href="inkdate-enterprise.html">Enterprise</a>
+    <a href="#order" class="nav-cta">Order Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">The Milestone Birthday Book</div>
+  <h1>
+    <em>Your Life</em><br>Through The Headlines
+  </h1>
+  <p class="hero-sub">A personalised 100-page premium hardback book telling the story of your life — world events, historic headlines and your own precious family memories — beautifully bound and ready to treasure forever.</p>
+  <div class="hero-quote">
+    "The world made history the day you were born. This is your story."
+  </div>
+  <a href="#order" style="display:inline-block;background:var(--red);color:#fff;padding:14px 36px;font-family:'Old Standard TT',serif;font-size:0.85rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;">✦ Order Your Book</a>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section class="inside">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow" style="margin-bottom:12px;">What's Inside</div>
+      <h2>100 pages. A lifetime of history.</h2>
+      <p>Every book is handcrafted by our team. No two books are identical. Your life, your headlines, your memories.</p>
+    </div>
+    <div class="pages-grid">
+      <div class="page-card">
+        <div class="page-num">01</div>
+        <div class="page-title">The Day You Were Born</div>
+        <div class="page-desc">The newspaper front page from the exact date of birth — the world as it was reported the day you arrived.</div>
+      </div>
+      <div class="page-card">
+        <div class="page-num">02</div>
+        <div class="page-title">Your Early Years</div>
+        <div class="page-desc">Historic headlines from your childhood years alongside your earliest family photos and memories.</div>
+      </div>
+      <div class="page-card">
+        <div class="page-num">03</div>
+        <div class="page-title">Growing Up</div>
+        <div class="page-desc">School days, teenage years — the world events that shaped your generation told through front pages.</div>
+      </div>
+      <div class="page-card">
+        <div class="page-num">04</div>
+        <div class="page-title">Family Milestones</div>
+        <div class="page-desc">Wedding day, children's births, special occasions — your personal headlines alongside world events.</div>
+      </div>
+      <div class="page-card">
+        <div class="page-num">05</div>
+        <div class="page-title">Your World Events</div>
+        <div class="page-desc">The historic moments of your lifetime — Moon landing, World Cups, royal events — as you lived through them.</div>
+      </div>
+      <div class="page-card">
+        <div class="page-num">06</div>
+        <div class="page-title">Today & Beyond</div>
+        <div class="page-desc">Today's front page and a final message from family and friends celebrating your milestone.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MILESTONES -->
+<section class="milestones">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow" style="margin-bottom:12px;">Choose Your Milestone</div>
+      <h2>Every milestone deserves a book.</h2>
+      <p>From 40th to 75th — and wedding anniversaries too. Each book is 100 pages, premium hardback, delivered to your door.</p>
+    </div>
+    <div class="milestone-grid">
+      <div class="milestone-card">
+        <div class="milestone-age">40</div>
+        <div class="milestone-label">40th Birthday</div>
+        <div class="milestone-price">£149.99</div>
+        <div class="milestone-pages">100 pages · Hardback</div>
+      </div>
+      <div class="milestone-card featured">
+        <div class="milestone-age">50</div>
+        <div class="milestone-label">50th Birthday</div>
+        <div class="milestone-price">£149.99</div>
+        <div class="milestone-pages">100 pages · Hardback</div>
+      </div>
+      <div class="milestone-card featured">
+        <div class="milestone-age">60</div>
+        <div class="milestone-label">60th Birthday</div>
+        <div class="milestone-price">£169.99</div>
+        <div class="milestone-pages">100 pages · Hardback</div>
+      </div>
+      <div class="milestone-card featured">
+        <div class="milestone-age">70</div>
+        <div class="milestone-label">70th Birthday</div>
+        <div class="milestone-price">£169.99</div>
+        <div class="milestone-pages">100 pages · Hardback</div>
+      </div>
+      <div class="milestone-card">
+        <div class="milestone-age">75</div>
+        <div class="milestone-label">75th Birthday</div>
+        <div class="milestone-price">£179.99</div>
+        <div class="milestone-pages">100 pages · Hardback</div>
+      </div>
+      <div class="milestone-card">
+        <div class="milestone-age">💍</div>
+        <div class="milestone-label">Anniversary</div>
+        <div class="milestone-price">£169.99</div>
+        <div class="milestone-pages">100 pages · Hardback</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow" style="margin-bottom:12px;">How It Works</div>
+      <h2>Simple to order. Extraordinary to receive.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Place Your Order</div>
+        <div class="step-desc">Fill in the form below with the name, date of birth, milestone and key family events you'd like included.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Send Your Photos</div>
+        <div class="step-desc">Email your personal photos to hello@inkdateapp.com — up to 20 photos included in every book.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">We Create Your Book</div>
+        <div class="step-desc">Our team handcrafts your 100-page book using AI-generated newspaper pages and your personal photos.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Delivered To Your Door</div>
+        <div class="step-desc">Your premium hardback arrives beautifully packaged within 10-14 working days. Ready to gift.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORDER FORM -->
+<section class="order" id="order">
+  <div class="form-wrap">
+    <div class="section-title" style="margin-bottom:40px;">
+      <div class="eyebrow" style="margin-bottom:12px;">Order Your Book</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-light);">Let's create their story.</h2>
+      <p style="color:var(--text);margin-top:12px;">Fill in the details below and we'll be in touch within 24 hours to confirm your order and payment.</p>
+    </div>
+
+    <form onsubmit="submitOrder(event)">
+
+      <!-- ABOUT THE RECIPIENT -->
+      <div class="form-section-title">✦ About The Person</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-input" id="r-fname" placeholder="e.g. Anita" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-input" id="r-lname" placeholder="e.g. Powell" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Date of Birth</label>
+          <input type="text" class="form-input" id="r-dob" placeholder="e.g. March 15, 1965" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Milestone</label>
+          <select class="form-select" id="r-milestone" onchange="updatePrice()" required>
+            <option value="">— Select milestone —</option>
+            <option value="40th" data-price="£149.99">40th Birthday — £149.99</option>
+            <option value="50th" data-price="£149.99">50th Birthday — £149.99</option>
+            <option value="60th" data-price="£169.99">60th Birthday — £169.99</option>
+            <option value="70th" data-price="£169.99">70th Birthday — £169.99</option>
+            <option value="75th" data-price="£179.99">75th Birthday — £179.99</option>
+            <option value="anniversary" data-price="£169.99">Wedding Anniversary — £169.99</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Preferred Newspaper</label>
+        <select class="form-select" id="r-newspaper" required>
+          <option value="">— Select newspaper —</option>
+          <option>The Times (UK)</option>
+          <option>Daily Mirror (UK)</option>
+          <option>The Guardian (UK)</option>
+          <option>Daily Express (UK)</option>
+          <option>The Sun (UK)</option>
+          <option>The Gleaner (Jamaica)</option>
+          <option>Daily Observer (Jamaica)</option>
+          <option>The Washington Post (USA)</option>
+          <option>New York Times (USA)</option>
+          <option>Other — please specify in notes</option>
+        </select>
+        <div class="form-hint">The newspaper used for their birth date and key life events</div>
+      </div>
+
+      <!-- FAMILY EVENTS -->
+      <div class="form-section">
+        <div class="form-section-title">✦ Key Life Events</div>
+        <p style="font-size:0.85rem;color:var(--text);margin-bottom:20px;line-height:1.7;">Tell us the important dates and events in their life — marriage, children's births, career highlights, family moments. The more you tell us the more personal we can make the book.</p>
+
+        <div class="form-group">
+          <label class="form-label">Key Dates & Events</label>
+          <textarea class="form-textarea" id="r-events" placeholder="e.g.&#10;Married John on June 12, 1990&#10;Son Michael born March 3, 1993&#10;Daughter Sarah born July 8, 1996&#10;Moved to London in 1988&#10;Retired from nursing in 2020&#10;&#10;Include as many dates and details as you like..." style="min-height:150px;"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Dedication Message</label>
+          <textarea class="form-textarea" id="r-dedication" placeholder="A personal message to appear in the front of the book..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Messages From Family & Friends</label>
+          <textarea class="form-textarea" id="r-messages" placeholder="Include any messages from family members to appear in the book..."></textarea>
+        </div>
+      </div>
+
+      <!-- PHOTOS -->
+      <div class="form-section">
+        <div class="form-section-title">✦ Personal Photos</div>
+        <p style="font-size:0.85rem;color:var(--text);margin-bottom:20px;line-height:1.7;">After placing your order, email up to <strong style="color:var(--gold);">20 personal photos</strong> to <a href="mailto:hello@inkdateapp.com" style="color:var(--gold);">hello@inkdateapp.com</a> with the subject line: <em>"Photos for [Name]'s book"</em>. Please label each photo with the year if possible.</p>
+        <div style="background:#1a1208;border:1px solid var(--rule);padding:16px;font-size:0.82rem;color:var(--text);line-height:1.7;">
+          ✦ Up to 20 photos included<br>
+          ✦ JPEG or PNG format<br>
+          ✦ Please include captions or dates where possible<br>
+          ✦ We'll place them alongside the relevant year headlines
+        </div>
+      </div>
+
+      <!-- YOUR DETAILS -->
+      <div class="form-section">
+        <div class="form-section-title">✦ Your Details</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your Name</label>
+            <input type="text" class="form-input" id="o-name" placeholder="Your full name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Email</label>
+            <input type="email" class="form-input" id="o-email" placeholder="your@email.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Delivery Address</label>
+          <textarea class="form-textarea" id="o-address" placeholder="Full delivery address including postcode..." style="min-height:80px;" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">When Is The Birthday / Anniversary?</label>
+          <input type="text" class="form-input" id="o-date" placeholder="e.g. August 15, 2026 — so we can ensure delivery in time">
+          <div class="form-hint">We need at least 14 working days to create and deliver your book</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Anything Else We Should Know?</label>
+          <textarea class="form-textarea" id="o-notes" placeholder="Any special requests, additional information or questions..."></textarea>
+        </div>
+      </div>
+
+      <!-- PRICE DISPLAY -->
+      <div class="price-display" id="price-display" style="display:none;">
+        <div class="price-display-label">Your Book Total</div>
+        <div class="price-display-amount" id="price-amount">£149.99</div>
+        <div class="price-display-note">We'll send a payment link to your email within 24 hours of receiving your order</div>
+      </div>
+
+      <div style="background:#1a1208;border:1px solid var(--rule);padding:16px;margin-bottom:20px;font-size:0.82rem;color:var(--text);line-height:1.7;">
+        <strong style="color:var(--gold);">✦ How payment works:</strong> Submit your order form now. We'll review your details and send a secure payment link to your email within 24 hours. No payment is taken until you approve the order.
+      </div>
+
+      <button type="submit" class="form-submit">✦ Submit My Order</button>
+
+    </form>
+
+    <div id="order-success">
+      <h3>✦ Order Received!</h3>
+      <p>
+        Thank you! We've received your order and will be in touch within 24 hours to confirm details and send your payment link.<br><br>
+        <strong style="color:#c8e8c8;">Don't forget to email your photos to:</strong><br>
+        <a href="mailto:hello@inkdateapp.com" style="color:#c8e8c8;">hello@inkdateapp.com</a><br><br>
+        Subject: <em>"Photos for [Name]'s book"</em>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="inkdate-landing.html">Home</a>
+    <a href="inkdate-pricing.html">Pricing</a>
+    <a href="inkdate-enterprise.html">Enterprise</a>
+    <a href="inkdate-terms.html">Terms</a>
+    <a href="inkdate-privacy.html">Privacy</a>
+    <a href="inkdate-refund.html">Refund</a>
+    <a href="mailto:hello@inkdateapp.com">Contact Us</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 Inkdate · All rights reserved · inkdateapp.com</div>
+</footer>
+
+<script>
+function updatePrice() {
+  const sel = document.getElementById('r-milestone');
+  const opt = sel.options[sel.selectedIndex];
+  if(opt.value) {
+    const price = opt.getAttribute('data-price');
+    document.getElementById('price-amount').textContent = price;
+    document.getElementById('price-display').style.display = 'block';
+  } else {
+    document.getElementById('price-display').style.display = 'none';
+  }
+}
+
+function submitOrder(e) {
+  e.preventDefault();
+  const data = {
+    recipient: document.getElementById('r-fname').value + ' ' + document.getElementById('r-lname').value,
+    dob: document.getElementById('r-dob').value,
+    milestone: document.getElementById('r-milestone').value,
+    newspaper: document.getElementById('r-newspaper').value,
+    events: document.getElementById('r-events').value,
+    dedication: document.getElementById('r-dedication').value,
+    messages: document.getElementById('r-messages').value,
+    orderedBy: document.getElementById('o-name').value,
+    email: document.getElementById('o-email').value,
+    address: document.getElementById('o-address').value,
+    eventDate: document.getElementById('o-date').value,
+    notes: document.getElementById('o-notes').value,
+  };
+
+  // Store locally
+  try {
+    const orders = JSON.parse(localStorage.getItem('inkdate_milestone_orders') || '[]');
+    orders.push({...data, timestamp: new Date().toISOString()});
+    localStorage.setItem('inkdate_milestone_orders', JSON.stringify(orders));
+  } catch(e) {}
+
+  // Send to email via formspree or similar
+  fetch('https://formspree.io/f/hello@inkdateapp.com', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  }).catch(()=>{});
+
+  document.querySelector('form').style.display = 'none';
+  document.getElementById('order-success').style.display = 'block';
+  window.scrollTo({top: document.getElementById('order-success').offsetTop - 100, behavior: 'smooth'});
+}
+</script>
+
+</body>
+</html>
