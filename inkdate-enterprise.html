@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inkdate Enterprise — AI Historical Reconstruction API</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#0f0d0a;
+  --gold:#c8a855;
+  --gold-light:#f0e4c0;
+  --amber:#c89050;
+  --rule:#3a2a18;
+  --text:#e8d5b0;
+  --muted:#c0a070;
+  --red:#8b2020;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--text);font-family:'Old Standard TT',Georgia,serif;line-height:1.7;overflow-x:hidden;}
+
+/* TYPOGRAPHY */
+.display{font-family:'Playfair Display',serif;font-weight:900;}
+.serif{font-family:'Playfair Display',serif;}
+.eyebrow{font-size:0.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);}
+
+/* LAYOUT */
+.container{max-width:900px;margin:0 auto;padding:0 24px;}
+.rule{border:none;border-top:1px solid var(--rule);margin:0;}
+
+/* ── NAV ── */
+nav{padding:20px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--rule);position:sticky;top:0;background:rgba(15,13,10,0.97);z-index:100;backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;letter-spacing:5px;color:var(--gold);text-decoration:none;}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-links a{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--text);text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-cta{background:var(--red);color:#fff;padding:8px 20px;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;font-family:'Old Standard TT',serif;}
+
+/* ── HERO ── */
+.hero{padding:80px 24px 60px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(ellipse at 50% 0%, rgba(200,168,85,0.06) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow{margin-bottom:24px;}
+.hero-title{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(2.4rem,6vw,4rem);line-height:1.1;color:var(--gold-light);margin-bottom:24px;letter-spacing:-0.5px;}
+.hero-title em{font-style:italic;color:var(--gold);}
+.hero-sub{font-size:1.1rem;color:var(--muted);max-width:600px;margin:0 auto 40px;line-height:1.8;}
+.hero-cta-group{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:var(--red);color:#fff;padding:14px 32px;font-family:'Old Standard TT',serif;font-size:0.8rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;display:inline-block;}
+.btn-secondary{background:transparent;color:var(--gold);padding:14px 32px;font-family:'Old Standard TT',serif;font-size:0.8rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;border:1px solid var(--gold);display:inline-block;}
+
+/* ── PIPELINE ── */
+.pipeline{padding:80px 24px;background:#0f0d0a;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.pipeline-title{text-align:center;margin-bottom:56px;}
+.pipeline-title h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-light);margin-bottom:12px;}
+.pipeline-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;max-width:900px;margin:0 auto;}
+.pipeline-step{padding:28px 20px;border-left:1px solid var(--rule);position:relative;text-align:center;}
+.pipeline-step:first-child{border-left:none;}
+.step-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--rule);margin-bottom:8px;line-height:1;}
+.step-icon{font-size:1.5rem;margin-bottom:8px;}
+.step-label{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.step-desc{font-size:0.8rem;color:var(--muted);line-height:1.5;}
+.arrow{display:flex;align-items:center;justify-content:center;color:var(--rule);font-size:1.2rem;padding-top:20px;}
+
+/* ── USE CASES ── */
+.usecases{padding:80px 24px;}
+.section-header{text-align:center;margin-bottom:56px;}
+.section-header h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-light);margin-bottom:12px;}
+.section-header p{color:var(--muted);max-width:560px;margin:0 auto;}
+.usecase-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--rule);max-width:900px;margin:0 auto;}
+.usecase-card{background:var(--ink);padding:32px 28px;}
+.usecase-icon{font-size:2rem;margin-bottom:16px;}
+.usecase-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold-light);margin-bottom:10px;}
+.usecase-desc{font-size:0.85rem;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+.usecase-example{font-size:0.75rem;color:var(--gold);font-style:italic;border-left:2px solid var(--rule);padding-left:12px;line-height:1.6;}
+
+/* ── API PREVIEW ── */
+.api-section{padding:80px 24px;background:#0f0d0a;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.api-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:900px;margin:0 auto;align-items:start;}
+.api-text h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-light);margin-bottom:16px;line-height:1.2;}
+.api-text p{color:var(--muted);font-size:0.9rem;line-height:1.8;margin-bottom:20px;}
+.api-features{list-style:none;}
+.api-features li{font-size:0.85rem;color:var(--text);padding:8px 0;border-bottom:1px solid var(--rule);display:flex;gap:10px;}
+.api-features li::before{content:'✦';color:var(--gold);flex-shrink:0;}
+.code-block{background:#0f0d0a;border:1px solid var(--rule);padding:24px;font-family:'Courier New',monospace;font-size:0.75rem;line-height:1.8;overflow-x:auto;}
+.code-comment{color:#4a3020;}
+.code-key{color:#c8a855;}
+.code-val{color:#c8b890;}
+.code-str{color:#8a9a60;}
+.code-url{color:#8b2020;}
+
+/* ── PRICING ── */
+.pricing{padding:80px 24px;}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--rule);max-width:900px;margin:0 auto 48px;}
+.pricing-card{background:var(--ink);padding:32px 24px;text-align:center;}
+.pricing-card.featured{background:#1a1208;position:relative;}
+.pricing-card.featured::before{content:'MOST POPULAR';position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);font-size:0.6rem;letter-spacing:2px;padding:4px 12px;white-space:nowrap;}
+.pricing-tier{font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.pricing-price{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold-light);margin-bottom:4px;}
+.pricing-period{font-size:0.75rem;color:var(--muted);margin-bottom:20px;}
+.pricing-calls{font-size:0.8rem;color:var(--text);margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--rule);}
+.pricing-features{list-style:none;text-align:left;}
+.pricing-features li{font-size:0.78rem;color:var(--text);padding:5px 0;display:flex;gap:8px;}
+.pricing-features li::before{content:'✓';color:var(--gold);flex-shrink:0;}
+.usecase-desc{font-size:0.85rem;color:var(--text);line-height:1.7;margin-bottom:16px;}
+.usecase-example{font-size:0.75rem;color:var(--gold);font-style:italic;border-left:2px solid var(--rule);padding-left:12px;line-height:1.6;}
+.step-desc{font-size:0.8rem;color:var(--text);line-height:1.5;}
+.api-text p{color:var(--text);font-size:0.9rem;line-height:1.8;margin-bottom:20px;}
+.api-features li{font-size:0.85rem;color:var(--text);padding:8px 0;border-bottom:1px solid var(--rule);display:flex;gap:10px;}
+.section-header p{color:var(--text);max-width:560px;margin:0 auto;}
+.hero-sub{font-size:1.1rem;color:var(--text);max-width:600px;margin:0 auto 40px;line-height:1.8;}
+.pricing-period{font-size:0.75rem;color:var(--text);margin-bottom:20px;}
+.pricing-calls{font-size:0.8rem;color:var(--gold-light);margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--rule);}
+.waitlist-inner p{color:var(--text);margin-bottom:40px;font-size:0.95rem;line-height:1.8;}
+
+/* ── WAITLIST ── */
+.waitlist{padding:80px 24px;background:#0f0d0a;border-top:1px solid var(--rule);}
+.waitlist-inner{max-width:600px;margin:0 auto;text-align:center;}
+.waitlist-inner h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold-light);margin-bottom:16px;}
+.waitlist-inner p{color:var(--muted);margin-bottom:40px;font-size:0.95rem;line-height:1.8;}
+.waitlist-form{display:flex;flex-direction:column;gap:16px;text-align:left;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-label{font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.form-input{background:#0f0d0a;border:1px solid var(--rule);color:var(--text);padding:12px 16px;font-family:'Old Standard TT',serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;width:100%;}
+.form-input:focus{border-color:var(--gold);}
+.form-select{background:#0f0d0a;border:1px solid var(--rule);color:var(--text);padding:12px 16px;font-family:'Old Standard TT',serif;font-size:0.9rem;outline:none;width:100%;cursor:pointer;}
+.form-textarea{background:#0f0d0a;border:1px solid var(--rule);color:var(--text);padding:12px 16px;font-family:'Old Standard TT',serif;font-size:0.9rem;outline:none;resize:vertical;min-height:80px;width:100%;}
+.form-submit{background:var(--red);color:#fff;padding:16px;font-family:'Old Standard TT',serif;font-size:0.8rem;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;width:100%;margin-top:8px;}
+.form-submit:hover{background:#a02828;}
+#waitlist-success{display:none;background:#0a1a0a;border:1px solid #2a5a2a;padding:24px;text-align:center;margin-top:24px;}
+#waitlist-success h3{font-family:'Playfair Display',serif;color:#c8e8c8;margin-bottom:8px;}
+#waitlist-success p{color:#8aaa8a;font-size:0.85rem;}
+
+/* ── FOOTER ── */
+footer{padding:32px 24px;border-top:1px solid var(--rule);text-align:center;}
+.footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
+.footer-links a{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--amber);text-decoration:none;}
+.footer-copy{font-size:0.7rem;color:var(--amber);letter-spacing:1px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .api-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .pipeline-grid{grid-template-columns:repeat(2,1fr);}
+  .pipeline-step{border-left:none;border-top:1px solid var(--rule);}
+  .pipeline-step:nth-child(odd){border-left:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="inkdate-landing.html" class="nav-logo">INKDATE</a>
+  <div class="nav-links">
+    <a href="inkdate-landing.html">Consumer</a>
+    <a href="inkdate-pricing.html">Pricing</a>
+    <a href="#waitlist" class="nav-cta">Request Access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow eyebrow">Inkdate Enterprise · AI Historical Reconstruction API</div>
+    <h1 class="hero-title display">
+      Experience history<br><em>exactly as people saw it.</em>
+    </h1>
+    <p class="hero-sub">
+      Give us any date, any country, any language. We return an authentic photorealistic historical newspaper front page in seconds. Powered by a multi-stage AI pipeline built on real historical research.
+    </p>
+    <div class="hero-cta-group">
+      <a href="#waitlist" class="btn-primary">Request API Access</a>
+      <a href="#how-it-works" class="btn-secondary">See How It Works</a>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="pipeline" id="how-it-works">
+  <div class="pipeline-title">
+    <div class="eyebrow" style="margin-bottom:12px;">The Technology</div>
+    <h2 class="display">Not just an image generator.<br>An AI historical reconstruction engine.</h2>
+  </div>
+  <div class="pipeline-grid">
+    <div class="pipeline-step">
+      <div class="step-icon">📅</div>
+      <div class="step-label">Step 1</div>
+      <div class="step-num">Date</div>
+      <div class="step-desc">Any date from 1850 to present</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-icon">🔍</div>
+      <div class="step-label">Step 2</div>
+      <div class="step-num">Research</div>
+      <div class="step-desc">AI researches real historical headlines</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-icon">📊</div>
+      <div class="step-label">Step 3</div>
+      <div class="step-num">Ranking</div>
+      <div class="step-desc">Events ranked by significance and location</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-icon">🌍</div>
+      <div class="step-label">Step 4</div>
+      <div class="step-num">Context</div>
+      <div class="step-desc">Country and language localisation</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-icon">✍️</div>
+      <div class="step-label">Step 5</div>
+      <div class="step-num">Editorial</div>
+      <div class="step-desc">Era-appropriate editorial generation</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-icon">🗞️</div>
+      <div class="step-label">Step 6</div>
+      <div class="step-num">Front Page</div>
+      <div class="step-desc">Photorealistic newspaper front page</div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="usecases">
+  <div class="section-header">
+    <div class="eyebrow" style="margin-bottom:12px;">Who It's For</div>
+    <h2 class="display">Built for organisations that bring history to life.</h2>
+    <p>From museums to publishers, schools to broadcasters — if your work involves historical storytelling, our API transforms how you do it.</p>
+  </div>
+  <div class="usecase-grid">
+    <div class="usecase-card">
+      <div class="usecase-icon">🏛️</div>
+      <div class="usecase-title serif">Museums & Heritage</div>
+      <div class="usecase-desc">Interactive exhibits where visitors enter their birth date and see the world as it was reported that day. Permanent installations. Touchscreen experiences.</div>
+      <div class="usecase-example">"Show me the front page from the day this museum opened."</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-icon">🏫</div>
+      <div class="usecase-title serif">Education</div>
+      <div class="usecase-desc">History curriculum resources. Students experience D-Day through five different national newspapers simultaneously. Primary sources, generated on demand.</div>
+      <div class="usecase-example">"Show pupils the Berlin Wall fall from German, French and British perspectives."</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-icon">📚</div>
+      <div class="usecase-title serif">Publishers</div>
+      <div class="usecase-desc">Period illustrations for history books. Educational textbook publishers. Magazine and media companies needing authentic historical imagery at scale.</div>
+      <div class="usecase-example">"Generate front pages for every chapter of our World War II history book."</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-icon">🎁</div>
+      <div class="usecase-title serif">Corporate Gifts</div>
+      <div class="usecase-desc">Employee milestone gifts at scale. Work anniversaries, birthdays, retirement. HR departments ordering personalised newspapers for hundreds of staff.</div>
+      <div class="usecase-example">"Generate a newspaper for every employee's first day at our company."</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-icon">📺</div>
+      <div class="usecase-title serif">Media & Broadcasting</div>
+      <div class="usecase-desc">TV documentaries needing period newspapers. Film and theatre production. News organisations creating historical content and interactives.</div>
+      <div class="usecase-example">"We need authentic 1940s newspapers for our six-part documentary series."</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-icon">🎮</div>
+      <div class="usecase-title serif">Gaming & Interactive</div>
+      <div class="usecase-desc">Historical games needing authentic newspapers. Interactive storytelling platforms. Immersive experiences where players discover history through headlines.</div>
+      <div class="usecase-example">"Generate dynamic newspapers for our 1960s historical simulation game."</div>
+    </div>
+  </div>
+</section>
+
+<!-- API PREVIEW -->
+<section class="api-section">
+  <div class="api-grid container">
+    <div class="api-text">
+      <div class="eyebrow" style="margin-bottom:16px;">The API</div>
+      <h2 class="display">Simple request.<br>Extraordinary result.</h2>
+      <p>One API call returns a photorealistic historical newspaper front page with verified headlines, period-accurate design, and authentic newspaper style — in any of 6 languages across 30+ countries.</p>
+      <ul class="api-features">
+        <li>1850 to present — any date in history</li>
+        <li>30+ countries and regions</li>
+        <li>6 languages including Spanish, French, German, Portuguese, Japanese</li>
+        <li>Broadsheet and tabloid formats</li>
+        <li>High resolution output — print ready</li>
+        <li>JSON response with headline data included</li>
+        <li>Then & Now and Memorial formats available</li>
+        <li>Webhook support for async generation</li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow" style="margin-bottom:12px;">Example Request</div>
+      <div class="code-block">
+<span class="code-comment">// POST /v1/generate</span>
+
+{
+  <span class="code-key">"date"</span>: <span class="code-str">"1966-07-30"</span>,
+  <span class="code-key">"country"</span>: <span class="code-str">"UK"</span>,
+  <span class="code-key">"language"</span>: <span class="code-str">"en"</span>,
+  <span class="code-key">"newspaper"</span>: <span class="code-str">"broadsheet"</span>,
+  <span class="code-key">"format"</span>: <span class="code-str">"portrait"</span>
+}
+
+<span class="code-comment">// Response</span>
+
+{
+  <span class="code-key">"image_url"</span>: <span class="code-url">"https://api.inkdate..."</span>,
+  <span class="code-key">"headline"</span>: <span class="code-str">"England Win The World Cup"</span>,
+  <span class="code-key">"date"</span>: <span class="code-str">"July 30, 1966"</span>,
+  <span class="code-key">"confidence"</span>: <span class="code-val">0.98</span>,
+  <span class="code-key">"historical_context"</span>: <span class="code-str">"England beat West..."</span>
+}
+      </div>
+      <div style="margin-top:24px;">
+        <div class="eyebrow" style="margin-bottom:12px;">Response Time</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);">
+          <div style="background:var(--ink);padding:16px;text-align:center;">
+            <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);">15s</div>
+            <div style="font-size:0.7rem;color:var(--muted);letter-spacing:1px;">Average generation</div>
+          </div>
+          <div style="background:var(--ink);padding:16px;text-align:center;">
+            <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);">99.9%</div>
+            <div style="font-size:0.7rem;color:var(--muted);letter-spacing:1px;">Uptime SLA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing">
+  <div class="section-header">
+    <div class="eyebrow" style="margin-bottom:12px;">Enterprise Pricing</div>
+    <h2 class="display">Scale with your needs.</h2>
+    <p>All plans include full API access, JSON responses, and dedicated onboarding. Annual billing available with 20% discount.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-tier">Starter</div>
+      <div class="pricing-price">£99</div>
+      <div class="pricing-period">per month</div>
+      <div class="pricing-calls">100 generations / month</div>
+      <ul class="pricing-features">
+        <li>Full API access</li>
+        <li>All languages & countries</li>
+        <li>Email support</li>
+        <li>JSON + image response</li>
+      </ul>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-tier">Growth</div>
+      <div class="pricing-price">£499</div>
+      <div class="pricing-period">per month</div>
+      <div class="pricing-calls">1,000 generations / month</div>
+      <ul class="pricing-features">
+        <li>Full API access</li>
+        <li>All languages & countries</li>
+        <li>Priority support</li>
+        <li>Webhook support</li>
+        <li>Custom newspaper styles</li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-tier">Education</div>
+      <div class="pricing-price">£199</div>
+      <div class="pricing-period">per month</div>
+      <div class="pricing-calls">500 generations / month</div>
+      <ul class="pricing-features">
+        <li>Schools & universities</li>
+        <li>Curriculum resources</li>
+        <li>Bulk generation tools</li>
+        <li>Dedicated onboarding</li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-tier">Enterprise</div>
+      <div class="pricing-price">POA</div>
+      <div class="pricing-period">custom pricing</div>
+      <div class="pricing-calls">Unlimited generations</div>
+      <ul class="pricing-features">
+        <li>Dedicated infrastructure</li>
+        <li>Custom SLA</li>
+        <li>White label available</li>
+        <li>Account manager</li>
+        <li>On-site integration support</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist" id="waitlist">
+  <div class="waitlist-inner">
+    <div class="eyebrow" style="margin-bottom:16px;">Early Access</div>
+    <h2 class="display">Join the Enterprise Waitlist.</h2>
+    <p>We are currently onboarding a select group of pilot partners. Join the waitlist and our team will be in touch within 48 hours to discuss your use case and requirements.</p>
+
+    <form class="waitlist-form" onsubmit="submitWaitlist(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-input" id="ent-fname" placeholder="First name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-input" id="ent-lname" placeholder="Last name" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Work Email</label>
+        <input type="email" class="form-input" id="ent-email" placeholder="you@organisation.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Organisation</label>
+        <input type="text" class="form-input" id="ent-org" placeholder="Museum, School, Publisher..." required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Organisation Type</label>
+        <select class="form-select" id="ent-type" required>
+          <option value="">— Select type —</option>
+          <option>Museum or Heritage Organisation</option>
+          <option>School or University</option>
+          <option>Publisher</option>
+          <option>Corporate — Gift Programme</option>
+          <option>Media or Broadcasting</option>
+          <option>Gaming or Interactive</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Estimated Monthly Generations</label>
+        <select class="form-select" id="ent-volume" required>
+          <option value="">— Select volume —</option>
+          <option>Under 100</option>
+          <option>100–500</option>
+          <option>500–1,000</option>
+          <option>1,000–5,000</option>
+          <option>5,000+</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tell us about your use case</label>
+        <textarea class="form-textarea" id="ent-usecase" placeholder="Briefly describe how you plan to use the Inkdate API..."></textarea>
+      </div>
+      <button type="submit" class="form-submit">✦ Request API Access</button>
+    </form>
+
+    <div id="waitlist-success">
+      <h3 class="serif">✦ You're on the list.</h3>
+      <p>Thank you for your interest in Inkdate Enterprise. Our team will be in touch within 48 hours to discuss your requirements.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="inkdate-landing.html">Home</a>
+    <a href="inkdate-pricing.html">Consumer</a>
+    <a href="inkdate-enterprise.html">Enterprise</a>
+    <a href="inkdate-terms.html">Terms</a>
+    <a href="inkdate-privacy.html">Privacy</a>
+    <a href="inkdate-refund.html">Refund</a>
+    <a href="mailto:hello@inkdateapp.com">Contact Us</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 Inkdate &middot; All rights reserved &middot; inkdateapp.com</div>
+</footer>
+
+<script>
+function submitWaitlist(e) {
+  e.preventDefault();
+  const data = {
+    fname: document.getElementById('ent-fname').value,
+    lname: document.getElementById('ent-lname').value,
+    email: document.getElementById('ent-email').value,
+    org: document.getElementById('ent-org').value,
+    type: document.getElementById('ent-type').value,
+    volume: document.getElementById('ent-volume').value,
+    usecase: document.getElementById('ent-usecase').value,
+  };
+
+  // Send to Netlify form or email
+  fetch('https://formspree.io/f/hello@inkdateapp.com', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  }).catch(()=>{});
+
+  // Show success regardless
+  document.querySelector('.waitlist-form').style.display = 'none';
+  document.getElementById('waitlist-success').style.display = 'block';
+
+  // Store in localStorage as backup
+  try {
+    const existing = JSON.parse(localStorage.getItem('inkdate_enterprise_leads') || '[]');
+    existing.push({...data, timestamp: new Date().toISOString()});
+    localStorage.setItem('inkdate_enterprise_leads', JSON.stringify(existing));
+  } catch(e) {}
+}
+</script>
+
+</body>
+</html>
