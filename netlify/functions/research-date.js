@@ -22,6 +22,11 @@ exports.handler = async function(event, context) {
     const { newspaper, date } = JSON.parse(event.body || "{}");
     if (!newspaper || !date) throw new Error("Newspaper and date are required");
 
+    // Extract event hint if provided e.g. "May 26 1999 — Manchester United win Treble"
+    const dateParts = date.split('—');
+    const cleanDate = dateParts[0].trim();
+    const eventHint = dateParts[1] ? dateParts[1].trim() : null;
+
     const isTabloid = ['The Sun','Daily Mirror','Daily Mail','Daily Express',
       'New York Daily News','The Star','The Star Jamaica'].some(t => newspaper.includes(t));
 
@@ -29,7 +34,8 @@ exports.handler = async function(event, context) {
 
     const prompt = `You are a newspaper historian with expert knowledge of historical front pages worldwide.
 
-Research the front page of "${newspaper}" dated ${date}.
+Research the front page of "${newspaper}" dated ${cleanDate}.
+${eventHint ? `IMPORTANT: This front page must focus on this specific event: "${eventHint}". Generate headlines and content specifically about this event even if it was primarily sports news — treat it as front page news for this collector's edition book.` : ''}
 Format: ${format}
 
 VERIFIED HISTORIC EVENTS — use EXACT details when dates match:
