@@ -670,8 +670,13 @@ function showSavedSample() {
 }
 
 function startOver() {
-  // Reset state
+  // Reset state but preserve creator mode
+  const wasCreator = S.creatorMode;
   S = {product:null,date1:'',date2:'',lang:null,langName:'',country:'',newspaper:'',paperEst:0,paperEnd:null,surface:'',lighting:''};
+  if(wasCreator) {
+    S.product = 'premium';
+    S.creatorMode = true;
+  }
   document.getElementById('date1').value='';
   document.getElementById('date2').value='';
   document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('selected'));
@@ -679,10 +684,9 @@ function startOver() {
   document.getElementById('country-sel').innerHTML='<option value="">— Select Country / Region —</option>';
   document.getElementById('paper-sel').style.display='none';
   document.getElementById('btn-review').disabled=true;
-  window.history.replaceState({}, '', '/inkdate-app.html');
-  // Show View My Sample button if sample exists
+  window.history.replaceState({}, '', window.location.pathname + (wasCreator ? '?creator=MARLENE2026' : ''));
   const saved = getSavedSample();
-  if(saved) {
+  if(saved && !wasCreator) {
     document.getElementById('btn-view-sample').style.display = 'block';
   }
   show('s1');
@@ -1339,7 +1343,10 @@ async function addWatermark(imageUrl) {
   if(creator === 'MARLENE2026') {
     S.product = 'premium';
     S.creatorMode = true;
-    document.getElementById('s2-product-label').textContent = 'Creator Mode — Unlimited';
+    document.getElementById('s2-product-label').textContent = '✦ Creator Mode — Unlimited';
+    // Hide upgrade prompt and watermark permanently
+    const upgradeWrap = document.getElementById('upgrade-wrap');
+    if(upgradeWrap) upgradeWrap.style.display = 'none';
     show('s2');
     return;
   }
