@@ -1333,6 +1333,17 @@ async function addWatermark(imageUrl) {
 (function checkStripeReturn() {
   const params = new URLSearchParams(window.location.search);
   const paid = params.get('paid');
+  const creator = params.get('creator');
+
+  // Creator bypass — unlimited free generations for book creation
+  if(creator === 'MARLENE2026') {
+    S.product = 'premium';
+    S.creatorMode = true;
+    document.getElementById('s2-product-label').textContent = 'Creator Mode — Unlimited';
+    show('s2');
+    return;
+  }
+
   if(paid && STRIPE[paid]) {
     S.product = paid;
     const labels = {
@@ -1358,7 +1369,6 @@ async function addWatermark(imageUrl) {
     // Check if customer has a saved sample to return to
     const saved = getSavedSample();
     if(saved && hasUsedFreeTrial()) {
-      // Show their saved sample so they can continue to payment
       document.getElementById('result-img').src = saved.imageUrl;
       document.getElementById('watermark-overlay').style.display = 'block';
       document.getElementById('btn-download').style.display = 'none';
