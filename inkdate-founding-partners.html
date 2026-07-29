@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InkDate Founding Partner Programme — Shaping the Future of AI Historical Storytelling</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#0f0d0a;
+  --gold:#c8a855;
+  --gold-light:#f0e4c0;
+  --amber:#c89050;
+  --rule:#3a2a18;
+  --text:#e8d5b0;
+  --muted:#c0a070;
+  --red:#8b2020;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--text);font-family:'Old Standard TT',Georgia,serif;line-height:1.7;overflow-x:hidden;}
+
+/* NAV */
+nav{padding:20px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--rule);position:sticky;top:0;background:rgba(15,13,10,0.97);z-index:100;backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;letter-spacing:5px;color:var(--gold);text-decoration:none;}
+.nav-links{display:flex;gap:20px;align-items:center;}
+.nav-links a{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--text);text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-cta{background:var(--red);color:#fff !important;padding:8px 20px;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;}
+
+/* HERO */
+.hero{padding:80px 24px 60px;text-align:center;border-bottom:1px solid var(--rule);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(200,168,85,0.06) 0%,transparent 70%);pointer-events:none;}
+.container{max-width:860px;margin:0 auto;}
+.eyebrow{font-size:0.85rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:20px;}
+.hero-number{font-family:'Playfair Display',serif;font-size:0.9rem;letter-spacing:3px;color:var(--muted);margin-bottom:16px;}
+.hero h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;color:var(--gold-light);margin-bottom:24px;}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.hero-intro{font-size:1.05rem;color:var(--text);max-width:640px;margin:0 auto 32px;line-height:1.9;}
+.hero-mission{font-family:'Playfair Display',serif;font-style:italic;font-size:1.15rem;color:var(--gold);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:20px 0;max-width:700px;margin:0 auto 40px;line-height:1.7;}
+.btn-primary{display:inline-block;background:var(--red);color:#fff;padding:14px 36px;font-family:'Old Standard TT',serif;font-size:0.85rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;margin:0 8px;}
+.btn-secondary{display:inline-block;background:transparent;color:var(--gold);padding:14px 36px;font-family:'Old Standard TT',serif;font-size:0.85rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;border:1px solid var(--gold);margin:0 8px;}
+
+/* SECTIONS */
+section{padding:70px 24px;border-bottom:1px solid var(--rule);}
+.section-eyebrow{font-size:0.85rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;text-align:center;}
+.section-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-light);text-align:center;margin-bottom:16px;}
+.section-sub{color:var(--text);text-align:center;max-width:580px;margin:0 auto 48px;font-size:0.95rem;line-height:1.8;}
+
+/* PROGRAMME STATEMENT */
+.statement{background:#0a0806;padding:48px;max-width:860px;margin:0 auto;border:1px solid var(--rule);text-align:center;}
+.statement p{font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--text);line-height:1.9;}
+.statement strong{color:var(--gold);font-style:normal;}
+
+/* WHY */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--rule);max-width:860px;margin:0 auto;}
+.why-card{background:var(--ink);padding:28px 24px;display:flex;gap:16px;align-items:flex-start;}
+.why-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px;}
+.why-title{font-family:'Playfair Display',serif;font-size:0.95rem;color:var(--gold-light);margin-bottom:6px;}
+.why-desc{font-size:0.82rem;color:var(--text);line-height:1.6;}
+
+/* WHO */
+.who-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--rule);max-width:860px;margin:0 auto;}
+.who-card{background:var(--ink);padding:20px;text-align:center;}
+.who-icon{font-size:1.6rem;margin-bottom:8px;}
+.who-label{font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text);}
+
+/* OPPORTUNITIES */
+.opp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--rule);max-width:860px;margin:0 auto;}
+.opp-card{background:#0a0806;padding:24px 20px;text-align:center;}
+.opp-title{font-family:'Playfair Display',serif;font-size:0.95rem;color:var(--gold);margin-bottom:6px;}
+.opp-desc{font-size:0.8rem;color:var(--text);line-height:1.5;}
+
+/* CERTIFICATE */
+.certificate{max-width:600px;margin:0 auto;border:1px solid var(--gold);padding:48px 40px;text-align:center;position:relative;background:#0a0806;}
+.certificate::before{content:'';position:absolute;inset:6px;border:1px solid rgba(200,168,85,0.3);pointer-events:none;}
+.cert-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;letter-spacing:6px;color:var(--gold);margin-bottom:4px;}
+.cert-sub{font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:24px;}
+.cert-rule{border:none;border-top:1px solid var(--rule);margin:16px 0;}
+.cert-title{font-family:'Playfair Display',serif;font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.cert-name{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold-light);margin-bottom:8px;}
+.cert-number{font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;}
+.cert-text{font-family:'Playfair Display',serif;font-style:italic;font-size:0.9rem;color:var(--text);line-height:1.7;margin-bottom:24px;}
+.cert-seal{font-size:2rem;margin-bottom:8px;}
+.cert-signed{font-size:0.7rem;letter-spacing:2px;color:var(--muted);}
+
+/* PARTNERS SHOWCASE */
+.partners-intro{text-align:center;margin-bottom:40px;font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:0.9rem;}
+.partner-slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--rule);max-width:860px;margin:0 auto;}
+.partner-slot{background:var(--ink);padding:24px;text-align:center;}
+.partner-slot.filled{background:#0f0d0a;}
+.partner-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--rule);margin-bottom:4px;}
+.partner-name{font-family:'Playfair Display',serif;font-size:0.85rem;color:var(--gold);margin-bottom:4px;}
+.partner-status{font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.partner-slot.open .partner-num{color:#2a1a0a;}
+.partner-slot.open .partner-name{color:#3a2a18;}
+.partner-slot.open .partner-status{color:#2a1a0a;}
+
+/* FORM */
+.form-wrap{max-width:640px;margin:0 auto;}
+.form-group{margin-bottom:20px;}
+.form-label{display:block;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.form-input{width:100%;background:#0a0806;border:1px solid var(--rule);color:var(--text);padding:12px 16px;font-family:'Old Standard TT',serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
+.form-input:focus{border-color:var(--gold);}
+.form-select{width:100%;background:#0a0806;border:1px solid var(--rule);color:var(--text);padding:12px 16px;font-family:'Old Standard TT',serif;font-size:0.9rem;outline:none;cursor:pointer;}
+.form-textarea{width:100%;background:#0a0806;border:1px solid var(--rule);color:var(--text);padding:12px 16px;font-family:'Old Standard TT',serif;font-size:0.9rem;outline:none;resize:vertical;min-height:100px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-submit{width:100%;background:var(--red);color:#fff;padding:16px;font-family:'Old Standard TT',serif;font-size:0.9rem;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;margin-top:8px;}
+#fp-success{display:none;background:#0a1a0a;border:1px solid #2a5a2a;padding:32px;text-align:center;margin-top:24px;}
+#fp-success h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:#c8e8c8;margin-bottom:12px;}
+#fp-success p{color:#8aaa8a;line-height:1.8;}
+
+/* CLOSING */
+.closing{text-align:center;padding:80px 24px;border-bottom:1px solid var(--rule);}
+.closing-quote{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,4vw,2.2rem);font-style:italic;color:var(--gold-light);max-width:700px;margin:0 auto 32px;line-height:1.4;}
+.closing-sub{color:var(--text);font-size:0.95rem;max-width:500px;margin:0 auto 40px;line-height:1.8;}
+
+/* FOOTER */
+footer{padding:32px 24px;text-align:center;}
+.footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.footer-links a{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--amber);text-decoration:none;}
+.footer-copy{font-size:0.7rem;color:var(--amber);letter-spacing:1px;}
+
+@media(max-width:640px){
+  .form-row{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+  .btn-primary,.btn-secondary{display:block;margin:8px auto;max-width:280px;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="inkdate-landing.html" class="nav-logo">INKDATE</a>
+  <div class="nav-links">
+    <a href="inkdate-landing.html">Home</a>
+    <a href="inkdate-pricing.html">Consumer</a>
+    <a href="inkdate-enterprise.html">Enterprise</a>
+    <a href="#apply" class="nav-cta">Apply Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">The InkDate Founding Partner Programme™</div>
+    <h1>
+      Shaping the future of<br>
+      <em>AI Historical Storytelling</em>
+    </h1>
+    <p class="hero-intro">
+      InkDate is inviting a select number of internationally respected organisations to become Founding Partners — helping shape how the world experiences history through AI Historical Reconstruction.
+    </p>
+    <div class="hero-mission">
+      "The InkDate Founding Partner Programme brings together leading cultural organisations to explore how AI Historical Reconstruction can create richer visitor experiences, new publishing opportunities and sustainable revenue — while preserving the integrity of history."
+    </div>
+    <a href="#apply" class="btn-primary">Request a Demonstration</a>
+    <a href="#programme" class="btn-secondary">Learn More</a>
+  </div>
+</section>
+
+<!-- PROGRAMME STATEMENT -->
+<section style="padding:60px 24px;border-bottom:1px solid var(--rule);">
+  <div class="container">
+    <div class="statement">
+      <p>
+        We are not looking for customers.<br><br>
+        We are looking for <strong>collaborators</strong>.<br><br>
+        Organisations that believe history should not simply be preserved — but <strong>experienced</strong>.<br><br>
+        Together, we will explore what becomes possible when AI Historical Reconstruction meets the world's greatest collections.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY BECOME A FOUNDING PARTNER -->
+<section id="programme">
+  <div class="container">
+    <div class="section-eyebrow">Why Become a Founding Partner</div>
+    <h2 class="section-title">A collaboration, not a contract.</h2>
+    <p class="section-sub">Founding Partners have the opportunity to help shape the future of AI Historical Reconstruction — and to benefit from it.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🏛️</div>
+        <div>
+          <div class="why-title">New Visitor Experiences</div>
+          <div class="why-desc">Explore immersive ways for visitors to experience history through authentic newspaper front pages from any date, any country, any language.</div>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📚</div>
+        <div>
+          <div class="why-title">Exclusive Publishing</div>
+          <div class="why-desc">Create collector's edition books and publications exclusive to your institution — new revenue from existing collections.</div>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💡</div>
+        <div>
+          <div class="why-title">Shape the Product</div>
+          <div class="why-desc">Founding Partners directly influence future InkDate capabilities — your needs shape what we build next.</div>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔬</div>
+        <div>
+          <div class="why-title">Early API Access</div>
+          <div class="why-desc">Priority access to the InkDate Enterprise API — evaluate and integrate before wider public availability.</div>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📰</div>
+        <div>
+          <div class="why-title">Thought Leadership</div>
+          <div class="why-desc">Co-author case studies and thought leadership pieces on AI and the future of historical storytelling.</div>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🌍</div>
+        <div>
+          <div class="why-title">Global Network</div>
+          <div class="why-desc">Join a select community of leading cultural institutions exploring AI Historical Reconstruction together.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE'RE LOOKING FOR -->
+<section style="background:#0f0d0a;">
+  <div class="container">
+    <div class="section-eyebrow">Who We're Looking For</div>
+    <h2 class="section-title">Leaders in preserving and presenting history.</h2>
+    <p class="section-sub">We are extending invitations to a carefully selected range of organisations across the UK, USA and internationally.</p>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-icon">🏛️</div>
+        <div class="who-label">Museums</div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🏛️</div>
+        <div class="who-label">Presidential Libraries</div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">👑</div>
+        <div class="who-label">Royal Collections</div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">📜</div>
+        <div class="who-label">National Archives</div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🏰</div>
+        <div class="who-label">Heritage Organisations</div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">📺</div>
+        <div class="who-label">Broadcasters</div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">📚</div>
+        <div class="who-label">Publishers</div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🎓</div>
+        <div class="who-label">Universities</div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🗺️</div>
+        <div class="who-label">Tourism Organisations</div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">⚽</div>
+        <div class="who-label">Sports Heritage</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRENT INITIATIVE -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow">Current Initiative</div>
+    <h2 class="section-title">The InkDate Global Enterprise 200</h2>
+    <p class="section-sub">A programme identifying 200 leading organisations across the UK, USA and internationally — collaborating on the future of AI Historical Reconstruction.</p>
+
+    <div class="partners-intro">The first Founding Partner numbers are being allocated now.</div>
+
+    <div class="partner-slots">
+      <div class="partner-slot open">
+        <div class="partner-num">001</div>
+        <div class="partner-name">Founding Partner</div>
+        <div class="partner-status">Available</div>
+      </div>
+      <div class="partner-slot open">
+        <div class="partner-num">002</div>
+        <div class="partner-name">Founding Partner</div>
+        <div class="partner-status">Available</div>
+      </div>
+      <div class="partner-slot open">
+        <div class="partner-num">003</div>
+        <div class="partner-name">Founding Partner</div>
+        <div class="partner-status">Available</div>
+      </div>
+      <div class="partner-slot open">
+        <div class="partner-num">004</div>
+        <div class="partner-name">Founding Partner</div>
+        <div class="partner-status">Available</div>
+      </div>
+      <div class="partner-slot open">
+        <div class="partner-num">005</div>
+        <div class="partner-name">Founding Partner</div>
+        <div class="partner-status">Available</div>
+      </div>
+      <div class="partner-slot open">
+        <div class="partner-num">006–200</div>
+        <div class="partner-name">Founding Partners</div>
+        <div class="partner-status">Available</div>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:24px;font-size:0.8rem;color:var(--muted);font-style:italic;">
+      Founding Partner numbers are permanent and non-transferable. The first organisations to join become part of InkDate history.
+    </p>
+  </div>
+</section>
+
+<!-- THE CERTIFICATE -->
+<section style="background:#0f0d0a;">
+  <div class="container">
+    <div class="section-eyebrow">The Founding Partner Certificate</div>
+    <h2 class="section-title">Something tangible. Something permanent.</h2>
+    <p class="section-sub">Every Founding Partner receives a formal certificate — a permanent record of their role in shaping the future of AI Historical Reconstruction.</p>
+
+    <div class="certificate">
+      <div class="cert-logo">INKDATE</div>
+      <div class="cert-sub">AI Historical Reconstruction Platform</div>
+      <div class="cert-rule"></div>
+      <div class="cert-title">This certifies that</div>
+      <div class="cert-name">Imperial War Museums</div>
+      <div class="cert-number">Founding Partner No. 001</div>
+      <div class="cert-text">
+        has joined the InkDate Founding Partner Programme and is recognised as a founding collaborator in shaping the future of AI Historical Reconstruction — helping bring history to life for audiences worldwide.
+      </div>
+      <div class="cert-seal">✦</div>
+      <div class="cert-rule"></div>
+      <div class="cert-signed">Marlene Blake · Founder & CEO · InkDate · 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERSHIP OPPORTUNITIES -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow">Partnership Opportunities</div>
+    <h2 class="section-title">What we can build together.</h2>
+    <p class="section-sub">Every partnership is bespoke. We begin with a conversation about your organisation's mission and explore together what becomes possible.</p>
+    <div class="opp-grid">
+      <div class="opp-card">
+        <div class="opp-title">Visitor Experiences</div>
+        <div class="opp-desc">QR-powered historical newspaper experiences for every visitor — no queues, no hardware costs.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Digital Exhibitions</div>
+        <div class="opp-desc">Immersive gallery installations showing how multiple nations reported the same historic event.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Collector's Edition Books</div>
+        <div class="opp-desc">Exclusive hardback publications available only through your institution — premium retail and gift.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Educational Resources</div>
+        <div class="opp-desc">Primary source materials for schools and universities — history experienced not just read.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Enterprise API</div>
+        <div class="opp-desc">Direct integration of InkDate's AI Historical Reconstruction engine into your digital platforms.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Publishing Partnerships</div>
+        <div class="opp-desc">Co-branded publications and licensing arrangements creating new revenue from existing collections.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLY -->
+<section id="apply" style="background:#0f0d0a;">
+  <div class="form-wrap">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div class="section-eyebrow">Apply to Become a Founding Partner</div>
+      <h2 class="section-title">Request a bespoke demonstration.</h2>
+      <p class="section-sub">We prepare a personalised demonstration for every organisation — showing exactly how InkDate can serve your specific mission and audience. There is no obligation.</p>
+    </div>
+
+    <form onsubmit="submitFP(event)" name="founding-partner" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="founding-partner">
+      <input type="hidden" name="bot-field" style="display:none">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-input" name="fname" placeholder="First name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-input" name="lname" placeholder="Last name" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Your Title / Role</label>
+        <input type="text" class="form-input" name="role" placeholder="e.g. Head of Digital Experience" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Organisation</label>
+        <input type="text" class="form-input" name="org" placeholder="Your organisation name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Organisation Type</label>
+        <select class="form-select" name="type" required>
+          <option value="">— Select type —</option>
+          <option>Museum or Heritage Organisation</option>
+          <option>Presidential Library</option>
+          <option>Royal Collection or Palace</option>
+          <option>National Archive or Library</option>
+          <option>Broadcaster</option>
+          <option>Publisher</option>
+          <option>University or Educational Institution</option>
+          <option>Tourism Organisation</option>
+          <option>Sports Heritage Organisation</option>
+          <option>Corporate — Heritage or Anniversary</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Work Email</label>
+        <input type="email" class="form-input" name="email" placeholder="you@organisation.com" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">What excites you most about InkDate?</label>
+        <textarea class="form-textarea" name="interest" placeholder="Tell us about your organisation's mission and what you'd most like to explore with InkDate..."></textarea>
+      </div>
+
+      <div style="background:#1a1208;border:1px solid var(--rule);padding:16px;margin-bottom:20px;font-size:0.82rem;color:var(--text);line-height:1.7;">
+        ✦ We prepare a bespoke demonstration for every organisation before our first conversation.<br>
+        ✦ There is no obligation and no sales pressure.<br>
+        ✦ We respond to every application within 48 hours.
+      </div>
+
+      <button type="submit" class="form-submit">✦ Apply to Become a Founding Partner</button>
+    </form>
+
+    <div id="fp-success">
+      <h3>✦ Application Received</h3>
+      <p>
+        Thank you for your interest in the InkDate Founding Partner Programme.<br><br>
+        We will prepare a bespoke demonstration specifically for your organisation and be in touch within 48 hours.<br><br>
+        <em>History should not simply be preserved. It should be experienced.</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-quote">
+    "History should not simply be preserved.<br>It should be experienced."
+  </div>
+  <p class="closing-sub">InkDate is building the platform that makes this possible — and we are looking for the organisations who believe it too.</p>
+  <a href="#apply" class="btn-primary">Request a Demonstration</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="inkdate-landing.html">Home</a>
+    <a href="inkdate-pricing.html">Consumer</a>
+    <a href="inkdate-enterprise.html">Enterprise</a>
+    <a href="inkdate-milestone.html">Milestone Books</a>
+    <a href="inkdate-terms.html">Terms</a>
+    <a href="inkdate-privacy.html">Privacy</a>
+    <a href="inkdate-refund.html">Refund</a>
+    <a href="mailto:hello@inkdateapp.com">Contact Us</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 Inkdate · All rights reserved · inkdateapp.com</div>
+</footer>
+
+<script>
+function submitFP(e) {
+  e.preventDefault();
+  // Store locally
+  try {
+    const data = {
+      fname: e.target.fname.value,
+      lname: e.target.lname.value,
+      role: e.target.role.value,
+      org: e.target.org.value,
+      type: e.target.type.value,
+      email: e.target.email.value,
+      interest: e.target.interest.value,
+      timestamp: new Date().toISOString()
+    };
+    const existing = JSON.parse(localStorage.getItem('inkdate_fp_applications') || '[]');
+    existing.push(data);
+    localStorage.setItem('inkdate_fp_applications', JSON.stringify(existing));
+  } catch(err) {}
+
+  document.querySelector('form').style.display = 'none';
+  document.getElementById('fp-success').style.display = 'block';
+  window.scrollTo({top: document.getElementById('fp-success').offsetTop - 100, behavior: 'smooth'});
+}
+</script>
+
+</body>
+</html>
