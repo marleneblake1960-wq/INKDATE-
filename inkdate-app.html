@@ -1191,7 +1191,7 @@ async function startGen() {
     const keepAlive = setInterval(() => {
       dots = (dots + 1) % 4;
       seconds++;
-      const msg = messages[Math.min(Math.floor(seconds/8), messages.length-1)];
+      const msg = messages[Math.min(Math.floor(seconds/5), messages.length-1)];
       lbl3.textContent = msg + '.'.repeat(dots);
     }, 800);
 
@@ -1230,8 +1230,11 @@ async function startGen() {
         prompt = `Photorealistic front page of ${r.newspaper} newspaper dated ${r.date}. Headline: "${r.banner_headline}". Subheadline: "${r.deck_headline}". Large press photograph, body text in columns, masthead at top. Aged newsprint. Flat unfolded page.`;
       }
 
+      const imgController = new AbortController();
+      const imgTimeout = setTimeout(() => imgController.abort(), 90000);
       const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
+        signal: imgController.signal,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + keyData.key,
@@ -1244,6 +1247,7 @@ async function startGen() {
           quality: 'medium',
         }),
       });
+      clearTimeout(imgTimeout);
 
       const imgData = await imgRes.json();
       if(imgData.error) throw new Error(imgData.error.message);
@@ -1252,6 +1256,9 @@ async function startGen() {
 
     } catch(e) {
       clearInterval(keepAlive);
+      if(e.name === 'AbortError') {
+        throw new Error('Generation timed out — OpenAI is busy. Please try again in a moment.');
+      }
       throw e;
     }
     if(!imageUrl) throw new Error('No image returned');
