@@ -180,7 +180,7 @@ select option{background:#1e1208;color:#e8d5b0;}
         display:block;margin:0 auto;
       ">✦ Try Free — See Your Date Come to Life</button>
       <div style="text-align:center;font-size:0.75rem;color:#a08060;font-style:italic;margin-top:8px;">
-        One free watermarked sample — no payment needed
+        Two free watermarked samples — no payment needed
       </div>
     </div>
 
@@ -617,11 +617,43 @@ const STRIPE = {
 };
 
 // Check if free trial already used
+function getFreeTrialData() {
+  try {
+    const raw = localStorage.getItem('inkdate_trial_data');
+    if (!raw) return { count: 0, firstUsed: null };
+    return JSON.parse(raw);
+  } catch(e) {
+    return { count: 0, firstUsed: null };
+  }
+}
 function hasUsedFreeTrial() {
-  return localStorage.getItem('inkdate_free_used') === '1';
+  const data = getFreeTrialData();
+  if (!data.firstUsed) return false;
+  // Reset after 7 days
+  const daysSinceFirst = (Date.now() - data.firstUsed) / (1000 * 60 * 60 * 24);
+  if (daysSinceFirst >= 7) {
+    localStorage.removeItem('inkdate_trial_data');
+    return false;
+  }
+  // Allow 2 free trials
+  return data.count >= 2;
+}
+function getTrialsRemaining() {
+  const data = getFreeTrialData();
+  if (!data.firstUsed) return 2;
+  const daysSinceFirst = (Date.now() - data.firstUsed) / (1000 * 60 * 60 * 24);
+  if (daysSinceFirst >= 7) return 2;
+  return Math.max(0, 2 - data.count);
 }
 function markFreeTrialUsed() {
-  localStorage.setItem('inkdate_free_used', '1');
+  const data = getFreeTrialData();
+  const now = Date.now();
+  localStorage.setItem('inkdate_trial_data', JSON.stringify({
+    count: (data.count || 0) + 1,
+    firstUsed: data.firstUsed || now
+  }));
+  // Keep legacy key removed
+  localStorage.removeItem('inkdate_free_used');
 }
 function saveSample(imageUrl, research) {
   try {
@@ -873,7 +905,7 @@ function pickProduct(p, el) {
 
   // Check free trial availability
   if(p === 'free' && hasUsedFreeTrial()) {
-    alert('You have already used your free trial. Purchase the full version for just £14.99.');
+    alert('You have used your 2 free trials. Your trials reset after 7 days, or purchase the full version for just £14.99.');
     S.product = 'premium';
     setTimeout(() => showPreview('premium'), 150);
     return;
@@ -912,7 +944,7 @@ const PREVIEWS = {
   free: {
     eyebrow: 'Try Free — Watermarked Sample',
     title: 'See your date come to life.',
-    desc: 'Generate one free watermarked newspaper front page. If you love it, purchase the clean full-resolution version for £14.99.',
+    desc: 'Generate two free watermarked newspaper front pages. If you love it, purchase the clean full-resolution version for £14.99.',
     price: 'Free — Watermarked Sample',
     img: '/IMG_9440.jpeg',
     stripe: null,
