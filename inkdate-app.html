@@ -834,11 +834,19 @@ const PAPERS = {
   },
   german: {
     'Germany': [
+      {v:'Berliner Tageblatt',l:'Berliner Tageblatt',est:1872},
+      {v:'Frankfurter Zeitung',l:'Frankfurter Zeitung',est:1856},
+      {v:'Berliner Morgenpost',l:'Berliner Morgenpost',est:1898},
+      {v:'Völkischer Beobachter',l:'Völkischer Beobachter',est:1920},
       {v:'Frankfurter Allgemeine Zeitung',l:'Frankfurter Allgemeine',est:1949},
       {v:'Die Welt',l:'Die Welt',est:1946},
       {v:'Süddeutsche Zeitung',l:'Süddeutsche Zeitung',est:1945},
     ],
-    'Austria': [{v:'Der Standard',l:'Der Standard',est:1988}],
+    'Austria': [
+      {v:'Wiener Zeitung Extrablatt',l:'Wiener Zeitung — Extrablatt',est:1703},
+      {v:'Neue Freie Presse',l:'Neue Freie Presse',est:1864},
+      {v:'Der Standard',l:'Der Standard',est:1988},
+    ],
   },
   portuguese: {
     'Brazil': [
@@ -1227,7 +1235,24 @@ async function startGen() {
         const r2 = research.date2 || {};
         prompt = `Photorealistic memorial keepsake photograph. TWO newspaper front pages arranged vertically in a single tall portrait frame. TOP HALF of image: ${r.newspaper} front page dated ${r.date}, headline "${r.banner_headline}". BOTTOM HALF of image: ${r2.newspaper||r.newspaper} front page dated ${r2.date||''}, headline "${(r2.banner_headline||'').substring(0,80)}". The two newspapers are stacked vertically — top paper above, bottom paper below — NOT side by side. A single white lily at the side. Aged newsprint. Warm amber light.`;
       } else {
-        prompt = `Photorealistic front page of ${r.newspaper} newspaper dated ${r.date}. Headline: "${r.banner_headline}". Subheadline: "${r.deck_headline}". Large press photograph, body text in columns, masthead at top. Aged newsprint. Flat unfolded page.`;
+        // Specific styling for historic German and Austrian newspapers
+        let styleGuide = '';
+        if (r.newspaper.includes('Berliner Tageblatt')) {
+          styleGuide = 'Authentic early 20th century German broadsheet style. Heavy serif masthead lettering in German typography. Dense justified columns in German language. Formal imperial layout. Aged yellowed newsprint. Pre-WW2 Berlin newspaper aesthetic.';
+        } else if (r.newspaper.includes('Frankfurter Zeitung')) {
+          styleGuide = 'Authentic pre-WW2 German broadsheet style. Prestigious liberal Frankfurt newspaper. Heavy serif German typography masthead. Dense multi-column layout in German language. Formal European broadsheet. Aged cream newsprint.';
+        } else if (r.newspaper.includes('Berliner Morgenpost')) {
+          styleGuide = 'Authentic early 20th century Berlin popular newspaper style. Bold German serif masthead. Multi-column layout in German language. Popular Berlin daily newspaper aesthetic. Aged newsprint. Pre-WW2 era styling.';
+        } else if (r.newspaper.includes('Völkischer Beobachter')) {
+          styleGuide = 'Authentic 1930s-1940s German newspaper style. Official NSDAP party newspaper. Bold aggressive Gothic blackletter Fraktur masthead typography. Dense propaganda-era German language columns. Nazi-era German newspaper aesthetic. Aged yellowed newsprint. Historically accurate layout only — no offensive imagery.';
+        } else if (r.newspaper.includes('Wiener Zeitung')) {
+          styleGuide = 'Authentic historic Austrian newspaper Extrablatt emergency edition style. World\'s oldest newspaper founded 1703. Heavy Gothic blackletter Fraktur masthead typography. Imperial Austro-Hungarian era formal layout. Dense German language columns. Imperial double eagle crest. Dramatic Extrablatt emergency edition banner. Aged cream newsprint. Formal Viennese broadsheet aesthetic.';
+        } else if (r.newspaper.includes('Neue Freie Presse')) {
+          styleGuide = 'Authentic late 19th to early 20th century Viennese prestige newspaper style. Vienna\'s most prestigious pre-war newspaper. Elegant formal European broadsheet layout. Heavy serif German typography masthead. Dense multi-column German language text. Imperial Vienna aesthetic. Aged cream newsprint.';
+        } else {
+          styleGuide = 'Authentic newspaper front page. Masthead at top. Large press photograph. Body text in columns. Aged newsprint. Flat unfolded page.';
+        }
+        prompt = `Photorealistic front page of ${r.newspaper} newspaper dated ${r.date}. Headline in appropriate language: "${r.banner_headline}". Subheadline: "${r.deck_headline}". ${styleGuide}`;
       }
 
       const imgController = new AbortController();
