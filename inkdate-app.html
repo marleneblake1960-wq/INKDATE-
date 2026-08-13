@@ -117,7 +117,8 @@ select option{background:#1e1208;color:#e8d5b0;}
 .prog-lbl.done{color:#7aaa4a;}
 
 /* RESULT */
-.result-img{width:100%;display:block;border:1px solid #3a2415;object-fit:contain;background:#1a0f0a;max-width:600px;margin:0 auto;}
+.result-img{width:100%;display:block;border:1px solid #3a2415;object-fit:contain;background:#1a0f0a;max-width:100%;margin:0 auto;cursor:zoom-in;}
+.result-img.fullscreen{position:fixed;top:0;left:0;width:100vw;height:100vh;max-width:100vw;z-index:9999;background:#000;object-fit:contain;cursor:zoom-out;border:none;margin:0;}
 .result-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 8px;}
 .result-note{font-size:0.78rem;color:#c8a860;font-style:italic;text-align:center;margin-bottom:20px;}
 
@@ -655,6 +656,76 @@ function markFreeTrialUsed() {
   // Keep legacy key removed
   localStorage.removeItem('inkdate_free_used');
 }
+// Tap to fullscreen
+document.addEventListener('DOMContentLoaded', function() {
+  // Tap to fullscreen
+  const img = document.getElementById('result-img');
+  if(img) {
+    img.addEventListener('click', function() {
+      if(this.src && this.src !== window.location.href) {
+        this.classList.toggle('fullscreen');
+        if(this.classList.contains('fullscreen')) {
+          document.addEventListener('keydown', function escHandler(e) {
+            if(e.key === 'Escape') {
+              img.classList.remove('fullscreen');
+              document.removeEventListener('keydown', escHandler);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  // Restore generation state if user left page mid-session
+  const gen = getGenerationState();
+  if(gen) {
+    document.getElementById('result-img').src = gen.imageUrl;
+    const isPaid = gen.tier !== 'free';
+    document.getElementById('watermark-overlay').style.display = isPaid ? 'none' : 'block';
+    document.getElementById('free-view-note').style.display = isPaid ? 'none' : 'block';
+    if(isPaid) {
+      const dlBtn = document.getElementById('btn-download');
+      dlBtn.style.display = 'block';
+      dlBtn.onclick = function() {
+        const a = document.createElement('a');
+        a.href = gen.imageUrl;
+        a.download = 'inkdate-newspaper.png';
+        a.click();
+        setTimeout(() => { window.open(gen.imageUrl, '_blank'); }, 500);
+      };
+      document.getElementById('save-hint').style.display = 'block';
+    }
+    document.getElementById('progress-wrap').style.display = 'none';
+    document.getElementById('result-wrap').style.display = 'block';
+    document.getElementById('s4-sub').textContent = 'Your newspaper is ready';
+    show('s4');
+  }
+});
+
+// Save generation state so returning to page restores it
+function saveGenerationState(imageUrl, research, tier) {
+  try {
+    sessionStorage.setItem('inkdate_gen_image', imageUrl);
+    sessionStorage.setItem('inkdate_gen_research', JSON.stringify(research));
+    sessionStorage.setItem('inkdate_gen_tier', tier || 'free');
+  } catch(e) {}
+}
+function getGenerationState() {
+  try {
+    const img = sessionStorage.getItem('inkdate_gen_image');
+    const research = JSON.parse(sessionStorage.getItem('inkdate_gen_research') || 'null');
+    const tier = sessionStorage.getItem('inkdate_gen_tier') || 'free';
+    return img && research ? { imageUrl: img, research, tier } : null;
+  } catch(e) { return null; }
+}
+function clearGenerationState() {
+  try {
+    sessionStorage.removeItem('inkdate_gen_image');
+    sessionStorage.removeItem('inkdate_gen_research');
+    sessionStorage.removeItem('inkdate_gen_tier');
+  } catch(e) {}
+}
+
 function saveSample(imageUrl, research) {
   try {
     localStorage.setItem('inkdate_sample_img', imageUrl);
@@ -703,6 +774,7 @@ function showSavedSample() {
 }
 
 function startOver() {
+  clearGenerationState();
   // Reset state but preserve creator mode
   const wasCreator = S.creatorMode;
   S = {product:null,date1:'',date2:'',lang:null,langName:'',country:'',newspaper:'',paperEst:0,paperEnd:null,surface:'',lighting:''};
@@ -1290,6 +1362,9 @@ async function startGen() {
     clearInterval(keepAlive);
 
     document.getElementById('result-img').src = imageUrl;
+
+    // Save generation state so returning to page restores result
+    saveGenerationState(imageUrl, research, S.product);
 
     // Show/hide watermark overlay and download button
     if(S.product === 'free') {
