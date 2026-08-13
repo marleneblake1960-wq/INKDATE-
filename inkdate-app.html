@@ -462,7 +462,7 @@ select option{background:#1e1208;color:#e8d5b0;}
     <div class="result-btns">
       <a id="result-link" href="#" target="_blank" class="btn btn-red">Open Full Size</a>
       <a id="btn-download" href="#" target="_blank" class="btn" style="display:none;margin-top:10px;background:#2a5a2a;border-color:#4a9a4a;color:#fff;">⬇ Open Full Resolution</a>
-      <p id="save-hint" style="display:none;font-size:0.75rem;color:#a08060;margin-top:8px;text-align:center;">On mobile: tap Open Full Resolution → long-press image → Save to Photos<br>On desktop: right-click image → Save Image As</p>
+      <p id="save-hint" style="display:none;font-size:0.75rem;color:#a08060;margin-top:8px;text-align:center;">On mobile: tap <strong>Save Image</strong> → long-press image → Save to Photos<br>On desktop: tap <strong>Save Image</strong> to download directly</p>
       <button class="btn btn-ghost" id="btn-create-another" onclick="startOver()">↺ Create Another</button>
       <button class="btn btn-ghost" id="btn-view-sample" style="display:none;margin-top:8px;" onclick="showSavedSample()">← View My Sample</button>
       <!-- Share button -->
@@ -1372,6 +1372,7 @@ async function startGen() {
       document.getElementById('btn-download').style.display = 'none';
       document.getElementById('save-hint').style.display = 'none';
       document.getElementById('free-view-note').style.display = 'block';
+      document.getElementById('result-link').href = '#';
       // Save sample so customer can return to it
       saveSample(imageUrl, research);
       markFreeTrialUsed();
@@ -1380,20 +1381,32 @@ async function startGen() {
       document.getElementById('free-view-note').style.display = 'none';
       document.getElementById('save-hint').style.display = 'block';
 
-      // Create download button that works on all devices
+      // Wire up Open Full Size button
+      const resultLink = document.getElementById('result-link');
+      resultLink.href = imageUrl;
+      resultLink.target = '_blank';
+
+      // Wire up download button
       const dlBtn = document.getElementById('btn-download');
       dlBtn.style.display = 'block';
+      dlBtn.textContent = '⬇ Save Image';
       dlBtn.onclick = function(e) {
         e.preventDefault();
-        // Try direct download first
-        const a = document.createElement('a');
-        a.href = imageUrl;
-        a.download = 'inkdate-newspaper.png';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        // Fallback — open in new tab
-        setTimeout(() => { window.open(imageUrl, '_blank'); }, 500);
+        // On mobile — open full size so user can long-press to save
+        if(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          window.open(imageUrl, '_blank');
+          setTimeout(() => {
+            alert('Long-press the image and tap "Save to Photos" or "Download Image".');
+          }, 800);
+        } else {
+          // On desktop — trigger direct download
+          const a = document.createElement('a');
+          a.href = imageUrl;
+          a.download = 'inkdate-newspaper.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
       };
     }
     document.getElementById('progress-wrap').style.display = 'none';
