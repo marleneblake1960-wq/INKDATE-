@@ -845,6 +845,16 @@ const PAPERS = {
       {v:'New York Daily News',l:'New York Daily News',est:1919},
       {v:'The Boston Globe',l:'The Boston Globe',est:1872},
       {v:'The Wall Street Journal',l:'The Wall Street Journal',est:1889},
+      {v:'Pittsburgh Post-Gazette',l:'Pittsburgh Post-Gazette',est:1786},
+      {v:'San Francisco Chronicle',l:'San Francisco Chronicle',est:1865},
+      {v:'St. Louis Post-Dispatch',l:'St. Louis Post-Dispatch',est:1878},
+      {v:'Atlanta Constitution',l:'Atlanta Constitution',est:1868},
+      {v:'Dallas Morning News',l:'Dallas Morning News',est:1885},
+      {v:'New York Post',l:'New York Post',est:1801},
+      {v:'Philadelphia Inquirer',l:'Philadelphia Inquirer',est:1829},
+      {v:'Detroit Free Press',l:'Detroit Free Press',est:1831},
+      {v:'Miami Herald',l:'Miami Herald',est:1903},
+      {v:'Houston Chronicle',l:'Houston Chronicle',est:1901},
     ],
     'Jamaica': [
       {v:'The Gleaner',l:'The Gleaner',est:1834},
@@ -1491,6 +1501,50 @@ async function addWatermark(imageUrl) {
   const params = new URLSearchParams(window.location.search);
   const paid = params.get('paid');
   const creator = params.get('creator');
+  const demo = params.get('demo');
+  const demoDate = params.get('date');
+  const demoNewspaper = params.get('newspaper');
+  const demoLang = params.get('lang') || 'english';
+
+  // Demo mode — pre-filled date and newspaper for live demonstrations
+  if(demo === 'kingcenter' || (demoDate && demoNewspaper)) {
+    S.product = 'free';
+    S.creatorMode = false;
+
+    // Pre-fill the date and newspaper fields
+    setTimeout(() => {
+      // Jump to screen 2 and pre-fill
+      show('s2');
+      const dateField = document.getElementById('date1');
+      if(dateField && demoDate) {
+        dateField.value = decodeURIComponent(demoDate);
+      }
+      // Pre-select language
+      const langBtns = document.querySelectorAll('.lang-btn');
+      langBtns.forEach(btn => {
+        if(btn.dataset.lang === demoLang) {
+          btn.click();
+        }
+      });
+      // Pre-select newspaper after language is set
+      setTimeout(() => {
+        const npSelect = document.getElementById('newspaper-select');
+        if(npSelect && demoNewspaper) {
+          const decoded = decodeURIComponent(demoNewspaper);
+          for(let opt of npSelect.options) {
+            if(opt.value === decoded || opt.text === decoded) {
+              npSelect.value = opt.value;
+              break;
+            }
+          }
+        }
+        // Show a welcome hint
+        const hint = document.getElementById('date-hint');
+        if(hint) hint.textContent = '✦ Demo pre-loaded — tap Generate to experience InkDate';
+      }, 300);
+    }, 100);
+    return;
+  }
 
   // Creator bypass — unlimited free generations for book creation
   if(creator === 'MARLENE2026') {
