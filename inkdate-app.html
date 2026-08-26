@@ -1509,11 +1509,11 @@ async function addWatermark(imageUrl) {
 
   // Demo mode — pre-filled date, country, language and newspaper for live demonstrations
   if(demo === 'kingcenter' || (demoDate && demoNewspaper)) {
-    S.product = 'free';
-    S.creatorMode = false;
+    S.product = 'premium';
+    S.creatorMode = true;
 
-    // Pre-fill all fields so visitor just presses Generate
-    setTimeout(() => {
+    // Wait for DOM to be fully ready then pre-fill all fields
+    const runDemo = () => {
       // Jump to screen 2
       show('s2');
 
@@ -1523,67 +1523,55 @@ async function addWatermark(imageUrl) {
         dateField.value = decodeURIComponent(demoDate);
       }
 
-      // Step 2 — Pre-select language by calling pickLang directly
+      // Step 2 — Call pickLang directly
+      const names = {'english':'English','french':'Français','spanish':'Español','german':'Deutsch','portuguese':'Português','japanese':'日本語'};
       const langBtns = document.querySelectorAll('.lang-btn');
-      let langTriggered = false;
+      let langBtn = null;
       langBtns.forEach(btn => {
-        const onclickAttr = btn.getAttribute('onclick') || '';
-        if(onclickAttr.includes("'" + demoLang + "'")) {
-          btn.click();
-          langTriggered = true;
-        }
+        const oc = btn.getAttribute('onclick') || '';
+        if(oc.includes("'" + demoLang + "'")) langBtn = btn;
       });
-      // Fallback — call pickLang directly if button click did not work
-      if(!langTriggered && typeof pickLang === 'function') {
-        const names = {'english':'English','french':'Français','spanish':'Español','german':'Deutsch'};
-        const fakeLangBtn = document.querySelector('.lang-btn');
-        pickLang(demoLang, names[demoLang] || demoLang, fakeLangBtn);
+      if(typeof pickLang === 'function') {
+        pickLang(demoLang, names[demoLang] || demoLang, langBtn || langBtns[0]);
       }
 
-      // Step 3 — Wait for pickLang to populate countries, then set country
+      // Step 3 — Set country after pickLang populates it
       setTimeout(() => {
         const countrySel = document.getElementById('country-sel');
-        if(countrySel && demoCountry) {
+        if(countrySel) {
           countrySel.value = demoCountry;
-          // Trigger updatePapers to populate newspaper dropdown
           if(typeof updatePapers === 'function') updatePapers();
         }
 
-        // Step 4 — Wait for updatePapers to populate newspapers, then select newspaper
+        // Step 4 — Set newspaper after updatePapers populates it
         setTimeout(() => {
           const npSelect = document.getElementById('paper-sel');
           if(npSelect && demoNewspaper) {
             const decoded = decodeURIComponent(demoNewspaper);
-            // Try exact match first, then partial match
-            let matched = false;
             for(let opt of npSelect.options) {
-              if(opt.value === decoded) {
+              if(opt.value === decoded || opt.value.toLowerCase().includes(decoded.toLowerCase()) || decoded.toLowerCase().includes(opt.value.toLowerCase())) {
                 npSelect.value = opt.value;
-                matched = true;
+                if(typeof pickPaper === 'function') pickPaper();
                 break;
               }
             }
-            if(!matched) {
-              for(let opt of npSelect.options) {
-                if(opt.value.toLowerCase().includes(decoded.toLowerCase()) ||
-                   decoded.toLowerCase().includes(opt.value.toLowerCase())) {
-                  npSelect.value = opt.value;
-                  matched = true;
-                  break;
-                }
-              }
-            }
             npSelect.style.display = 'block';
-            if(matched && typeof pickPaper === 'function') pickPaper();
           }
 
-          // Step 5 — Show welcome hint
+          // Step 5 — Hint
           const hint = document.getElementById('date-hint');
           if(hint) hint.textContent = '✦ Demo pre-loaded — press Generate to experience InkDate';
 
-        }, 500);
-      }, 500);
-    }, 100);
+        }, 600);
+      }, 600);
+    };
+
+    // Run after DOM ready
+    if(document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => setTimeout(runDemo, 200));
+    } else {
+      setTimeout(runDemo, 200);
+    }
     return;
   }
 
