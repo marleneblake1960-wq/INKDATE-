@@ -1523,13 +1523,22 @@ async function addWatermark(imageUrl) {
         dateField.value = decodeURIComponent(demoDate);
       }
 
-      // Step 2 — Pre-select language (this populates the country dropdown via pickLang)
+      // Step 2 — Pre-select language by calling pickLang directly
       const langBtns = document.querySelectorAll('.lang-btn');
+      let langTriggered = false;
       langBtns.forEach(btn => {
-        if(btn.dataset.lang === demoLang) {
+        const onclickAttr = btn.getAttribute('onclick') || '';
+        if(onclickAttr.includes("'" + demoLang + "'")) {
           btn.click();
+          langTriggered = true;
         }
       });
+      // Fallback — call pickLang directly if button click did not work
+      if(!langTriggered && typeof pickLang === 'function') {
+        const names = {'english':'English','french':'Français','spanish':'Español','german':'Deutsch'};
+        const fakeLangBtn = document.querySelector('.lang-btn');
+        pickLang(demoLang, names[demoLang] || demoLang, fakeLangBtn);
+      }
 
       // Step 3 — Wait for pickLang to populate countries, then set country
       setTimeout(() => {
