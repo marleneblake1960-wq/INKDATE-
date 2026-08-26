@@ -1523,7 +1523,7 @@ async function addWatermark(imageUrl) {
         dateField.value = decodeURIComponent(demoDate);
       }
 
-      // Step 2 — Pre-select language
+      // Step 2 — Pre-select language (this populates the country dropdown via pickLang)
       const langBtns = document.querySelectorAll('.lang-btn');
       langBtns.forEach(btn => {
         if(btn.dataset.lang === demoLang) {
@@ -1531,42 +1531,49 @@ async function addWatermark(imageUrl) {
         }
       });
 
-      // Step 3 — Pre-select country and trigger updatePapers
+      // Step 3 — Wait for pickLang to populate countries, then set country
       setTimeout(() => {
         const countrySel = document.getElementById('country-sel');
         if(countrySel && demoCountry) {
           countrySel.value = demoCountry;
-          // Trigger the onchange to populate newspaper dropdown
+          // Trigger updatePapers to populate newspaper dropdown
           if(typeof updatePapers === 'function') updatePapers();
         }
 
-        // Step 4 — Pre-select newspaper after papers are loaded
+        // Step 4 — Wait for updatePapers to populate newspapers, then select newspaper
         setTimeout(() => {
           const npSelect = document.getElementById('paper-sel');
           if(npSelect && demoNewspaper) {
             const decoded = decodeURIComponent(demoNewspaper);
+            // Try exact match first, then partial match
+            let matched = false;
             for(let opt of npSelect.options) {
-              if(opt.value === decoded || opt.text.includes(decoded) || decoded.includes(opt.value)) {
+              if(opt.value === decoded) {
                 npSelect.value = opt.value;
-                if(typeof pickPaper === 'function') pickPaper();
+                matched = true;
                 break;
               }
             }
+            if(!matched) {
+              for(let opt of npSelect.options) {
+                if(opt.value.toLowerCase().includes(decoded.toLowerCase()) ||
+                   decoded.toLowerCase().includes(opt.value.toLowerCase())) {
+                  npSelect.value = opt.value;
+                  matched = true;
+                  break;
+                }
+              }
+            }
             npSelect.style.display = 'block';
+            if(matched && typeof pickPaper === 'function') pickPaper();
           }
 
-          // Step 5 — Show welcome hint and enable generate button
+          // Step 5 — Show welcome hint
           const hint = document.getElementById('date-hint');
           if(hint) hint.textContent = '✦ Demo pre-loaded — press Generate to experience InkDate';
 
-          // Enable the generate button
-          const reviewBtn = document.getElementById('btn-review');
-          if(reviewBtn) {
-            reviewBtn.style.opacity = '1';
-            reviewBtn.style.cursor = 'pointer';
-          }
-        }, 400);
-      }, 200);
+        }, 500);
+      }, 500);
     }, 100);
     return;
   }
