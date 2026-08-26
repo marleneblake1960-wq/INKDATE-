@@ -1505,43 +1505,68 @@ async function addWatermark(imageUrl) {
   const demoDate = params.get('date');
   const demoNewspaper = params.get('newspaper');
   const demoLang = params.get('lang') || 'english';
+  const demoCountry = params.get('country') || 'USA';
 
-  // Demo mode — pre-filled date and newspaper for live demonstrations
+  // Demo mode — pre-filled date, country, language and newspaper for live demonstrations
   if(demo === 'kingcenter' || (demoDate && demoNewspaper)) {
     S.product = 'free';
     S.creatorMode = false;
 
-    // Pre-fill the date and newspaper fields
+    // Pre-fill all fields so visitor just presses Generate
     setTimeout(() => {
-      // Jump to screen 2 and pre-fill
+      // Jump to screen 2
       show('s2');
+
+      // Step 1 — Pre-fill date
       const dateField = document.getElementById('date1');
       if(dateField && demoDate) {
         dateField.value = decodeURIComponent(demoDate);
       }
-      // Pre-select language
+
+      // Step 2 — Pre-select language
       const langBtns = document.querySelectorAll('.lang-btn');
       langBtns.forEach(btn => {
         if(btn.dataset.lang === demoLang) {
           btn.click();
         }
       });
-      // Pre-select newspaper after language is set
+
+      // Step 3 — Pre-select country and trigger updatePapers
       setTimeout(() => {
-        const npSelect = document.getElementById('newspaper-select');
-        if(npSelect && demoNewspaper) {
-          const decoded = decodeURIComponent(demoNewspaper);
-          for(let opt of npSelect.options) {
-            if(opt.value === decoded || opt.text === decoded) {
-              npSelect.value = opt.value;
-              break;
-            }
-          }
+        const countrySel = document.getElementById('country-sel');
+        if(countrySel && demoCountry) {
+          countrySel.value = demoCountry;
+          // Trigger the onchange to populate newspaper dropdown
+          if(typeof updatePapers === 'function') updatePapers();
         }
-        // Show a welcome hint
-        const hint = document.getElementById('date-hint');
-        if(hint) hint.textContent = '✦ Demo pre-loaded — tap Generate to experience InkDate';
-      }, 300);
+
+        // Step 4 — Pre-select newspaper after papers are loaded
+        setTimeout(() => {
+          const npSelect = document.getElementById('paper-sel');
+          if(npSelect && demoNewspaper) {
+            const decoded = decodeURIComponent(demoNewspaper);
+            for(let opt of npSelect.options) {
+              if(opt.value === decoded || opt.text.includes(decoded) || decoded.includes(opt.value)) {
+                npSelect.value = opt.value;
+                if(typeof pickPaper === 'function') pickPaper();
+                break;
+              }
+            }
+            npSelect.style.display = 'block';
+          }
+
+          // Step 5 — Show welcome hint and enable generate button
+          const hint = document.getElementById('date-hint');
+          if(hint) hint.textContent = '✦ Demo pre-loaded — press Generate to experience InkDate';
+
+          // Enable the generate button
+          const reviewBtn = document.getElementById('btn-review');
+          if(reviewBtn) {
+            reviewBtn.style.opacity = '1';
+            reviewBtn.style.cursor = 'pointer';
+          }
+        }, 400);
+      }, 200);
     }, 100);
     return;
   }
