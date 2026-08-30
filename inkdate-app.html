@@ -168,9 +168,9 @@ select option{background:#1e1208;color:#e8d5b0;}
       <span>1850 to Present</span>
     </div>
 
-    <!-- TRY FREE — Main CTA -->
+    <!-- TRY FREE — Main CTA — goes directly to input screen -->
     <div style="margin-bottom:16px;">
-      <button onclick="pickProduct('free',this)" style="
+      <button onclick="goFree()" style="
         width:100%;max-width:400px;
         background:linear-gradient(135deg,#c8a855,#e8c860);
         color:#1a0f0a;padding:18px 32px;
@@ -958,6 +958,20 @@ function show(id) {
 }
 
 // ── SCREEN 1 ──
+function goFree() {
+  if(hasUsedFreeTrial()) {
+    alert('You have used your 2 free trials. Your trials reset after 7 days, or purchase the full version for just £14.99.');
+    return;
+  }
+  S.product = 'free';
+  document.getElementById('s2-product-label').textContent = 'Try Free — Watermarked Sample';
+  document.getElementById('date2-wrap').style.display = 'none';
+  document.getElementById('date1').placeholder = 'e.g. November 5, 2008';
+  document.getElementById('date-hint').textContent = 'Enter any date from 1850 to present';
+  show('s2');
+  checkForm();
+}
+
 function pickProduct(p, el) {
   S.product = p;
   document.querySelectorAll('.pcard').forEach(c => c.classList.remove('selected'));
@@ -1620,24 +1634,30 @@ async function addWatermark(imageUrl) {
 
   // Creator bypass — unlimited free generations for book creation
   if(creator === 'MARLENE2026') {
-    // Clear any saved session so we always land on the input screen
     try { sessionStorage.clear(); } catch(e) {}
     S.product = 'premium';
     S.creatorMode = true;
-    if(document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        const lbl = document.getElementById('s2-product-label');
-        if(lbl) lbl.textContent = '✦ Creator Mode — Unlimited';
-        const upgradeWrap = document.getElementById('upgrade-wrap');
-        if(upgradeWrap) upgradeWrap.style.display = 'none';
-        show('s2');
-      });
-    } else {
+    const activateCreator = () => {
+      // Hide all screens first
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      // Show screen 2
+      const s2 = document.getElementById('s2');
+      if(s2) s2.classList.add('active');
+      // Set label
       const lbl = document.getElementById('s2-product-label');
       if(lbl) lbl.textContent = '✦ Creator Mode — Unlimited';
+      // Hide upgrade wrap
       const upgradeWrap = document.getElementById('upgrade-wrap');
       if(upgradeWrap) upgradeWrap.style.display = 'none';
-      show('s2');
+      // Close any open modal
+      const modal = document.getElementById('preview-modal');
+      if(modal) modal.style.display = 'none';
+      window.scrollTo(0,0);
+    };
+    if(document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => setTimeout(activateCreator, 100));
+    } else {
+      setTimeout(activateCreator, 100);
     }
     return;
   }
