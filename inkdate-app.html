@@ -147,6 +147,39 @@ select option{background:#1e1208;color:#e8d5b0;}
 </style>
 </head>
 <body>
+<script>
+// EARLY INIT — runs before any other JS
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var creator = params.get('creator');
+  var demo = params.get('demo');
+  var demoDate = params.get('date');
+  var demoNewspaper = params.get('newspaper');
+
+  function goToS2() {
+    // Use CSS to switch screens immediately — no waiting for full JS init
+    var style = document.createElement('style');
+    style.textContent = '#s1{display:none!important}#s2{display:block!important}';
+    document.head.appendChild(style);
+  }
+
+  if(creator === 'MARLENE2026') {
+    try { sessionStorage.clear(); } catch(e) {}
+    // Set flag for main JS to pick up
+    window.__creatorMode = true;
+    // Switch screen as soon as DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      goToS2();
+      var lbl = document.getElementById('s2-product-label');
+      if(lbl) lbl.textContent = '✦ Creator Mode — Unlimited';
+      var uw = document.getElementById('upgrade-wrap');
+      if(uw) uw.style.display = 'none';
+      var modal = document.getElementById('preview-modal');
+      if(modal) modal.style.display = 'none';
+    });
+  }
+})();
+</script>
 <div class="app">
 
 <!-- ══════════════════════════════
@@ -1633,32 +1666,22 @@ async function addWatermark(imageUrl) {
   }
 
   // Creator bypass — unlimited free generations for book creation
-  if(creator === 'MARLENE2026') {
+  if(creator === 'MARLENE2026' || window.__creatorMode) {
     try { sessionStorage.clear(); } catch(e) {}
     S.product = 'premium';
     S.creatorMode = true;
-    const activateCreator = () => {
-      // Hide all screens first
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      // Show screen 2
-      const s2 = document.getElementById('s2');
-      if(s2) s2.classList.add('active');
-      // Set label
-      const lbl = document.getElementById('s2-product-label');
-      if(lbl) lbl.textContent = '✦ Creator Mode — Unlimited';
-      // Hide upgrade wrap
-      const upgradeWrap = document.getElementById('upgrade-wrap');
-      if(upgradeWrap) upgradeWrap.style.display = 'none';
-      // Close any open modal
-      const modal = document.getElementById('preview-modal');
-      if(modal) modal.style.display = 'none';
-      window.scrollTo(0,0);
-    };
-    if(document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => setTimeout(activateCreator, 100));
-    } else {
-      setTimeout(activateCreator, 100);
-    }
+    // Screen already switched by early init script — just set state
+    const lbl = document.getElementById('s2-product-label');
+    if(lbl) lbl.textContent = '✦ Creator Mode — Unlimited';
+    const upgradeWrap = document.getElementById('upgrade-wrap');
+    if(upgradeWrap) upgradeWrap.style.display = 'none';
+    const modal = document.getElementById('preview-modal');
+    if(modal) modal.style.display = 'none';
+    // Ensure screen 2 is visible
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const s2el = document.getElementById('s2');
+    if(s2el) { s2el.classList.add('active'); s2el.style.display = 'block'; }
+    window.scrollTo(0,0);
     return;
   }
 
@@ -1704,3 +1727,4 @@ async function addWatermark(imageUrl) {
 </script>
 </body>
 </html>
+
