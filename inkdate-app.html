@@ -1332,9 +1332,9 @@ async function startGen() {
         } else if (r.newspaper.includes('Neue Freie Presse')) {
           styleGuide = 'Authentic late 19th to early 20th century Viennese prestige newspaper style. Vienna\'s most prestigious pre-war newspaper. Elegant formal European broadsheet layout. Heavy serif German typography masthead. Dense multi-column German language text. Imperial Vienna aesthetic. Aged cream newsprint.';
         } else {
-          styleGuide = 'Authentic newspaper front page. Masthead at top. Large press photograph. Body text in columns. Aged newsprint. Flat unfolded page.';
+          styleGuide = 'Authentic photorealistic newspaper broadsheet front page. Flat unfolded single page viewed from directly above. Masthead in bold serif typography at top. Large black and white press photograph below headline. Body text arranged in three clean straight vertical columns of dense justified small serif text — columns must be perfectly straight and aligned, text must flow naturally within each column, no distortion, no warping, no scrambled or fragmented letters, no overlapping text. Thin column rules between each column. Clear gutters between columns. Aged cream or yellowed newsprint texture. Ink slightly absorbed into paper. Authentic period printing aesthetic. All text must appear natural, legible and unwarped.';
         }
-        prompt = `Photorealistic front page of ${r.newspaper} newspaper dated ${r.date}. Headline in appropriate language: "${r.banner_headline}". Subheadline: "${r.deck_headline}". ${styleGuide}`;
+        prompt = `Photorealistic front page of ${r.newspaper} newspaper dated ${r.date}. Headline: "${r.banner_headline}". Subheadline: "${r.deck_headline}". Secondary stories if any: ${(r.secondary_stories||[]).slice(0,2).join('. ')}. ${styleGuide} The image must show a complete flat newspaper page with clean undistorted readable text in all columns. No perspective distortion. No warped text. No scrambled letters.`;
       }
 
       const imgController = new AbortController();
@@ -1351,7 +1351,7 @@ async function startGen() {
           prompt,
           n: 1,
           size: '1024x1536',
-          quality: 'medium',
+          quality: 'high',
         }),
       });
       clearTimeout(imgTimeout);
