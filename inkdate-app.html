@@ -1334,17 +1334,50 @@ async function startGen() {
         } else {
           styleGuide = 'Visual style: aged yellowed newsprint texture, ink slightly absorbed into paper, warm ambient museum light from above, flat page viewed straight on, authentic period printing aesthetic, monochrome black and white photograph with caption, thin column rules between text columns, formal serif typography throughout.';
         }
-        // Build a zone-structured prompt for clean results
-        const secStories = (r.secondary_stories||[]).slice(0,3).join(' | ');
-        prompt = `Photorealistic ${r.newspaper} newspaper front page dated ${r.date}.
+        // Generate plausible period-accurate masthead details
+        const dateObj = new Date(r.date);
+        const yr = dateObj.getFullYear() || 1963;
+        // Period-accurate price based on decade
+        const price = yr < 1940 ? '2 cents' : yr < 1960 ? '5 cents' : yr < 1970 ? '10 cents' : yr < 1980 ? '15 cents' : yr < 1990 ? '25 cents' : yr < 2000 ? '50 cents' : '75 cents';
+        // Volume number (approximate years in print)
+        const founded = r.newspaper.includes('Times') ? 1851 : r.newspaper.includes('Post') ? 1877 : r.newspaper.includes('Guardian') ? 1821 : r.newspaper.includes('Telegraph') ? 1855 : r.newspaper.includes('Mirror') ? 1903 : 1890;
+        const volume = Math.max(1, yr - founded);
+        // Issue number (roughly 300 issues per year)
+        const issue = (volume * 312) + Math.floor(Math.random() * 312);
+        // Plausible weather for the date/location
+        const month = dateObj.getMonth();
+        const isUS = (r.newspaper.includes('Post') || r.newspaper.includes('Times') || r.newspaper.includes('Tribune') || r.newspaper.includes('Herald'));
+        const weathers = month < 2 || month > 10 ? ['Cold and cloudy','Wintry showers','Frost expected','Snow likely'] : month < 5 ? ['Mild and breezy','Spring showers','Partly cloudy','Cool and bright'] : month < 8 ? ['Warm and sunny','Hot and clear','Humid, chance of storms','Fine and warm'] : ['Autumn showers','Cool and overcast','Mild with cloud','Breezy and bright'];
+        const weather = weathers[Math.floor(Math.random() * weathers.length)];
+        const edition = ['Morning Edition','Final Edition','Late City Edition','National Edition'][Math.floor(Math.random()*4)];
+        const motto = r.newspaper.includes('Times') ? '"All the News That's Fit to Print"' : r.newspaper.includes('Guardian') ? '"Comment is Free, But Facts are Sacred"' : r.newspaper.includes('Post') ? '"Democracy Dies in Darkness"' : r.newspaper.includes('Telegraph') ? '"Was, Is, and Shall Be"' : '';
+        const secStories = (r.secondary_stories||[]).slice(0,3);
 
-ZONE 1 — TOP MASTHEAD (top 15% of page): Large bold serif newspaper title "${r.newspaper}" centred. Date "${r.date}" below in small caps. Thin decorative rule beneath. THIS ZONE CONTAINS ONLY THE NEWSPAPER TITLE AND DATE — NO BODY TEXT IN THIS ZONE.
+        prompt = `Photorealistic authentic newspaper front page. Newspaper: ${r.newspaper}. Date: ${r.date}.
 
-ZONE 2 — HEADLINE (15% to 30%): Very large bold headline text: "${r.banner_headline}". Below it smaller subheadline: "${r.deck_headline}". ONLY HEADLINE TEXT IN THIS ZONE — NO COLUMNS OF BODY TEXT HERE.
+MASTHEAD ZONE (top 18% of image only):
+- Newspaper title "${r.newspaper}" in very large ornate bold serif — centred and dominant
+- Below title: motto or tagline in small italic if applicable${motto ? ': ' + motto : ''}
+- Below that: a single thin decorative rule line spanning full width
+- Below rule: three columns of tiny masthead text — LEFT: "VOL. ${volume} .. No. ${issue}" — CENTRE: "${r.date}" — RIGHT: "PRICE ${price}"
+- Below that: tiny weather line: "WEATHER: ${weather} — ${edition}"
+- Another thin rule line at bottom of masthead zone
+- MASTHEAD CONTAINS ONLY TYPOGRAPHY — NO PHOTOGRAPHS — NO BODY TEXT COLUMNS
 
-ZONE 3 — MAIN CONTENT (30% to 100%): This zone fills the rest of the page completely. Left third: one column of small dense serif body text paragraphs — FULLY FILLED TOP TO BOTTOM. Centre third: large black and white press photograph taking up most of this zone, with a short caption below. Right third: one column of small dense serif body text paragraphs — FULLY FILLED TOP TO BOTTOM. Additional secondary headlines: "${secStories}". Below the photograph: two more columns of dense body text filling remaining space completely.
+HEADLINE ZONE (18% to 35% of image):
+- One or two lines of very large bold serif headline: "${r.banner_headline}"
+- Below it one line of medium bold sub-headline: "${r.deck_headline}"
+- Thin rule beneath
 
-CRITICAL RULES: Every column must be completely filled with dense printed text — no blank spaces, no empty columns, no white voids anywhere. Aged cream yellowed newsprint texture throughout. ${styleGuide}`;
+CONTENT ZONE (35% to 100% of image) — completely filled:
+- Large dramatic black and white press photograph centre — 40% of content zone width — with short italic caption below
+- LEFT of photograph: column of dense small serif body text with sub-headline "${secStories[0]||''}" partway through breaking up text
+- RIGHT of photograph: column of dense small serif body text with sub-headline "${secStories[1]||''}" partway through breaking up text  
+- BELOW photograph: three equal columns of dense small serif body text — each column has a bold sub-headline at top: use "${secStories[2]||'Latest Reports'}" and two others
+- Thin vertical rules between ALL columns
+- Every column completely filled — no blank spaces — text runs right to bottom margin
+
+Visual style: ${styleGuide}`;
       }
 
       const imgController = new AbortController();
