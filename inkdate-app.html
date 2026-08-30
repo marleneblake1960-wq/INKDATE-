@@ -1620,13 +1620,25 @@ async function addWatermark(imageUrl) {
 
   // Creator bypass — unlimited free generations for book creation
   if(creator === 'MARLENE2026') {
+    // Clear any saved session so we always land on the input screen
+    try { sessionStorage.clear(); } catch(e) {}
     S.product = 'premium';
     S.creatorMode = true;
-    document.getElementById('s2-product-label').textContent = '✦ Creator Mode — Unlimited';
-    // Hide upgrade prompt and watermark permanently
-    const upgradeWrap = document.getElementById('upgrade-wrap');
-    if(upgradeWrap) upgradeWrap.style.display = 'none';
-    show('s2');
+    if(document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        const lbl = document.getElementById('s2-product-label');
+        if(lbl) lbl.textContent = '✦ Creator Mode — Unlimited';
+        const upgradeWrap = document.getElementById('upgrade-wrap');
+        if(upgradeWrap) upgradeWrap.style.display = 'none';
+        show('s2');
+      });
+    } else {
+      const lbl = document.getElementById('s2-product-label');
+      if(lbl) lbl.textContent = '✦ Creator Mode — Unlimited';
+      const upgradeWrap = document.getElementById('upgrade-wrap');
+      if(upgradeWrap) upgradeWrap.style.display = 'none';
+      show('s2');
+    }
     return;
   }
 
