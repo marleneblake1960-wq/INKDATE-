@@ -148,36 +148,15 @@ select option{background:#1e1208;color:#e8d5b0;}
 </head>
 <body>
 <script>
-// EARLY INIT — runs before any other JS
+// ── INKDATE EARLY INIT ──
 (function() {
-  var params = new URLSearchParams(window.location.search);
-  var creator = params.get('creator');
-  var demo = params.get('demo');
-  var demoDate = params.get('date');
-  var demoNewspaper = params.get('newspaper');
-
-  function goToS2() {
-    // Use CSS to switch screens immediately — no waiting for full JS init
-    var style = document.createElement('style');
-    style.textContent = '#s1{display:none!important}#s2{display:block!important}';
-    document.head.appendChild(style);
-  }
-
-  if(creator === 'MARLENE2026') {
-    try { sessionStorage.clear(); } catch(e) {}
-    // Set flag for main JS to pick up
-    window.__creatorMode = true;
-    // Switch screen as soon as DOM is ready
-    document.addEventListener('DOMContentLoaded', function() {
-      goToS2();
-      var lbl = document.getElementById('s2-product-label');
-      if(lbl) lbl.textContent = '✦ Creator Mode — Unlimited';
-      var uw = document.getElementById('upgrade-wrap');
-      if(uw) uw.style.display = 'none';
-      var modal = document.getElementById('preview-modal');
-      if(modal) modal.style.display = 'none';
-    });
-  }
+  try {
+    var p = new URLSearchParams(window.location.search);
+    if(p.get('creator') === 'MARLENE2026') {
+      sessionStorage.clear();
+      window.__inkCreator = true;
+    }
+  } catch(e) {}
 })();
 </script>
 <div class="app">
@@ -381,10 +360,11 @@ select option{background:#1e1208;color:#e8d5b0;}
 
   <!-- NEWSPAPER -->
   <div class="section">
-    <div class="section-label">Newspaper</div>
-    <select id="country-sel" onchange="updatePapers()" style="margin-bottom:8px;">
-      <option value="">— Select Country / Region —</option>
+    <div class="section-label">Country / Region</div>
+    <select id="country-sel" onchange="updatePapers()" style="margin-bottom:12px;">
+      <option value="">— Select language first —</option>
     </select>
+    <div class="section-label" id="newspaper-label" style="display:none;">Newspaper</div>
     <select id="paper-sel" onchange="pickPaper()" style="display:none;">
       <option value="">— Select Newspaper —</option>
     </select>
@@ -1177,6 +1157,8 @@ function pickLang(lang, name, el) {
   });
   document.getElementById('paper-sel').style.display = 'none';
   document.getElementById('paper-sel').innerHTML = '<option value="">— Select Newspaper —</option>';
+  const nlabel = document.getElementById('newspaper-label');
+  if(nlabel) nlabel.style.display = 'none';
   S.country = ''; S.newspaper = '';
   checkForm();
 }
@@ -1194,6 +1176,8 @@ function updatePapers() {
     pSel.appendChild(o);
   });
   pSel.style.display = 'block';
+  const nlabel = document.getElementById('newspaper-label');
+  if(nlabel) nlabel.style.display = 'block';
   S.newspaper = ''; S.paperEst = 0;
   checkForm();
 }
@@ -1666,21 +1650,32 @@ async function addWatermark(imageUrl) {
   }
 
   // Creator bypass — unlimited free generations for book creation
-  if(creator === 'MARLENE2026' || window.__creatorMode) {
+    if(creator === 'MARLENE2026' || window.__inkCreator) {
     try { sessionStorage.clear(); } catch(e) {}
     S.product = 'premium';
     S.creatorMode = true;
-    // Screen already switched by early init script — just set state
-    const lbl = document.getElementById('s2-product-label');
+    // Switch to screen 2
+    document.querySelectorAll('.screen').forEach(s => {
+      s.classList.remove('active');
+      s.style.display = 'none';
+    });
+    var s2 = document.getElementById('s2');
+    if(s2) { s2.classList.add('active'); s2.style.display = 'block'; }
+    // Set label
+    var lbl = document.getElementById('s2-product-label');
     if(lbl) lbl.textContent = '✦ Creator Mode — Unlimited';
-    const upgradeWrap = document.getElementById('upgrade-wrap');
-    if(upgradeWrap) upgradeWrap.style.display = 'none';
-    const modal = document.getElementById('preview-modal');
-    if(modal) modal.style.display = 'none';
-    // Ensure screen 2 is visible
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    const s2el = document.getElementById('s2');
-    if(s2el) { s2el.classList.add('active'); s2el.style.display = 'block'; }
+    var uw = document.getElementById('upgrade-wrap');
+    if(uw) uw.style.display = 'none';
+    var mod = document.getElementById('preview-modal');
+    if(mod) mod.style.display = 'none';
+    // Auto-select English and populate countries
+    setTimeout(function() {
+      var engBtn = document.querySelector('.lang-btn[onclick*=\'english\']');
+      if(engBtn) {
+        pickLang('english', 'English', engBtn);
+        engBtn.classList.add('selected');
+      }
+    }, 200);
     window.scrollTo(0,0);
     return;
   }
@@ -1727,4 +1722,3 @@ async function addWatermark(imageUrl) {
 </script>
 </body>
 </html>
-
