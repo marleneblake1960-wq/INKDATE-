@@ -66,6 +66,34 @@ nav{padding:20px 24px;display:flex;justify-content:space-between;align-items:cen
 .step-desc{font-size:0.8rem;color:var(--text);line-height:1.5;}
 .arrow{display:flex;align-items:center;justify-content:center;color:var(--rule);font-size:1.2rem;padding-top:20px;}
 
+/* ── 4-STEP MOCKUPS ── */
+.pipeline-visual{background:#0d0d0d;height:120px;border-radius:2px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden;}
+.mock-monitor{width:78%;background:#0d0d0d;border-radius:3px;padding:5px;box-shadow:0 6px 16px rgba(0,0,0,0.4);}
+.mock-monitor img{width:100%;display:block;border-radius:1px;}
+.mock-phone{width:50%;background:#111;border-radius:12px;padding:6px 5px;box-shadow:0 8px 20px rgba(0,0,0,0.45);}
+.mock-phone img{width:100%;display:block;border-radius:2px;}
+.typewriter-mock{width:82%;background:#0d0d0d;border-radius:3px;padding:14px;color:var(--gold-light);font-family:'Old Standard TT',serif;font-style:italic;font-size:0.72rem;line-height:1.4;text-align:center;}
+
+/* ── SCAN CARD + TECH PANEL ── */
+.scan-tech{display:grid;grid-template-columns:1fr 1.3fr;background:#0a0806;border-top:1px solid var(--rule);margin-top:20px;}
+.scan-panel{display:flex;align-items:center;justify-content:center;padding:36px 24px;}
+.scan-card{border:1px solid var(--rule);padding:20px;text-align:center;max-width:220px;background:#0f0d0a;}
+.scan-card .qr{width:100px;height:100px;background:var(--gold-light);margin:0 auto 14px;position:relative;}
+.scan-card .qr::before{
+  content:'';position:absolute;inset:8px;
+  background-image:linear-gradient(#0f0d0a 40%, transparent 40%),linear-gradient(90deg,#0f0d0a 40%, transparent 40%);
+  background-size:13px 13px;
+}
+.scan-card .qr .corner{position:absolute;width:20px;height:20px;border:4px solid #0f0d0a;}
+.scan-card .qr .corner.tl{top:6px;left:6px;}
+.scan-card .qr .corner.tr{top:6px;right:6px;}
+.scan-card .qr .corner.bl{bottom:6px;left:6px;}
+.scan-card .label{font-size:0.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);line-height:1.6;margin-bottom:10px;}
+.scan-card .powered{font-size:0.58rem;letter-spacing:1px;text-transform:uppercase;color:var(--gold);}
+.tech-panel{padding:40px 36px;}
+.tech-panel p{font-size:0.88rem;color:var(--text);margin-bottom:14px;text-align:center;line-height:1.7;}
+.tech-panel .punch{color:var(--gold);font-style:italic;text-align:center;}
+
 /* ── USE CASES ── */
 .usecases{padding:80px 24px;}
 .section-header{text-align:center;margin-bottom:56px;}
@@ -120,9 +148,10 @@ footer{padding:32px 24px;border-top:1px solid var(--rule);text-align:center;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:640px){
-  .pipeline-grid{grid-template-columns:repeat(2,1fr);}
+  .pipeline-grid{grid-template-columns:repeat(2,1fr) !important;}
   .pipeline-step{border-left:none;border-top:1px solid var(--rule);}
   .pipeline-step:nth-child(odd){border-left:none;}
+  .scan-tech{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -202,7 +231,7 @@ footer{padding:32px 24px;border-top:1px solid var(--rule);text-align:center;}
 
 <div class="headline-divider">
   <div>
-    <img class="headline-image zoomable" src="titanic-1912.png" alt="The Times: Loss of the Titanic, April 15 1912" onclick="openLightbox(this.src)">
+    <img class="headline-image zoomable" src="TITANIC .png" alt="The Times: Loss of the Titanic, April 15 1912" onclick="openLightbox(this.src)">
     <p class="mockup-caption">April 15, 1912 — The Times, London</p>
   </div>
 </div>
@@ -213,49 +242,60 @@ footer{padding:32px 24px;border-top:1px solid var(--rule);text-align:center;}
     <div class="eyebrow" style="margin-bottom:12px;">The Technology</div>
     <h2 class="display">Not just an image generator.<br>A platform for experiencing history.</h2>
   </div>
-  <div class="pipeline-grid">
+  <div class="pipeline-grid" style="grid-template-columns:repeat(4,1fr);">
     <div class="pipeline-step">
-      <div class="step-icon">📅</div>
+      <div class="pipeline-visual"><div style="font-size:2rem;">🔍</div></div>
       <div class="step-label">Step 1</div>
-      <div class="step-num">Date</div>
-      <div class="step-desc">Any date from 1850 to present</div>
-    </div>
-    <div class="pipeline-step">
-      <div class="step-icon">🔍</div>
-      <div class="step-label">Step 2</div>
       <div class="step-num">Research</div>
-      <div class="step-desc">We research real historical headlines</div>
+      <div class="step-desc">InkDate researches real events and verifies the facts</div>
     </div>
     <div class="pipeline-step">
-      <div class="step-icon">📊</div>
-      <div class="step-label">Step 3</div>
-      <div class="step-num">Ranking</div>
-      <div class="step-desc">Events ranked by significance and location</div>
-    </div>
-    <div class="pipeline-step">
-      <div class="step-icon">🌍</div>
-      <div class="step-label">Step 4</div>
-      <div class="step-num">Context</div>
-      <div class="step-desc">Country and language localisation</div>
-    </div>
-    <div class="pipeline-step">
-      <div class="step-icon">✍️</div>
-      <div class="step-label">Step 5</div>
+      <div class="pipeline-visual">
+        <div class="typewriter-mock">"White Star Liner Strikes<br>Iceberg South of Newfoundland."</div>
+      </div>
+      <div class="step-label">Step 2</div>
       <div class="step-num">Editorial</div>
-      <div class="step-desc">Era-appropriate editorial generation</div>
+      <div class="step-desc">AI writes authentic headlines and captions in the voice of the era</div>
     </div>
     <div class="pipeline-step">
-      <div class="step-icon">🗞️</div>
-      <div class="step-label">Step 6</div>
-      <div class="step-num">Front Page</div>
-      <div class="step-desc">Photorealistic newspaper front page</div>
+      <div class="pipeline-visual">
+        <div class="mock-monitor"><img src="35F1C68E-3640-4A9A-8728-940F1C95B85A.png" alt="The Times: Loss of the Titanic front page reconstruction"></div>
+      </div>
+      <div class="step-label">Step 3</div>
+      <div class="step-num">Reconstruction</div>
+      <div class="step-desc">AI reconstructs the front page with period-accurate design</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-visual">
+        <div class="mock-phone"><img src="35F1C68E-3640-4A9A-8728-940F1C95B85A.png" alt="The Times: Loss of the Titanic front page on phone"></div>
+      </div>
+      <div class="step-label">Step 4</div>
+      <div class="step-num">Delivery</div>
+      <div class="step-desc">Delivered in seconds — ready to download, share or print</div>
+    </div>
+  </div>
+
+  <div class="scan-tech">
+    <div class="scan-panel">
+      <div class="scan-card">
+        <div class="qr">
+          <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div>
+        </div>
+        <div class="label">SCAN TO TRY<br>THE LIVE DEMO</div>
+        <div class="powered">Powered by Inkdate</div>
+      </div>
+    </div>
+    <div class="tech-panel">
+      <p>Most people think InkDate is an AI image generator. It isn't. InkDate is a multi-stage AI pipeline that recreates history exactly as people experienced it.</p>
+      <p>Starting with nothing more than a date, a country and a newspaper, InkDate researches real historical events, writes authentic editorial, recreates period newspaper design, and generates a reconstructed front page that looks as though it came directly from the archive.</p>
+      <p class="punch">The result isn't simply an image.<br>It's a historically accurate moment, reconstructed.</p>
     </div>
   </div>
 </section>
 
 <div class="headline-divider">
   <div>
-    <img class="headline-image zoomable" src="roosevelt-1945.png" alt="The Washington Post: President Roosevelt Is Dead, April 12 1945" onclick="openLightbox(this.src)">
+    <img class="headline-image zoomable" src="ROOSEVELT .png" alt="The Washington Post: President Roosevelt Is Dead, April 12 1945" onclick="openLightbox(this.src)">
     <p class="mockup-caption">April 12, 1945 — The Washington Post</p>
   </div>
 </div>
@@ -265,19 +305,19 @@ footer{padding:32px 24px;border-top:1px solid var(--rule);text-align:center;}
   <div class="section-header">
     <div class="eyebrow" style="margin-bottom:12px;">Who It's For</div>
     <h2 class="display">Built for organisations that bring history to life.</h2>
-    <p>From museums to publishers, schools to broadcasters — if your work involves historical storytelling, our platform transforms how you do it.</p>
+    <p>InkDate transforms historical information into immersive, explorable experiences.</p>
   </div>
   <div class="usecase-grid">
     <div class="usecase-card">
       <div class="usecase-icon">🏛️</div>
       <div class="usecase-title serif">Museums & Heritage</div>
-      <div class="usecase-desc">Interactive exhibits where visitors enter their birth date and see the world as it was reported that day. Permanent installations. Touchscreen experiences.</div>
+      <div class="usecase-desc">Turn dormant archive material into an active audience experience. Imagine standing in front of one of your objects — and being able to step into the world in which it existed.</div>
       <div class="usecase-example">"Show me the front page from the day this museum opened."</div>
     </div>
     <div class="usecase-card">
       <div class="usecase-icon">🏫</div>
       <div class="usecase-title serif">Education</div>
-      <div class="usecase-desc">History curriculum resources. Students experience D-Day through five different national newspapers simultaneously. Primary sources, generated on demand.</div>
+      <div class="usecase-desc">Instead of asking students to read about an event, what if they could investigate the world as it existed at that moment? Primary sources, generated on demand — students can experience D-Day through five different national newspapers, simultaneously.</div>
       <div class="usecase-example">"Show pupils the Berlin Wall fall from German, French and British perspectives."</div>
     </div>
     <div class="usecase-card">
@@ -295,7 +335,7 @@ footer{padding:32px 24px;border-top:1px solid var(--rule);text-align:center;}
     <div class="usecase-card">
       <div class="usecase-icon">📺</div>
       <div class="usecase-title serif">Media & Broadcasting</div>
-      <div class="usecase-desc">TV documentaries needing period newspapers. Film and theatre production. News organisations creating historical content and interactives.</div>
+      <div class="usecase-desc">The documentary ends — but the audience doesn't have to stop there. InkDate lets them step into the surrounding history themselves, the moment the programme only had time to tell.</div>
       <div class="usecase-example">"We need authentic 1940s newspapers for our six-part documentary series."</div>
     </div>
     <div class="usecase-card">
@@ -309,7 +349,7 @@ footer{padding:32px 24px;border-top:1px solid var(--rule);text-align:center;}
 
 <div class="headline-divider">
   <div>
-    <img class="headline-image zoomable" src="ve-day-1945.png" alt="Daily Mirror: Victory, VE-Day, May 8 1945" onclick="openLightbox(this.src)">
+    <img class="headline-image zoomable" src="VE DAY DAILY MIRROR.PNG" alt="Daily Mirror: Victory, VE-Day, May 8 1945" onclick="openLightbox(this.src)">
     <p class="mockup-caption">May 8, 1945 — Daily Mirror</p>
   </div>
 </div>
@@ -326,8 +366,8 @@ footer{padding:32px 24px;border-top:1px solid var(--rule);text-align:center;}
 
     <div class="headline-divider" style="margin:0 0 32px;">
       <div>
-        <img class="headline-image zoomable" src="obama-2008.png" alt="The Washington Post: Obama Makes History, November 5 2008" onclick="openLightbox(this.src)">
-        <p class="mockup-caption">November 5, 2008 — The Washington Post</p>
+        <img class="headline-image zoomable" src="IMG_1040.png" alt="Man Walks on the Moon, July 20 1969" onclick="openLightbox(this.src)">
+        <p class="mockup-caption">July 20, 1969 — Man Walks on the Moon</p>
       </div>
     </div>
 
