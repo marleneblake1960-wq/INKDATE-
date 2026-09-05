@@ -1332,7 +1332,7 @@ async function startGen() {
         } else if (r.newspaper.includes('Neue Freie Presse')) {
           styleGuide = 'Authentic late 19th to early 20th century Viennese prestige newspaper style. Vienna\'s most prestigious pre-war newspaper. Elegant formal European broadsheet layout. Heavy serif German typography masthead. Dense multi-column German language text. Imperial Vienna aesthetic. Aged cream newsprint.';
         } else {
-          styleGuide = 'Authentic newspaper front page. Masthead at top. Large press photograph. Body text in columns. Aged newsprint. Flat unfolded page.';
+          styleGuide = 'Authentic newspaper front page. Masthead at top. Large press photograph. Body text in columns. Aged newsprint. Flat unfolded page. In the bottom margin of the page include a small discreet line of tiny italic text reading: Historical Reconstruction — InkDate™';
         }
         prompt = `Photorealistic front page of ${r.newspaper} newspaper dated ${r.date}. Headline in appropriate language: "${r.banner_headline}". Subheadline: "${r.deck_headline}". ${styleGuide}`;
       }
