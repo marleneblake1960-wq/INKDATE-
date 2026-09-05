@@ -1232,6 +1232,32 @@ function setProg(step) {
   }
 }
 
+async function stampReconstructionNotice(imageUrl) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      // Draw notice bar at very bottom of image
+      const barH = Math.round(img.height * 0.028);
+      const y = img.height - barH;
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.fillRect(0, y, img.width, barH);
+      ctx.fillStyle = 'rgba(255,255,255,0.90)';
+      ctx.font = `italic ${Math.round(barH * 0.52)}px Georgia, serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('Historical Reconstruction — InkDate™ · inkdateapp.com', img.width / 2, y + barH / 2);
+      resolve(canvas.toDataURL('image/png'));
+    };
+    img.onerror = () => resolve(imageUrl);
+    img.src = imageUrl;
+  });
+}
+
 async function startGen() {
   show('s4');
   document.getElementById('progress-wrap').style.display = 'block';
@@ -1332,7 +1358,7 @@ async function startGen() {
         } else if (r.newspaper.includes('Neue Freie Presse')) {
           styleGuide = 'Authentic late 19th to early 20th century Viennese prestige newspaper style. Vienna\'s most prestigious pre-war newspaper. Elegant formal European broadsheet layout. Heavy serif German typography masthead. Dense multi-column German language text. Imperial Vienna aesthetic. Aged cream newsprint.';
         } else {
-          styleGuide = 'Authentic newspaper front page. Masthead at top. Large press photograph. Body text in columns. Aged newsprint. Flat unfolded page. In the bottom margin of the page include a small discreet line of tiny italic text reading: Historical Reconstruction — InkDate™';
+          styleGuide = 'Authentic newspaper front page. Masthead at top. Large press photograph. Body text in columns. Aged newsprint. Flat unfolded page.';
         }
         prompt = `Photorealistic front page of ${r.newspaper} newspaper dated ${r.date}. Headline in appropriate language: "${r.banner_headline}". Subheadline: "${r.deck_headline}". ${styleGuide}`;
       }
@@ -1360,6 +1386,8 @@ async function startGen() {
       if(imgData.error) throw new Error(imgData.error.message);
       if(!imgData.data || !imgData.data[0] || !imgData.data[0].b64_json) throw new Error('No image returned');
       imageUrl = 'data:image/png;base64,' + imgData.data[0].b64_json;
+      // Stamp reconstruction notice directly onto image — always visible
+      imageUrl = await stampReconstructionNotice(imageUrl);
 
     } catch(e) {
       clearInterval(keepAlive);
