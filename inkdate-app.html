@@ -1232,32 +1232,6 @@ function setProg(step) {
   }
 }
 
-async function stampReconstructionNotice(imageUrl) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = function() {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      // Draw notice bar at very bottom of image
-      const barH = Math.round(img.height * 0.028);
-      const y = img.height - barH;
-      ctx.fillStyle = 'rgba(0,0,0,0.55)';
-      ctx.fillRect(0, y, img.width, barH);
-      ctx.fillStyle = 'rgba(255,255,255,0.90)';
-      ctx.font = `italic ${Math.round(barH * 0.52)}px Georgia, serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('Historical Reconstruction — InkDate™ · inkdateapp.com', img.width / 2, y + barH / 2);
-      resolve(canvas.toDataURL('image/png'));
-    };
-    img.onerror = () => resolve(imageUrl);
-    img.src = imageUrl;
-  });
-}
-
 async function startGen() {
   show('s4');
   document.getElementById('progress-wrap').style.display = 'block';
@@ -1346,19 +1320,19 @@ async function startGen() {
         // Specific styling for historic German and Austrian newspapers
         let styleGuide = '';
         if (r.newspaper.includes('Berliner Tageblatt')) {
-          styleGuide = 'Authentic early 20th century German broadsheet style. Heavy serif masthead lettering in German typography. Dense justified columns in German language. Formal imperial layout. Aged yellowed newsprint. Pre-WW2 Berlin newspaper aesthetic.';
+          styleGuide = 'Authentic early 20th century German broadsheet style. Heavy serif masthead lettering in German typography. Dense justified columns in German language. Formal imperial layout. Aged yellowed newsprint. Pre-WW2 Berlin newspaper aesthetic. The newspaper must have a printed footer at the very bottom edge containing small italic text: Historical Reconstruction — InkDate™.';
         } else if (r.newspaper.includes('Frankfurter Zeitung')) {
-          styleGuide = 'Authentic pre-WW2 German broadsheet style. Prestigious liberal Frankfurt newspaper. Heavy serif German typography masthead. Dense multi-column layout in German language. Formal European broadsheet. Aged cream newsprint.';
+          styleGuide = 'Authentic pre-WW2 German broadsheet style. Prestigious liberal Frankfurt newspaper. Heavy serif German typography masthead. Dense multi-column layout in German language. Formal European broadsheet. Aged cream newsprint. The newspaper must have a printed footer at the very bottom edge containing small italic text: Historical Reconstruction — InkDate™.';
         } else if (r.newspaper.includes('Berliner Morgenpost')) {
-          styleGuide = 'Authentic early 20th century Berlin popular newspaper style. Bold German serif masthead. Multi-column layout in German language. Popular Berlin daily newspaper aesthetic. Aged newsprint. Pre-WW2 era styling.';
+          styleGuide = 'Authentic early 20th century Berlin popular newspaper style. Bold German serif masthead. Multi-column layout in German language. Popular Berlin daily newspaper aesthetic. Aged newsprint. Pre-WW2 era styling. The newspaper must have a printed footer at the very bottom edge containing small italic text: Historical Reconstruction — InkDate™.';
         } else if (r.newspaper.includes('Völkischer Beobachter')) {
-          styleGuide = 'Authentic 1930s-1940s German newspaper style. Official NSDAP party newspaper. Bold aggressive Gothic blackletter Fraktur masthead typography. Dense propaganda-era German language columns. Nazi-era German newspaper aesthetic. Aged yellowed newsprint. Historically accurate layout only — no offensive imagery.';
+          styleGuide = 'Authentic 1930s-1940s German newspaper style. Official NSDAP party newspaper. Bold aggressive Gothic blackletter Fraktur masthead typography. Dense propaganda-era German language columns. Nazi-era German newspaper aesthetic. Aged yellowed newsprint. Historically accurate layout only — no offensive imagery. The newspaper must have a printed footer at the very bottom edge containing small italic text: Historical Reconstruction — InkDate™.';
         } else if (r.newspaper.includes('Wiener Zeitung')) {
-          styleGuide = 'Authentic historic Austrian newspaper Extrablatt emergency edition style. World\'s oldest newspaper founded 1703. Heavy Gothic blackletter Fraktur masthead typography. Imperial Austro-Hungarian era formal layout. Dense German language columns. Imperial double eagle crest. Dramatic Extrablatt emergency edition banner. Aged cream newsprint. Formal Viennese broadsheet aesthetic.';
+          styleGuide = 'Authentic historic Austrian newspaper Extrablatt emergency edition style. World\'s oldest newspaper founded 1703. Heavy Gothic blackletter Fraktur masthead typography. Imperial Austro-Hungarian era formal layout. Dense German language columns. Imperial double eagle crest. Dramatic Extrablatt emergency edition banner. Aged cream newsprint. Formal Viennese broadsheet aesthetic. The newspaper must have a printed footer at the very bottom edge containing small italic text: Historical Reconstruction — InkDate™.';
         } else if (r.newspaper.includes('Neue Freie Presse')) {
-          styleGuide = 'Authentic late 19th to early 20th century Viennese prestige newspaper style. Vienna\'s most prestigious pre-war newspaper. Elegant formal European broadsheet layout. Heavy serif German typography masthead. Dense multi-column German language text. Imperial Vienna aesthetic. Aged cream newsprint.';
+          styleGuide = 'Authentic late 19th to early 20th century Viennese prestige newspaper style. Vienna\'s most prestigious pre-war newspaper. Elegant formal European broadsheet layout. Heavy serif German typography masthead. Dense multi-column German language text. Imperial Vienna aesthetic. Aged cream newsprint. The newspaper must have a printed footer at the very bottom edge containing small italic text: Historical Reconstruction — InkDate™.';
         } else {
-          styleGuide = 'Authentic newspaper front page. Masthead at top. Large press photograph. Body text in columns. Aged newsprint. Flat unfolded page.';
+          styleGuide = 'Authentic newspaper front page. Masthead at top. Large press photograph. Body text in columns. Aged newsprint. Flat unfolded page. The newspaper must have a printed footer strip at the very bottom edge of the newspaper page itself — inside the newspaper border — containing the small italic text: Historical Reconstruction — InkDate™. This footer must be part of the newspaper, not on the background surface.';
         }
         prompt = `Photorealistic front page of ${r.newspaper} newspaper dated ${r.date}. Headline in appropriate language: "${r.banner_headline}". Subheadline: "${r.deck_headline}". ${styleGuide}`;
       }
@@ -1386,8 +1360,6 @@ async function startGen() {
       if(imgData.error) throw new Error(imgData.error.message);
       if(!imgData.data || !imgData.data[0] || !imgData.data[0].b64_json) throw new Error('No image returned');
       imageUrl = 'data:image/png;base64,' + imgData.data[0].b64_json;
-      // Stamp reconstruction notice directly onto image — always visible
-      imageUrl = await stampReconstructionNotice(imageUrl);
 
     } catch(e) {
       clearInterval(keepAlive);
